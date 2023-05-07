@@ -17,13 +17,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const isAuth = localStorage.getItem("isAuth");
-    if (isAuth) {
-      navigate("/");
-    }
-  }, []);
-
   const handleSubmit = async (e: any) => {
     setLoading(true);
     e.preventDefault();
