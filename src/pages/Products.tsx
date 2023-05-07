@@ -19,83 +19,85 @@ import Drawer from "../components/drawer";
 import Form from "../components/createForm";
 import { createProductsField } from "../data/formFields";
 import UpdateForm from "../components/updateForm";
+import { useAuth } from "../context/authContext";
 
 export default function Products() {
+  const { auth } = useAuth();
   const {
     data,
     error,
     mutate,
     isLoading: loading,
-  } = useSWR(productsApiEndpoint, getProducts);
+  } = useSWR(productsApiEndpoint, () => getProducts(auth.accessToken));
 
-  const {
-    data: categories,
-    isLoading: categoriesLoading,
-    error: categoriesError,
-  } = useSWR(categoriesApiEndpoint, getCategories);
+  console.log(data);
 
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
   const options = useMemo(() => {
-    if (categories) {
-      return categories.map((category: any) => ({
+    if (data?.categories) {
+      return data.categories.map((category: any) => ({
         label: category.name,
         value: category.id,
       }));
     }
-  }, [categories]);
+  }, [data]);
 
   const onClose = () => {
     setOpen(false);
     setUpdateDrawerOpen(false);
     setRowSelected(null);
   };
+
   return (
     <>
       <PageTitle title="Produk" setOpen={setOpen} loading={loading} />
       <div>
-        {loading && !data ? (
+        {(loading && !data) || error ? (
           <TableLoader header={productsHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={data}
-            mutate={mutate}
-            deleteFunction={deleteProducts}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            setRowSelected={setRowSelected}
-            onClose={onClose}
-          />
+          <>
+            {" "}
+            <Table
+              columns={columns}
+              data={data.products}
+              mutate={mutate}
+              deleteFunction={deleteProducts}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              setRowSelected={setRowSelected}
+              onClose={onClose}
+            />{" "}
+            <Drawer open={open} onClose={() => setOpen(false)}>
+              {loading ? (
+                "Loading"
+              ) : (
+                <Form
+                  mutate={mutate}
+                  createFunction={createProduct}
+                  fields={createProductsField(options)}
+                  onClose={onClose}
+                />
+              )}
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {!rowSelected || loading ? (
+                <></>
+              ) : (
+                <UpdateForm
+                  mutate={mutate}
+                  updateFunction={updateProduct}
+                  getSingleData={getProduct}
+                  cacheKey={productsApiEndpoint}
+                  fields={createProductsField(options)}
+                  onClose={onClose}
+                  rowSelected={rowSelected}
+                />
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={() => setOpen(false)}>
-        {categoriesLoading ? (
-          "Loading"
-        ) : (
-          <Form
-            mutate={mutate}
-            createFunction={createProduct}
-            fields={createProductsField(options)}
-            onClose={onClose}
-          />
-        )}
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {!rowSelected || categoriesLoading ? (
-          <></>
-        ) : (
-          <UpdateForm
-            mutate={mutate}
-            updateFunction={updateProduct}
-            getSingleData={getProduct}
-            cacheKey={productsApiEndpoint}
-            fields={createProductsField(options)}
-            onClose={onClose}
-            rowSelected={rowSelected}
-          />
-        )}
-      </Drawer>
     </>
   );
 }

@@ -25,7 +25,7 @@ const idColumn = {
   ),
   Cell: ({ row }: any) => {
     return (
-      <div className="flex items-center bg-[#d7dde4] rounded-2xl w-fit py-1 px-2">
+      <div className="flex items-center bg-[#d7dde4] rounded-lg w-fit py-1 px-2">
         <button
           className="mr-2 text-slate-600"
           onClick={(e) => {
@@ -129,7 +129,7 @@ const productsColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center bg-[#d7dde4] rounded-2xl w-fit py-1 px-3">
+        <div className="flex items-center bg-[#d7dde4] rounded-lg w-fit py-1 px-3">
           {row.original.category.name}
         </div>
       );
@@ -256,11 +256,11 @@ const rolesColumn = [
     Cell: ({ row }: any) => {
       return (
         <div className="flex flex-wrap gap-1">
-          {row.original.permissions.map((permission: any) => {
+          {row.original.permissions.map((permission: any, index: number) => {
             return (
               <div
-                key={permission.id}
-                className="bg-[#d7dde4] rounded-2xl w-fit py-1 px-3 mb-1"
+                key={index}
+                className="bg-[#d7dde4] rounded-lg w-fit py-1 px-3 mb-1"
               >
                 {permission}
               </div>
@@ -306,7 +306,7 @@ const usersColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center bg-[#d7dde4] rounded-2xl w-fit py-1 px-3">
+        <div className="flex items-center bg-[#d7dde4] rounded-lg w-fit py-1 px-3">
           {row.original.role.name}
         </div>
       );
@@ -330,7 +330,7 @@ const purchasesColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center bg-[#d7dde4] rounded-2xl w-fit py-1 px-3">
+        <div className="flex items-center bg-[#d7dde4] rounded-lg w-fit py-1 px-3">
           {row.original.supplier.name}
         </div>
       );
@@ -348,7 +348,7 @@ const purchasesColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center rounded-2xl w-fit py-1 px-3">
+        <div className="flex items-center rounded-lg w-fit py-1 px-3">
           {formatter.format(row.original.total)}
         </div>
       );
@@ -372,8 +372,8 @@ const salesColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center bg-[#d7dde4] rounded-2xl w-fit py-1 px-3">
-          {row.original.customer.name}
+        <div className="flex items-center bg-[#d7dde4] rounded-lg w-fit py-1 px-3">
+          {row.original.customer ? row.original.customer.name : "-"}
         </div>
       );
     },
@@ -390,7 +390,7 @@ const salesColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center rounded-2xl w-fit py-1 px-3">
+        <div className="flex items-center rounded-lg w-fit py-1 px-3">
           {formatter.format(row.original.total)}
         </div>
       );

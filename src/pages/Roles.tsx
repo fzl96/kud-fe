@@ -19,14 +19,16 @@ import Table from "../components/table";
 import Drawer from "../components/drawer";
 import { useState, useMemo } from "react";
 import { SidebarData } from "../data/sidebarNav";
+import { useAuth } from "../context/authContext";
 
 export default function Roles() {
+  const { auth } = useAuth();
   const {
     data,
     error,
     mutate,
     isLoading: loading,
-  } = useSWR(rolesApiEndpoint, getRoles);
+  } = useSWR(rolesApiEndpoint, () => getRoles(auth.accessToken));
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
@@ -50,43 +52,46 @@ export default function Roles() {
     <>
       <PageTitle title="Roles" setOpen={setOpen} loading={loading} />
       <div>
-        {loading ? (
+        {loading || error ? (
           <TableLoader header={rolesHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={data}
-            mutate={mutate}
-            deleteFunction={deleteRoles}
-            setRowSelected={setRowSelected}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            onClose={onClose}
-          />
+          <>
+            {" "}
+            <Table
+              columns={columns}
+              data={data}
+              mutate={mutate}
+              deleteFunction={deleteRoles}
+              setRowSelected={setRowSelected}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              onClose={onClose}
+            />
+            <Drawer open={open} onClose={onClose}>
+              {options && (
+                <Form
+                  fields={createRolesField(options)}
+                  createFunction={createRole}
+                  mutate={mutate}
+                  onClose={onClose}
+                />
+              )}
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {rowSelected && (
+                <UpdateForm
+                  fields={createRolesField(options)}
+                  cacheKey={rolesApiEndpoint}
+                  getSingleData={getRole}
+                  updateFunction={updateRole}
+                  mutate={mutate}
+                  onClose={onClose}
+                  rowSelected={rowSelected}
+                />
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={onClose}>
-        {options && (
-          <Form
-            fields={createRolesField(options)}
-            createFunction={createRole}
-            mutate={mutate}
-            onClose={onClose}
-          />
-        )}
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {rowSelected && (
-          <UpdateForm
-            fields={createRolesField(options)}
-            cacheKey={rolesApiEndpoint}
-            getSingleData={getRole}
-            updateFunction={updateRole}
-            mutate={mutate}
-            onClose={onClose}
-            rowSelected={rowSelected}
-          />
-        )}
-      </Drawer>
     </>
   );
 }

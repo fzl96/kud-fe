@@ -70,8 +70,11 @@ export default function Drawer({ children, open, onClose }: DrawerProps) {
             open ? "block" : "hidden"
           } `}
       >
-        <button onClick={onClose} className="flex text-blue-700 font-semibold">
-          <IoIosArrowBack className="text-2xl" />
+        <button
+          onClick={onClose}
+          className="flex group text-[#a285e1] font-semibold"
+        >
+          <IoIosArrowBack className="text-2xl group-hover:translate-x-[-0.5rem] transition-transform duration-150 ease-in" />
           <span className="">Kembali</span>
         </button>
         <div className="h-[43rem] overflow-y-auto">{children}</div>

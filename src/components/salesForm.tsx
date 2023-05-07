@@ -73,7 +73,7 @@ export default function SalesForm({ rowSelected, onClose }: Props) {
             ) : (
               <input
                 disabled
-                value={rowSelected.customer.name}
+                value={data.customer?.name}
                 type="text"
                 className="bg-transparent outline-none text-sm pt-1"
               />

@@ -19,30 +19,27 @@ import { usersColumn as columns } from "../data/tableColumns";
 import Table from "../components/table";
 import Drawer from "../components/drawer";
 import { useState, useMemo } from "react";
+import { useAuth } from "../context/authContext";
 
 export default function Users() {
+  const { auth } = useAuth();
   const {
     data,
     error,
     mutate,
     isLoading: loading,
-  } = useSWR(usersApiEndpoint, getUsers);
-  const {
-    data: roles,
-    isLoading: rolesLoading,
-    error: rolesError,
-  } = useSWR(rolesApiEndpoint, getRoles);
+  } = useSWR(usersApiEndpoint, () => getUsers(auth.accessToken));
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
   const options = useMemo(() => {
-    return roles?.map((item: { name: string; id: string }) => {
+    return data?.roles.map((item: { name: string; id: string }) => {
       return {
         label: item.name,
         value: item.id,
       };
     });
-  }, [roles]);
+  }, [data]);
   const onClose = () => {
     setOpen(false);
     setUpdateDrawerOpen(false);
@@ -53,43 +50,46 @@ export default function Users() {
     <>
       <PageTitle title="User" setOpen={setOpen} loading={loading} />
       <div>
-        {loading ? (
+        {loading || error ? (
           <TableLoader header={usersHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={data}
-            mutate={mutate}
-            deleteFunction={deleteUsers}
-            setRowSelected={setRowSelected}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            onClose={onClose}
-          />
+          <>
+            {" "}
+            <Table
+              columns={columns}
+              data={data.users}
+              mutate={mutate}
+              deleteFunction={deleteUsers}
+              setRowSelected={setRowSelected}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              onClose={onClose}
+            />
+            <Drawer open={open} onClose={onClose}>
+              {options && (
+                <Form
+                  fields={createUsersField(options)}
+                  createFunction={createUser}
+                  mutate={mutate}
+                  onClose={onClose}
+                />
+              )}
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {rowSelected && (
+                <UpdateForm
+                  fields={updateUsersField(options)}
+                  updateFunction={updateUser}
+                  getSingleData={getUser}
+                  cacheKey={usersApiEndpoint}
+                  rowSelected={rowSelected}
+                  mutate={mutate}
+                  onClose={onClose}
+                />
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={onClose}>
-        {options && (
-          <Form
-            fields={createUsersField(options)}
-            createFunction={createUser}
-            mutate={mutate}
-            onClose={onClose}
-          />
-        )}
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {rowSelected && (
-          <UpdateForm
-            fields={updateUsersField(options)}
-            updateFunction={updateUser}
-            getSingleData={getUser}
-            cacheKey={usersApiEndpoint}
-            rowSelected={rowSelected}
-            mutate={mutate}
-            onClose={onClose}
-          />
-        )}
-      </Drawer>
     </>
   );
 }

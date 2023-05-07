@@ -2,6 +2,8 @@ import { useForm, useController } from "react-hook-form";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { BiKey } from "react-icons/bi";
+import { useState } from "react";
+import { isAxiosError } from "axios";
 
 type Fields = {
   name: string;
@@ -60,6 +62,7 @@ export default function Form({
   fields,
   createFunction,
 }: FormProps) {
+  const [error, setError] = useState("");
   const { register, handleSubmit, reset, control, setValue } = useForm();
 
   const { field: controlField } = useController({
@@ -109,6 +112,10 @@ export default function Form({
             theme: "colored",
           });
         } catch (err) {
+          if (isAxiosError(err) && err.response?.data?.error) {
+            setError(err.response.data.error);
+            return;
+          }
           console.log(err);
           toast.error("Gagal menambahkan data", {
             position: "bottom-center",
@@ -177,15 +184,17 @@ export default function Form({
                     valueAsNumber: field.type === "number" ? true : false,
                   })}
                   type={field.type}
-                  className="bg-transparent outline-none text-sm"
+                  className="bg-transparent outline-none text-sm text-black"
+                  onChange={(e) => setError("")}
                 />
               </div>
             );
           }
         })}
       </div>
-      <div className="bottom-10 fixed border-t border-gray-300 pt-5 left-0 w-full">
-        <div className="float-right mr-5">
+      <div className="bottom-10 px-5 flex items-center justify-between fixed border-t border-gray-300 pt-5 left-0 w-full">
+        <div>{error && <p className="text-red-600">Error: {error}</p>}</div>
+        <div className="">
           <button
             className="px-3 py-2 hover:bg-[#e4e9ec] rounded-md"
             onClick={onClose}

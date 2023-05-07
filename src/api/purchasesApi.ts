@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const purchasesApi = axios.create({
-  baseURL: "http://localhost:3000",
-});
+import { kudApi } from "./calls";
 
 export const purchasesApiEndpoint = "/purchases";
 
@@ -17,32 +13,36 @@ type Purchase = {
   items: Item[];
 };
 
-export const getPurchases = async () => {
-  const response = await purchasesApi.get(purchasesApiEndpoint);
+export const getPurchases = async (token: string) => {
+  const response = await kudApi.get(`${purchasesApiEndpoint}?include_products_suppliers=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 }
 
 export const getPurchase = async (id: string) => {
-  const response = await purchasesApi.get(`${purchasesApiEndpoint}/${id}`);
+  const response = await kudApi.get(`${purchasesApiEndpoint}/${id}`);
   return response.data;
 }
 
 export const createPurchase = async (purchase: Purchase) => {
-  const response = await purchasesApi.post(purchasesApiEndpoint, purchase);
+  const response = await kudApi.post(purchasesApiEndpoint, purchase);
   return response.data;
 }
 
 export const updatePurchase = async (id: string, purchase: Purchase) => {
-  const response = await purchasesApi.put(`${purchasesApiEndpoint}/${id}`, purchase);
+  const response = await kudApi.put(`${purchasesApiEndpoint}/${id}`, purchase);
   return response.data;
 }
 
 export const deletePurchase = async (id: string) => {
-  const response = await purchasesApi.delete(`${purchasesApiEndpoint}/${id}`);
+  const response = await kudApi.delete(`${purchasesApiEndpoint}/${id}`);
   return response.data;
 }
 
 export const deletePurchases = async (ids: string[]) => {
-  const response = await purchasesApi.delete(purchasesApiEndpoint, { data: { ids } });
+  const response = await kudApi.delete(purchasesApiEndpoint, { data: { ids } });
   return response.data;
 }

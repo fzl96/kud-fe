@@ -1,7 +1,10 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Sidebar from "./components/sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "./context/authContext";
+import { kudApi } from "./api/calls";
+import useRefreshToken from "./hooks/useRefreshToken";
 
 interface Props {
   children: React.ReactNode;
@@ -29,6 +32,42 @@ function Layout({ children, open, setOpen }: Props) {
 
 export default function Root() {
   const [open, setOpen] = useState(false);
+  const { auth, setAuth } = useAuth();
+  const refresh = useRefreshToken();
+
+  useEffect(() => {
+    const requestIntercept = kudApi.interceptors.request.use(
+      (config) => {
+        config.headers.Authorization = `Bearer ${auth?.accessToken}`;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    const responseIntercept = kudApi.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      async (error) => {
+        const previousRequest = error.config;
+        if (error.response.status === 403 && !previousRequest.sent) {
+          previousRequest.sent = true;
+          const newAccessToken = await refresh();
+          previousRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return kudApi(previousRequest);
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      kudApi.interceptors.response.eject(responseIntercept);
+      kudApi.interceptors.request.eject(requestIntercept);
+    };
+  }, [auth, refresh]);
+
   return (
     <AnimatePresence>
       <Layout open={open} setOpen={setOpen}>

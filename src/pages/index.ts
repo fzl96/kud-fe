@@ -11,6 +11,8 @@ import Sales from "./Sales";
 import Settings from "./Settings";
 import Suppliers from "./Suppliers";
 import Users from "./Users";
+import Unauthorized from "./Unauthorized";
+import RoleProtectedRoutes from "./RoleProtectedRoutes";
 
 export {
   Cashier,
@@ -26,4 +28,6 @@ export {
   Settings,
   Suppliers,
   Users,
+  Unauthorized,
+  RoleProtectedRoutes
 };

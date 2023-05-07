@@ -18,14 +18,16 @@ import { customersColumn as columns } from "../data/tableColumns";
 import Table from "../components/table";
 import Drawer from "../components/drawer";
 import { useState } from "react";
+import { useAuth } from "../context/authContext";
 
 export default function Customers() {
+  const { auth } = useAuth();
   const {
     data,
     error,
     mutate,
     isLoading: loading,
-  } = useSWR(customersApiEndpoint, getCustomers);
+  } = useSWR(customersApiEndpoint, () => getCustomers(auth.accessToken));
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
@@ -39,41 +41,43 @@ export default function Customers() {
     <>
       <PageTitle title="Customer" setOpen={setOpen} loading={loading} />
       <div>
-        {loading ? (
+        {loading || error ? (
           <TableLoader header={customersHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={data}
-            mutate={mutate}
-            deleteFunction={deleteCustomers}
-            setRowSelected={setRowSelected}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            onClose={onClose}
-          />
+          <>
+            <Table
+              columns={columns}
+              data={data}
+              mutate={mutate}
+              deleteFunction={deleteCustomers}
+              setRowSelected={setRowSelected}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              onClose={onClose}
+            />
+            <Drawer open={open} onClose={onClose}>
+              <Form
+                fields={customersField}
+                createFunction={createCustomer}
+                mutate={mutate}
+                onClose={onClose}
+              />
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {rowSelected && (
+                <UpdateForm
+                  fields={customersField}
+                  cacheKey={customersApiEndpoint}
+                  getSingleData={getCustomer}
+                  rowSelected={rowSelected}
+                  updateFunction={updateCustomer}
+                  mutate={mutate}
+                  onClose={onClose}
+                />
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={onClose}>
-        <Form
-          fields={customersField}
-          createFunction={createCustomer}
-          mutate={mutate}
-          onClose={onClose}
-        />
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {rowSelected && (
-          <UpdateForm
-            fields={customersField}
-            cacheKey={customersApiEndpoint}
-            getSingleData={getCustomer}
-            rowSelected={rowSelected}
-            updateFunction={updateCustomer}
-            mutate={mutate}
-            onClose={onClose}
-          />
-        )}
-      </Drawer>
     </>
   );
 }

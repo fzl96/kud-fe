@@ -79,18 +79,6 @@ const SidebarData: SidebarNav[] = [
     path: "/role",
     icon: <BiUserPin className="stroke-[0.5px] " />,
   },
-  {
-    name: "Laporan",
-    value: "reports",
-    path: "/laporan",
-    icon: <HiOutlineDocumentReport className="stroke-[0.5px]" />,
-  },
-  {
-    name: "Pengaturan",
-    value: "settings",
-    path: "/pengaturan",
-    icon: <BsGear className="stroke-[0.5px]" />,
-  },
 ];
 
 export { SidebarData };

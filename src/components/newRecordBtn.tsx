@@ -13,8 +13,8 @@ export default function NewRecordBtn({
 }: NewRecordBtnProps) {
   return (
     <button
-      className={`flex items-center text-white px-4 py-3 text-[0.9063rem] rounded-[0.25rem] bg-[#16161a] font-semibold gap-2 hover:bg-[#2d2d30] transition-colors duration-150 ${
-        loading ? "cursor-not-allowed bg-[#2d2d30]" : "cursor-pointer"
+      className={`flex items-center text-white px-4 py-3 text-[0.9063rem] rounded-[0.25rem] bg-[#a285e1] font-semibold gap-2 hover:bg-[#bdabe2] transition-colors duration-150 ${
+        loading ? "cursor-not-allowed bg-[#bdabe2]" : "cursor-pointer"
       }}`}
       onClick={() => setOpen(true)}
       disabled={loading}

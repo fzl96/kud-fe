@@ -18,18 +18,21 @@ import Form from "../components/createForm";
 import { categoriesField } from "../data/formFields";
 import PageTitle from "../components/pageTitle";
 import UpdateForm from "../components/updateForm";
+import { useAuth } from "../context/authContext";
 
 export default function Categories() {
+  const { auth } = useAuth();
   const {
     data,
     error,
     mutate,
     isLoading: loading,
-  } = useSWR(categoriesApiEndpoint, getCategories, {
+  } = useSWR(categoriesApiEndpoint, () => getCategories(auth.accessToken), {
     onSuccess: (data) => data.sort((a: any, b: any) => b.name - a.name),
     revalidateOnMount: true,
   });
   const [open, setOpen] = useState(false);
+  const [errorLoading, setErrorLoading] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
   const onClose = () => {
@@ -42,43 +45,45 @@ export default function Categories() {
     <>
       <PageTitle title="Kategori" setOpen={setOpen} loading={loading} />
       <div>
-        {loading ? (
+        {loading || error ? (
           <TableLoader header={categoriesHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={data}
-            mutate={mutate}
-            deleteFunction={deleteCategories}
-            setRowSelected={setRowSelected}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            onClose={onClose}
-          />
+          <>
+            <Table
+              columns={columns}
+              data={data}
+              mutate={mutate}
+              deleteFunction={deleteCategories}
+              setRowSelected={setRowSelected}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              onClose={onClose}
+            />
+            <Drawer open={open} onClose={onClose}>
+              <Form
+                mutate={mutate}
+                onClose={onClose}
+                fields={categoriesField}
+                createFunction={createCategory}
+              />
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {!rowSelected ? (
+                ""
+              ) : (
+                <UpdateForm
+                  mutate={mutate}
+                  updateFunction={updateCategory}
+                  rowSelected={rowSelected}
+                  onClose={onClose}
+                  cacheKey={categoriesApiEndpoint}
+                  getSingleData={getCategory}
+                  fields={categoriesField}
+                />
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={onClose}>
-        <Form
-          mutate={mutate}
-          onClose={onClose}
-          fields={categoriesField}
-          createFunction={createCategory}
-        />
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {!rowSelected ? (
-          ""
-        ) : (
-          <UpdateForm
-            mutate={mutate}
-            updateFunction={updateCategory}
-            rowSelected={rowSelected}
-            onClose={onClose}
-            cacheKey={categoriesApiEndpoint}
-            getSingleData={getCategory}
-            fields={categoriesField}
-          />
-        )}
-      </Drawer>
     </>
   );
 }

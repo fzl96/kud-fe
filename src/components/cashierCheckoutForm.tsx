@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import Select from "react-select";
-import { createSale, type Sale } from "../api/salesApi";
+import { postCashier, type Sale } from "../api/cashierApi";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 interface Props {
   selectedItems: any;
@@ -50,6 +51,7 @@ export default function CashierCheckoutForm({
 }: Props) {
   const [selectedCustomer, setSelectedCustomer] = useState(customers[0]);
   const [cash, setCash] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const currencyFormatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -60,7 +62,7 @@ export default function CashierCheckoutForm({
   const options = useMemo(() => {
     return [
       {
-        value: "-",
+        value: "",
         label: "-",
       },
       ...customers.map((customer: any) => ({
@@ -81,13 +83,12 @@ export default function CashierCheckoutForm({
   }, [selectedItems]);
 
   const disabled = useMemo(() => {
-    return (
-      isNaN(cash) || cash < total + total * 0.1 || selectedItems.length === 0
-    );
+    return isNaN(cash) || cash < total || selectedItems.length === 0;
   }, [selectedItems, cash, total]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const data: Sale = {
       customerId: selectedCustomer.value,
       cash: cash,
@@ -98,7 +99,7 @@ export default function CashierCheckoutForm({
       })),
     };
     try {
-      await createSale(data);
+      await postCashier(data);
       toast.success("Sukses menambahkan data", {
         position: "bottom-center",
         autoClose: 2000,
@@ -109,12 +110,25 @@ export default function CashierCheckoutForm({
         progress: undefined,
         theme: "colored",
       });
+      setLoading(false);
       setSelectedItems([]);
       setCash(0);
       setSelectedCustomer(customers[0]);
       mutate();
     } catch (error) {
-      console.log(error);
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+        });
+        setLoading(false);
+      }
     }
   };
 
@@ -156,13 +170,10 @@ export default function CashierCheckoutForm({
           <h1>Subtotal</h1>
           <span>{currencyFormatter.format(total)}</span>
         </div>
-        <div className="flex justify-between text-xl">
-          <h1>Pajak (10%)</h1>
-          <span>{currencyFormatter.format(total * 0.1)}</span>
-        </div>
-        <div className="flex justify-between font-semibold text-3xl">
+
+        <div className="flex justify-between font-semibold text-2xl">
           <h1>Total</h1>
-          <span>{currencyFormatter.format(total + total * 0.1)}</span>
+          <span>{currencyFormatter.format(total)}</span>
         </div>
         <div className="flex justify-between text-xl">
           <h1>Cash</h1>
@@ -170,7 +181,7 @@ export default function CashierCheckoutForm({
         </div>
         <div className="flex justify-between font-semibold text-2xl">
           <h1>Kembalian</h1>
-          <span>{currencyFormatter.format(cash - (total + total * 0.1))}</span>
+          <span>{currencyFormatter.format(cash - total)}</span>
         </div>
         <button
           className={` ${

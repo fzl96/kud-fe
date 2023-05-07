@@ -82,8 +82,6 @@ export default function UpdatePurchaseForm({
     });
   }, [data, isLoading]);
 
-  console.log(selectedProducts);
-
   const productOptions = useMemo(() => {
     return products.map((product: any) => ({
       value: product.id,

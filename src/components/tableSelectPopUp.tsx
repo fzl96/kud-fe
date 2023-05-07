@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 interface TableSelectPopUpProps {
   selectedFlatRows: any;
@@ -45,19 +46,34 @@ export default function TableSelectPopUP({
       `Are you sure you want to delete ${selectedIds.length} items?`
     );
     if (confirm) {
-      await deleteFunction(selectedIds);
-      mutate();
-      onClose();
-      toast.success("Sukses menghapus data", {
-        position: "bottom-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "colored",
-      });
+      try {
+        await deleteFunction(selectedIds);
+        mutate();
+        onClose();
+        toast.success("Sukses menghapus data", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+        });
+      } catch (error) {
+        if (isAxiosError(error) && error.response) {
+          toast.error(error.response.data.error, {
+            position: "bottom-center",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+      }
     }
   };
 

@@ -261,7 +261,7 @@ export default function UpdateForm({
                       valueAsNumber: field.type === "number" ? true : false,
                     })}
                     type={field.type}
-                    className={`bg-transparent outline-none text-sm`}
+                    className={`bg-transparent outline-none text-sm text-gray-600`}
                     disabled={field.disabled}
                   />
                 )}

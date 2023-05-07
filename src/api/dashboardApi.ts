@@ -1,12 +1,13 @@
 import axios from "axios";
-
-const dashboardApi = axios.create({
-  baseURL: "http://localhost:3000",
-});
+import { kudApi } from "./calls";
 
 export const dashboardApiEndpoint = "/dashboard";
 
-export const getDashboard = async (year: number) => {
-  const response = await dashboardApi.get(`${dashboardApiEndpoint}/${year}`);
+export const getDashboard = async (year: number, token: string) => {
+  const response = await kudApi.get(`${dashboardApiEndpoint}/${year}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 }

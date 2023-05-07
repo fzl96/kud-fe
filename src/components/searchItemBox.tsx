@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 interface Props {
   items: any;
@@ -33,6 +34,20 @@ export default function SearchItemBox({
   };
 
   const handleSelectItem = (item: any) => {
+    // check if the selected item stock is 0
+    if (item.stock === 0) {
+      toast.error("stock barang habis", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
     setItemSelected(true);
     // if the selected item doesnt exist in the selectedItems array then add it and set the quantity to 1
     setSelectedItems((prev: any) => {
@@ -81,7 +96,15 @@ export default function SearchItemBox({
                 onClick={() => handleSelectItem(item)}
               >
                 {item.name}
-                <span>{item.stock}</span>
+                <span
+                  className={`py-1 px-2 font-semibold rounded-md ${
+                    item.stock
+                      ? "bg-[#fcf4db] text-[#ff8a00]"
+                      : "bg-[#fbdddd] text-[#e96c6c]"
+                  }`}
+                >
+                  {item.stock}
+                </span>
               </li>
             ))
           )}

@@ -1,25 +1,26 @@
 import NewRecordBtn from "../components/newRecordBtn";
 import { getProducts, productsApiEndpoint } from "../api/productsApi";
 import { getCustomers, customersApiEndpoint } from "../api/customersApi";
+import { getCashier, postCashier, cashierApiEndpoint } from "../api/cashierApi";
 import useSWR from "swr";
 import { useState } from "react";
 import SearchItemBox from "../components/searchItemBox";
 import CashierCheckoutForm from "../components/cashierCheckoutForm";
+import { useAuth } from "../context/authContext";
 
 export default function Cashier() {
-  const {
-    data: items,
-    error,
-    isLoading: loading,
-    mutate,
-  } = useSWR(productsApiEndpoint, getProducts);
-  const {
-    data: customers,
-    error: customersError,
-    isLoading,
-  } = useSWR(customersApiEndpoint, getCustomers);
+  const { auth } = useAuth();
+  const { data, error, isLoading, mutate } = useSWR(cashierApiEndpoint, () =>
+    getCashier(auth.accessToken)
+  );
   const [query, setQuery] = useState("");
   const [selectedItems, setSelectedItems] = useState<any>([]);
+
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  });
 
   if (error) return <div>Error</div>;
   if (isLoading) return <div>Loading...</div>;
@@ -67,14 +68,14 @@ export default function Cashier() {
   return (
     <>
       <div className="flex justify-between mx-5 md:mx-10 items-center">
-        <h1 className="text-xl">Kasir</h1>
+        <h1 className="text-2xl font-semibold">Kasir</h1>
       </div>
       <div className="flex lg:flex-row flex-col">
         <div className="">
           <div className="p-4">
-            {items && (
+            {data.products && (
               <SearchItemBox
-                items={items}
+                items={data.products}
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems}
               />
@@ -118,7 +119,7 @@ export default function Cashier() {
                             <span>
                               <input
                                 type="number"
-                                className="w-10 text-center focus:outline-none border-b-2 py-1 bg-transparent "
+                                className="w-10 text-center rounded-md focus:outline-none bg-[#fcf4db] font-semibold text-[#ff8a00] py-1"
                                 value={item.quantity}
                                 min={1}
                                 max={item.stock}
@@ -183,14 +184,16 @@ export default function Cashier() {
                             </button>
                           </div>
                         </td>
-                        <td className="px-4 py-2 border">${item.price}</td>
                         <td className="px-4 py-2 border">
-                          ${item.price * item.quantity}
+                          {formatter.format(item.price)}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {formatter.format(item.price * item.quantity)}
                         </td>
                         <td className="px-4 py-2 border">
                           <button
                             onClick={() => handleDeleteItem(item.id)}
-                            className="py-1 px-2 rounded bg-red-600 text-white text-sm"
+                            className="py-1 px-2 rounded-md bg-[#fbdddd] text-[#e96c6c] hover:bg-[#e96c6c] hover:text-[#fbdddd] text-sm font-semibold"
                           >
                             Hapus
                           </button>
@@ -204,11 +207,11 @@ export default function Cashier() {
           </div>
         </div>
         <div className="w-full pr-5">
-          {isLoading || !customers ? (
+          {isLoading || !data ? (
             "loading"
           ) : (
             <CashierCheckoutForm
-              customers={customers}
+              customers={data.customers}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
               mutate={mutate}

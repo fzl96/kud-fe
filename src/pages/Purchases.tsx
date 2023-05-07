@@ -21,21 +21,12 @@ import PageTitle from "../components/pageTitle";
 import TableLoader from "../components/tableLoader";
 import CreateFormLoader from "../components/createFormLoader";
 import UpdatePurchaseForm from "../components/updatePurchaseForm";
+import { useAuth } from "../context/authContext";
 
 export default function Purchases() {
-  const {
-    data: purchases,
-    error: purchasesError,
-    mutate: purchasesMutate,
-    isLoading: purchasesLoading,
-  } = useSWR(purchasesApiEndpoint, getPurchases);
-  const { data: products, isLoading: productsLoading } = useSWR(
-    productsApiEndpoint,
-    getProducts
-  );
-  const { data: suppliers, isLoading: suppliersLoading } = useSWR(
-    suppliersApiEndpoint,
-    getSuppliers
+  const { auth } = useAuth();
+  const { data, error, mutate, isLoading } = useSWR(purchasesApiEndpoint, () =>
+    getPurchases(auth.accessToken)
   );
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
@@ -46,54 +37,55 @@ export default function Purchases() {
     setRowSelected(null);
   };
 
+  console.log(data);
+
   return (
     <>
-      <PageTitle
-        title="Pembelian"
-        setOpen={setOpen}
-        loading={purchasesLoading}
-      />
+      <PageTitle title="Pembelian" setOpen={setOpen} loading={isLoading} />
       <div>
-        {!products || !suppliers || !purchases ? (
+        {!data || error ? (
           <TableLoader header={purchasesHeader} />
         ) : (
-          <Table
-            columns={columns}
-            data={purchases}
-            mutate={purchasesMutate}
-            deleteFunction={deletePurchases}
-            setRowSelected={setRowSelected}
-            setUpdateDrawerOpen={setUpdateDrawerOpen}
-            onClose={onClose}
-          />
+          <>
+            {" "}
+            <Table
+              columns={columns}
+              data={data.purchases}
+              mutate={mutate}
+              deleteFunction={deletePurchases}
+              setRowSelected={setRowSelected}
+              setUpdateDrawerOpen={setUpdateDrawerOpen}
+              onClose={onClose}
+            />
+            <Drawer open={open} onClose={onClose}>
+              {!rowSelected && data ? (
+                <CreatePurchaseForm
+                  mutate={mutate}
+                  onClose={onClose}
+                  suppliers={data.suppliers}
+                  products={data.products}
+                  createPurchase={createPurchase}
+                />
+              ) : (
+                <CreateFormLoader number={2} />
+              )}
+            </Drawer>
+            <Drawer open={updateDrawerOpen} onClose={onClose}>
+              {rowSelected && data ? (
+                <UpdatePurchaseForm
+                  mutate={mutate}
+                  onClose={onClose}
+                  rowSelected={rowSelected}
+                  products={data.products}
+                  suppliers={data.suppliers}
+                />
+              ) : (
+                <></>
+              )}
+            </Drawer>
+          </>
         )}
       </div>
-      <Drawer open={open} onClose={onClose}>
-        {!rowSelected && products && suppliers ? (
-          <CreatePurchaseForm
-            mutate={purchasesMutate}
-            onClose={onClose}
-            suppliers={suppliers}
-            products={products}
-            createPurchase={createPurchase}
-          />
-        ) : (
-          <CreateFormLoader number={2} />
-        )}
-      </Drawer>
-      <Drawer open={updateDrawerOpen} onClose={onClose}>
-        {rowSelected && products && suppliers ? (
-          <UpdatePurchaseForm
-            mutate={purchasesMutate}
-            onClose={onClose}
-            rowSelected={rowSelected}
-            products={products}
-            suppliers={suppliers}
-          />
-        ) : (
-          <></>
-        )}
-      </Drawer>
     </>
   );
 }
