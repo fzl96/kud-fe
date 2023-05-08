@@ -191,6 +191,10 @@ export const salesHeader: TableHeader[] = [
     icon: <BiKey className="stroke-[0.5px]" />,
   },
   {
+    title: "Kasir",
+    icon: <BiUser />,
+  },
+  {
     title: "Customer",
     icon: <BiGitBranch />,
   },

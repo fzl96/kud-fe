@@ -77,7 +77,7 @@ export default function Drawer({ children, open, onClose }: DrawerProps) {
           <IoIosArrowBack className="text-2xl group-hover:translate-x-[-0.5rem] transition-transform duration-150 ease-in" />
           <span className="">Kembali</span>
         </button>
-        <div className="h-[43rem] overflow-y-auto">{children}</div>
+        <div className="h-[43rem] mt-4 overflow-y-auto">{children}</div>
       </motion.div>
     </>
   );

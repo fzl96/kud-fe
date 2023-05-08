@@ -275,7 +275,7 @@ export default function UpdateForm({
           }
         })}
       </div>
-      <div className="bottom-10 fixed border-t bg-white border-gray-300 pt-5 left-0 w-full">
+      <div className="bottom-20 md:bottom-10 fixed border-t bg-white border-gray-300 pt-5 left-0 w-full">
         <div className="float-right mr-5">
           <button
             className="px-3 py-2 hover:bg-[#e4e9ec] rounded-md"

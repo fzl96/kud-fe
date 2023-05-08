@@ -40,12 +40,14 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
           open ? "left-0" : "left-full"
         }`}
       >
-        <button
-          className="flex m-5 lg:hidden text-2xl"
-          onClick={() => setOpen(false)}
-        >
-          <MdClose className="outline-none" />
-        </button>
+        <div className="lg:hidden text-right">
+          <button
+            className="p-2 mx-4 mt-2 text-lg rounded-md text-[#a285e1] bg-[#e5defe]"
+            onClick={() => setOpen(false)}
+          >
+            <MdClose className="outline-none" />
+          </button>
+        </div>
         <div className="h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-2 text-base m-5">
             {filteredSidebarData.map((item, index) => (

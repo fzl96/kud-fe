@@ -158,9 +158,9 @@ export default function CreatePurchaseForm({
 
   return (
     <>
-      <div className="flex flex-col gap-6 mt-5 ">
+      <div className="flex flex-col gap-6 ">
         <form onSubmit={handleSubmit}>
-          <div className="mb-[4rem] flex flex-col gap-4">
+          <div className="mb-[5rem] flex flex-col gap-4">
             <div className="flex flex-col py-3 rounded-sm bg-[#e4e9ec] focus-within:bg-[#d7dde4] text-slate-500 focus-within:text-black transition-colors duration-150 ">
               <label
                 htmlFor="supplier"
@@ -190,6 +190,7 @@ export default function CreatePurchaseForm({
                 value={selectedProducts}
                 onChange={handleProductChange}
                 isMulti={true}
+                isSearchable={false}
               />
             </div>
             {selectedProducts?.map((product: any, index: number) => (
@@ -203,7 +204,7 @@ export default function CreatePurchaseForm({
                 >
                   {product.label}
                 </label>
-                <div className="flex gap-4 w-full">
+                <div className="flex flex-col md:flex-row gap-4 w-full">
                   <div className="flex flex-1 flex-col">
                     <label
                       htmlFor={product.label + "quantity"}
@@ -241,7 +242,7 @@ export default function CreatePurchaseForm({
               </div>
             ))}
           </div>
-          <div className="bottom-0 absolute border-t bg-white py-5 border-gray-300 left-0 w-full">
+          <div className="bottom-20 md:bottom-0 absolute border-t bg-white py-5 border-gray-300 left-0 w-full">
             <div className="float-right mr-5">
               <button
                 className="px-3 py-2 hover:bg-[#e4e9ec] rounded-md"

@@ -285,6 +285,7 @@ export default function UpdatePurchaseForm({
                   value={selectedProducts}
                   onChange={handleProductChange}
                   isMulti={true}
+                  isSearchable={false}
                 />
               )}
             </div>
@@ -299,7 +300,7 @@ export default function UpdatePurchaseForm({
                 >
                   {product.label}
                 </label>
-                <div className="flex gap-4 w-full">
+                <div className="flex flex-col md:flex-row  gap-4 w-full">
                   <div className="flex flex-1 flex-col">
                     <label
                       htmlFor={product.label + "quantity"}
@@ -337,7 +338,7 @@ export default function UpdatePurchaseForm({
               </div>
             ))}
           </div>
-          <div className="bottom-0 absolute border-t bg-white py-5 border-gray-300 left-0 w-full">
+          <div className="bottom-20 md:bottom-0 absolute border-t bg-white py-5 border-gray-300 left-0 w-full">
             <div className="float-right mr-5">
               <button
                 className="px-3 py-2 hover:bg-[#e4e9ec] rounded-md"

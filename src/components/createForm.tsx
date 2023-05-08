@@ -78,7 +78,7 @@ export default function Form({
 
   return (
     <form
-      className="flex flex-col gap-4 mt-5 ml-1 mb-10"
+      className="flex flex-col gap-4 ml-1 mb-10"
       onSubmit={handleSubmit(async (data) => {
         // validate password and confirm password
         const password = data.password;
@@ -192,7 +192,7 @@ export default function Form({
           }
         })}
       </div>
-      <div className="bottom-10 px-5 flex items-center justify-between fixed border-t border-gray-300 pt-5 left-0 w-full">
+      <div className="bottom-20 md:bottom-10 px-5 flex items-center justify-between fixed border-t border-gray-300 pt-5 left-0 w-full">
         <div>{error && <p className="text-red-600">Error: {error}</p>}</div>
         <div className="">
           <button
