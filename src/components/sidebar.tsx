@@ -73,7 +73,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
               </motion.li>
             ))}
           </ul>
-          <div className="mb-10 mx-5">
+          <div className="mb-[6rem] md:mb-10 mx-5">
             <button
               onClick={() => handleLogout()}
               className="group w-full flex items-center px-3 py-[0.65rem] text-slate-500  hover:text-[#a285e1] "

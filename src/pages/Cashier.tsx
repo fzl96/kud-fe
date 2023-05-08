@@ -7,6 +7,7 @@ import { useState } from "react";
 import SearchItemBox from "../components/searchItemBox";
 import CashierCheckoutForm from "../components/cashierCheckoutForm";
 import { useAuth } from "../context/authContext";
+import { format } from "date-fns";
 
 export default function Cashier() {
   const { auth } = useAuth();
@@ -206,7 +207,7 @@ export default function Cashier() {
             </div>
           </div>
         </div>
-        <div className="w-full pr-5">
+        <div className="w-full px-5 md:px-0 md:pr-5 ">
           {isLoading || !data ? (
             "loading"
           ) : (

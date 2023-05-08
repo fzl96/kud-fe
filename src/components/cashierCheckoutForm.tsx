@@ -1,8 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import Select from "react-select";
 import { postCashier, type Sale } from "../api/cashierApi";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
+import Receipt from "./receipt";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 
 interface Props {
   selectedItems: any;
@@ -52,6 +54,8 @@ export default function CashierCheckoutForm({
   const [selectedCustomer, setSelectedCustomer] = useState(customers[0]);
   const [cash, setCash] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const componentRef = useRef<any>(null);
+  const pageStyle = `{ size: 2in 3in }`;
 
   const currencyFormatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -100,6 +104,7 @@ export default function CashierCheckoutForm({
     };
     try {
       await postCashier(data);
+      handlePrint();
       toast.success("Sukses menambahkan data", {
         position: "bottom-center",
         autoClose: 2000,
@@ -132,67 +137,83 @@ export default function CashierCheckoutForm({
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="customer" className="font-semibold">
-            Customer
-          </label>
-          <Select
-            className="border-gray-300 border-2 block w-full sm:text-sm rounded-md"
-            options={options}
-            styles={customStyles}
-            onChange={handleSelectChange}
-            closeMenuOnSelect={true}
-            noOptionsMessage={() => null}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="Cash" className="font-semibold">
-            Cash
-          </label>
-          <input
-            type="number"
-            name="cash"
-            id="cash"
-            placeholder="Cash"
-            className="border-gray-300 py-2 px-3 border-2 block w-full rounded-md"
-            onChange={(e) => setCash(parseInt(e.target.value))}
-            onBlur={(e) =>
-              e.target.value === ""
-                ? setCash(0)
-                : setCash(parseInt(e.target.value))
-            }
-          />
-        </div>
-        <div className="flex justify-between text-xl">
-          <h1>Subtotal</h1>
-          <span>{currencyFormatter.format(total)}</span>
-        </div>
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
-        <div className="flex justify-between font-semibold text-2xl">
-          <h1>Total</h1>
-          <span>{currencyFormatter.format(total)}</span>
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="customer" className="font-semibold">
+              Customer
+            </label>
+            <Select
+              className="border-gray-300 border-2 block w-full sm:text-sm rounded-md"
+              options={options}
+              styles={customStyles}
+              onChange={handleSelectChange}
+              closeMenuOnSelect={true}
+              noOptionsMessage={() => null}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="Cash" className="font-semibold">
+              Cash
+            </label>
+            <input
+              type="number"
+              name="cash"
+              id="cash"
+              placeholder="Cash"
+              className="border-gray-300 py-2 px-3 border-2 block w-full rounded-md"
+              onChange={(e) => setCash(parseInt(e.target.value))}
+              onBlur={(e) =>
+                e.target.value === ""
+                  ? setCash(0)
+                  : setCash(parseInt(e.target.value))
+              }
+            />
+          </div>
+          <div className="flex justify-between text-xl">
+            <h1>Subtotal</h1>
+            <span>{currencyFormatter.format(total)}</span>
+          </div>
+
+          <div className="flex justify-between font-semibold text-2xl">
+            <h1>Total</h1>
+            <span>{currencyFormatter.format(total)}</span>
+          </div>
+          <div className="flex justify-between text-xl">
+            <h1>Cash</h1>
+            <span>{currencyFormatter.format(cash)}</span>
+          </div>
+          <div className="flex justify-between font-semibold text-2xl">
+            <h1>Kembalian</h1>
+            <span>{currencyFormatter.format(cash - total)}</span>
+          </div>
+          <button
+            className={` ${
+              disabled ? "bg-gray-500" : "bg-gray-800"
+            } px-3 py-3 rounded-lg text-white`}
+            disabled={disabled}
+            type="submit"
+          >
+            Simpan
+          </button>
         </div>
-        <div className="flex justify-between text-xl">
-          <h1>Cash</h1>
-          <span>{currencyFormatter.format(cash)}</span>
-        </div>
-        <div className="flex justify-between font-semibold text-2xl">
-          <h1>Kembalian</h1>
-          <span>{currencyFormatter.format(cash - total)}</span>
-        </div>
-        <button
-          className={` ${
-            disabled ? "bg-gray-500" : "bg-gray-800"
-          } px-3 py-3 rounded-lg text-white`}
-          disabled={disabled}
-          type="submit"
-        >
-          Simpan
-        </button>
+      </form>
+      <div ref={componentRef} className="z-[-10] componentsToPrint">
+        {selectedItems && (
+          <Receipt
+            selectedItems={selectedItems}
+            cash={cash || 0}
+            change={cash - total || 0}
+            totalPrice={total || 0}
+          />
+        )}
       </div>
-    </form>
+    </>
   );
 }

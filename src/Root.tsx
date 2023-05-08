@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./context/authContext";
 import { kudApi } from "./api/calls";
 import useRefreshToken from "./hooks/useRefreshToken";
+import { CgMenuRightAlt } from "react-icons/cg";
 
 interface Props {
   children: React.ReactNode;
@@ -15,14 +16,17 @@ interface Props {
 function Layout({ children, open, setOpen }: Props) {
   return (
     <div className="flex min-h-[100svh]">
-      <div className="bg-gray-400 fixed top-0 w-full h-10 lg:hidden text-right">
-        <button className="mr-5 text-2xl" onClick={() => setOpen(!open)}>
-          =
+      <div className="bg-white fixed top-0 z-[10] w-full h-12 lg:hidden text-right">
+        <button
+          className="p-2 mx-4 mt-2 border rounded-md text-[#a285e1] bg-[#e5defe] text-lg"
+          onClick={() => setOpen(!open)}
+        >
+          <CgMenuRightAlt />
         </button>
       </div>
       <Sidebar open={open} setOpen={setOpen} />
       <div
-        className={`mt-10 lg:mt-5 w-full lg:ml-[15.5rem] ml-0 bg-[#f8f9fa] text-[#16161a]`}
+        className={`mt-[3.5rem] lg:mt-6 w-full lg:ml-[15.5rem] ml-0 bg-[#f8f9fa] text-[#16161a]`}
       >
         {children}
       </div>

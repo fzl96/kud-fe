@@ -116,11 +116,9 @@ export default function Dashboard() {
     };
   }, [data]);
 
-  if (error) return <div>error</div>;
-
   return (
     <div>
-      <div className="flex justify-between mx-5 md:mx-10 items-center">
+      <div className="flex flex-col gap-3 md:gap-0 w-full md:flex-row md:justify-between mx-5 md:mx-10 md:items-center">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
         <div className="flex gap-3">
           <CustomYearSelect year={year} setYear={setYear} />
@@ -138,8 +136,8 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
-      <div className="px-10 mt-5 grid grid-cols-3 gap-5 w-full">
-        {loading && !data ? (
+      <div className="px-5 md:px-10 mt-5 grid grid-cols-1 md:grid-cols-3 md:gap-3 w-full">
+        {(loading && !data) || error ? (
           <>
             {Array.from(Array(3).keys()).map((item) => (
               <DashboardCardLoader key={item} />
@@ -168,7 +166,7 @@ export default function Dashboard() {
           </>
         )}
       </div>
-      <div className="bg-white p-7 mx-10 rounded-lg border shadow">
+      <div className="bg-white p-7 mx-5 md:mx-10 rounded-lg border shadow mb-5 md:mb-0">
         <h1 className="mb-10 text-xl">
           Pendapatan dan Pengeluaran tahun {year}
         </h1>
