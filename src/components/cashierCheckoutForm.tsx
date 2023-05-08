@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
 import Receipt from "./receipt";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { useAuth } from "../context/authContext";
 
 interface Props {
   selectedItems: any;
@@ -51,6 +52,7 @@ export default function CashierCheckoutForm({
   customers,
   mutate,
 }: Props) {
+  const { auth } = useAuth();
   const [selectedCustomer, setSelectedCustomer] = useState(customers[0]);
   const [cash, setCash] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -101,6 +103,7 @@ export default function CashierCheckoutForm({
         id: item.id,
         quantity: item.quantity,
       })),
+      cashierId: auth?.user?.id,
     };
     try {
       await postCashier(data);
@@ -156,6 +159,7 @@ export default function CashierCheckoutForm({
               onChange={handleSelectChange}
               closeMenuOnSelect={true}
               noOptionsMessage={() => null}
+              value={selectedCustomer}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -165,6 +169,7 @@ export default function CashierCheckoutForm({
             <input
               type="number"
               name="cash"
+              value={cash}
               id="cash"
               placeholder="Cash"
               className="border-gray-300 py-2 px-3 border-2 block w-full rounded-md"

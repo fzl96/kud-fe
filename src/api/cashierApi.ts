@@ -10,6 +10,7 @@ export type Sale = {
   cash: number;
   change: number;
   customerId: string;
+  cashierId: string;
 };
 
 export const getCashier = async (token: string) => {

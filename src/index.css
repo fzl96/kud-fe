@@ -10,8 +10,14 @@
   }
 }
 
+.componentsToPrint {
+  /* display: none; */
+  font-family: 'Roboto Mono';
+}
+
 @media screen {
   .componentsToPrint {
     display: none;
+    font-family: 'Roboto Mono';
   }
 }

@@ -79,6 +79,31 @@ export default function SalesForm({ rowSelected, onClose }: Props) {
               />
             )}
           </div>
+          <div className="flex flex-col px-4 py-3  rounded-sm bg-[#e4e9ec] focus-within:bg-[#d7dde4] text-slate-500 focus-within:text-black transition-colors duration-150 opacity-90">
+            <label
+              htmlFor="id"
+              className="text-sm font-semibold flex items-center gap-2"
+            >
+              <span>
+                <BiUser />
+              </span>
+              Kasir
+            </label>
+            {loading ? (
+              <Skeleton
+                baseColor="#eaeef1"
+                highlightColor="#f7f8fa"
+                className="h-[0.35rem] py-0"
+              />
+            ) : (
+              <input
+                disabled
+                value={data?.cashier?.name}
+                type="text"
+                className="bg-transparent outline-none text-sm pt-1"
+              />
+            )}
+          </div>
           <div className="flex flex-col py-3  rounded-sm bg-[#e4e9ec] focus-within:bg-[#d7dde4] text-slate-500 focus-within:text-black transition-colors duration-150 max-h-[17rem] opacity-90 ">
             <label
               htmlFor="id"

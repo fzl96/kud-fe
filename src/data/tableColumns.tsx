@@ -367,6 +367,24 @@ const salesColumn = [
         <span className="mr-2 text-base">
           <BiGitBranch />
         </span>
+        <span>Kasir</span>
+      </div>
+    ),
+    Cell: ({ row }: any) => {
+      return (
+        <div className="flex items-center rounded-lg w-fit py-1">
+          {row.original.user.name}
+        </div>
+      );
+    },
+    accessor: "user.name",
+  },
+  {
+    Header: (
+      <div className="flex items-center">
+        <span className="mr-2 text-base">
+          <BiGitBranch />
+        </span>
         <span>Customer</span>
       </div>
     ),
@@ -390,7 +408,7 @@ const salesColumn = [
     ),
     Cell: ({ row }: any) => {
       return (
-        <div className="flex items-center rounded-lg w-fit py-1 px-3">
+        <div className="flex items-center rounded-lg w-fit py-1">
           {formatter.format(row.original.total)}
         </div>
       );

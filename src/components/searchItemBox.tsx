@@ -85,7 +85,7 @@ export default function SearchItemBox({
         />
       </div>
       {isFocused && (
-        <ul className="absolute z-10 shadow bg-white border-2 rounded-md w-64 mt-2 p-2">
+        <ul className="max-h-[30rem] overflow-auto absolute z-10 shadow bg-white border-2 rounded-md w-64 mt-2 p-2">
           {filteredItems.length < 1 ? (
             <div className="px-4 py-2 hover:bg-gray-200 cursor-pointer" />
           ) : (
