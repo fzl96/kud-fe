@@ -62,6 +62,7 @@ export default function CustomYearSelect({ year, setYear }: Props) {
         options={yearOptions}
         onChange={handleSelectChange}
         styles={customStyles}
+        isSearchable={false}
         className="rounded-md shadow-sm border-2 border-[#a285e1] bg-white text-gray-700 sm:text-sm text-lg focus:outline-none focus:ring-soft-purple-500 focus:border-soft-purple-500"
       />
     </div>

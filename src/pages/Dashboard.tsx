@@ -118,7 +118,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 md:gap-0 w-full md:flex-row md:justify-between mx-5 md:mx-10 md:items-center">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-0 justify-between mx-5 md:mx-10 md:items-center">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
         <div className="flex gap-3">
           <CustomYearSelect year={year} setYear={setYear} />
