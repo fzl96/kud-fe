@@ -26,8 +26,6 @@ export default function Sales() {
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
 
-  console.log(data);
-
   const onClose = () => {
     setOpen(false);
     setUpdateDrawerOpen(false);

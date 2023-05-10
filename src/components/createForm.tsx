@@ -112,21 +112,20 @@ export default function Form({
             theme: "colored",
           });
         } catch (err) {
-          if (isAxiosError(err) && err.response?.data?.error) {
+          if (isAxiosError(err) && err.response) {
             setError(err.response.data.error);
+            toast.error(err.response.data.error, {
+              position: "bottom-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: false,
+              progress: undefined,
+              theme: "colored",
+            });
             return;
           }
-          console.log(err);
-          toast.error("Gagal menambahkan data", {
-            position: "bottom-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-          });
           onClose();
         }
       })}

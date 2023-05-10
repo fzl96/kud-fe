@@ -17,6 +17,21 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const getFirstPage = (roleName: string) => {
+    switch (roleName) {
+      case "Admin":
+        return "/";
+      case "Ketua":
+        return "/";
+      case "Kasir":
+        return "/kasir";
+      case "Bendahara":
+        return "/";
+      default:
+        return "/";
+    }
+  };
+
   const handleSubmit = async (e: any) => {
     setLoading(true);
     e.preventDefault();
@@ -32,16 +47,10 @@ export default function Login() {
         accessToken: response.accessToken,
         user: user,
       });
-      const firstPage = user.role.permissions.sort((a: string, b: string) =>
-        a.localeCompare(b)
-      )[0];
-      localStorage.setItem("isAuth", "true");
-      if (firstPage.toLowerCase() === "dashboard") {
-        navigate("/");
-        return;
-      }
+
+      const firstPage = getFirstPage(user.role.name);
       setLoading(false);
-      navigate(`/${translate(firstPage.toLowerCase())}`);
+      navigate(firstPage);
     } catch (err) {
       if (isAxiosError(err) && err.response) {
         setError(err.response.data.error);

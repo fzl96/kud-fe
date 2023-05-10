@@ -30,8 +30,6 @@ export default function Products() {
     isLoading: loading,
   } = useSWR(productsApiEndpoint, () => getProducts(auth.accessToken));
 
-  console.log(data);
-
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);

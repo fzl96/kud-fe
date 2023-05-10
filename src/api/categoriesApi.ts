@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { kudApi } from './calls';
+import { Category } from '../data/types';
 
 export const categoriesApiEndpoint = '/categories';
 
-type Category = {
+type CategoryInput = {
   name: string;
 };
 
@@ -13,7 +14,8 @@ export const getCategories = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  const categories: Category[] = response.data;
+  return categories;
 };
 
 export const getCategory = async (id: string) => {
@@ -21,7 +23,7 @@ export const getCategory = async (id: string) => {
   return response.data;
 };
 
-export const createCategory = async (category: Category) => {
+export const createCategory = async (category: CategoryInput) => {
   const response = await kudApi.post(categoriesApiEndpoint, category);
   return response.data;
 }

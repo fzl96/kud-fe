@@ -19,17 +19,39 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
 
+  const Admin = [
+    "dashboard",
+    "categories",
+    "products",
+    "suppliers",
+    "cashier",
+    "sales",
+    "purchases",
+    "customers",
+    "users",
+  ];
+  const Cashier = ["cashier", "sales", "customers", "products"];
+  const Ketua = ["dashboard"];
+  const Bendahara = ["dashboard", "purchases", "suppliers", "sales"];
+
+  const userRole = auth?.user?.role.name;
+
   const filteredSidebarData = useMemo(() => {
-    return SidebarData.filter((item) =>
-      auth?.user?.role.permissions.includes(item.value)
-    );
+    if (userRole === "Admin") {
+      return SidebarData.filter((item) => Admin.includes(item.value));
+    } else if (userRole === "Ketua") {
+      return SidebarData.filter((item) => Ketua.includes(item.value));
+    } else if (userRole === "Bendahara") {
+      return SidebarData.filter((item) => Bendahara.includes(item.value));
+    } else if (userRole === "Kasir") {
+      return SidebarData.filter((item) => Cashier.includes(item.value));
+    }
   }, [auth]);
 
   const handleLogout = async () => {
     localStorage.removeItem("isAuth");
     setAuth(null);
     const response = await logout();
-    console.log(response);
     window.location.href = "/login";
   };
 
@@ -50,7 +72,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
         </div>
         <div className="h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-2 text-base m-5">
-            {filteredSidebarData.map((item, index) => (
+            {filteredSidebarData?.map((item, index) => (
               <motion.li
                 key={index}
                 whileTap={{ scale: 0.9 }}

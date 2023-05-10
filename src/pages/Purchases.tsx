@@ -37,8 +37,6 @@ export default function Purchases() {
     setRowSelected(null);
   };
 
-  console.log(data);
-
   return (
     <>
       <PageTitle title="Pembelian" setOpen={setOpen} loading={isLoading} />

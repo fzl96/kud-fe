@@ -5,6 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { useMemo, useState } from "react";
 import Select from "react-select";
 import { BiKey } from "react-icons/bi";
+import { isAxiosError } from "axios";
 
 type Fields = {
   name: string;
@@ -143,16 +144,18 @@ export default function UpdateForm({
             theme: "colored",
           });
         } catch (err) {
-          toast.error("Gagal memperbarui data", {
-            position: "bottom-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-          });
+          if (isAxiosError(err) && err.response) {
+            toast.error(err.response.data.error, {
+              position: "bottom-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: false,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
           onClose();
         }
       })}

@@ -83,8 +83,12 @@ export default function Dashboard() {
   }, [data]);
 
   const compare = (current: number, previous: number) => {
-    const percentageDiff = ((current - previous) / previous) * 100;
+    const prev = previous === 0 || isNaN(previous) ? 1 : previous;
+    const percentageDiff = ((current - prev) / prev) * 100;
     const rounded = Math.round(percentageDiff * 100) / 100;
+    // console.log(
+    //   `current : ${current}, previous : ${prev}, diff : ${percentageDiff} rounded : ${rounded}`
+    // );
     return rounded;
   };
 

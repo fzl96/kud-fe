@@ -61,6 +61,7 @@ export default function TableSelectPopUP({
           theme: "colored",
         });
       } catch (error) {
+        console.log(error);
         if (isAxiosError(error) && error.response) {
           toast.error(error.response.data.error, {
             position: "bottom-center",

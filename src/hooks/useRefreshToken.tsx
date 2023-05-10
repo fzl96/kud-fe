@@ -8,6 +8,7 @@ const useRefreshToken = () => {
 
   const refreshToken = async () => {
     const response = await getToken();
+    console.log("test: ", response);
     setAuth({
       accessToken: response.accessToken,
       user: jwt_decode(response.accessToken),

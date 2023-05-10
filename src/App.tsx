@@ -34,49 +34,73 @@ function App() {
           <Route element={<Root />}>
             <Route path="/tidak-sah" element={<Unauthorized />} />
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="dashboard" />}
+              element={
+                <RoleProtectedRoutes
+                  allowedPermissions={["Admin", "Ketua", "Bendahara"]}
+                />
+              }
             >
               <Route path="/" element={<Dashboard />} />
             </Route>
 
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="categories" />}
+              element={<RoleProtectedRoutes allowedPermissions={["Admin"]} />}
             >
               <Route path="/kategori" element={<Categories />} />
             </Route>
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="products" />}
+              element={
+                <RoleProtectedRoutes allowedPermissions={["Admin", "Kasir"]} />
+              }
             >
               <Route path="/produk" element={<Products />} />
             </Route>
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="suppliers" />}
+              element={<RoleProtectedRoutes allowedPermissions={["Admin"]} />}
             >
               <Route path="/supplier" element={<Suppliers />} />
             </Route>
 
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="cashier" />}
+              element={
+                <RoleProtectedRoutes allowedPermissions={["Admin", "Kasir"]} />
+              }
             >
               <Route path="/kasir" element={<Cashier />} />
             </Route>
-            <Route element={<RoleProtectedRoutes allowedPermissions="sales" />}>
+            <Route
+              element={
+                <RoleProtectedRoutes
+                  allowedPermissions={["Admin", "Kasir", "Bendahara"]}
+                />
+              }
+            >
               <Route path="/penjualan" element={<Sales />} />
             </Route>
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="purchases" />}
+              element={
+                <RoleProtectedRoutes
+                  allowedPermissions={["Admin", "Bendahara"]}
+                />
+              }
             >
               <Route path="/pembelian" element={<Purchases />} />
             </Route>
             <Route
-              element={<RoleProtectedRoutes allowedPermissions="customers" />}
+              element={
+                <RoleProtectedRoutes allowedPermissions={["Admin", "Kasir"]} />
+              }
             >
               <Route path="/pelanggan" element={<Customers />} />
             </Route>
-            <Route element={<RoleProtectedRoutes allowedPermissions="users" />}>
+            <Route
+              element={<RoleProtectedRoutes allowedPermissions={["Admin"]} />}
+            >
               <Route path="/user" element={<Users />} />
             </Route>
-            <Route element={<RoleProtectedRoutes allowedPermissions="roles" />}>
+            <Route
+              element={<RoleProtectedRoutes allowedPermissions={["Admin"]} />}
+            >
               <Route path="/role" element={<Roles />} />
             </Route>
             <Route path="*" element={<div>Not Found</div>} />

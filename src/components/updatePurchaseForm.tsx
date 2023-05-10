@@ -10,6 +10,7 @@ import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import { BiKey } from "react-icons/bi";
 import { FiHash } from "react-icons/fi";
+import { isAxiosError } from "axios";
 
 interface Props {
   products: any;
@@ -156,8 +157,6 @@ export default function UpdatePurchaseForm({
     };
     try {
       await updatePurchase(rowSelected.id, data);
-      mutate();
-      onClose();
       toast.success("Berhasil menambahkan data", {
         position: "bottom-center",
         autoClose: 2000,
@@ -168,17 +167,21 @@ export default function UpdatePurchaseForm({
         progress: undefined,
         theme: "colored",
       });
+      mutate();
+      onClose();
     } catch (error) {
-      toast.error("Gagal menambahkan data", {
-        position: "bottom-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "colored",
-      });
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
     }
   };
 

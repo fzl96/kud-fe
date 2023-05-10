@@ -29,6 +29,7 @@ export default function Users() {
     mutate,
     isLoading: loading,
   } = useSWR(usersApiEndpoint, () => getUsers(auth.accessToken));
+  console.log(data);
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);

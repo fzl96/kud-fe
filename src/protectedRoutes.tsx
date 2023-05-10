@@ -33,6 +33,24 @@ export default function ProtectedRoutes() {
     refreshToken();
   }, []);
 
+  useEffect(() => {
+    if (auth?.user && auth?.user.role.name === "Kasir") {
+      return navigate("/kasir");
+    }
+
+    if (auth?.user && auth?.user.role.name === "Admin") {
+      return navigate("/");
+    }
+
+    if (auth?.user && auth?.user.role.name === "Ketua") {
+      return navigate("/");
+    }
+
+    if (auth?.user && auth?.user.role.name === "Bendahara") {
+      return navigate("/");
+    }
+  }, [auth]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
