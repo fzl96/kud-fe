@@ -20,7 +20,7 @@ import Drawer from "../components/drawer";
 import { useState } from "react";
 import { useAuth } from "../context/authContext";
 
-export default function Suppliers() {
+const Suppliers = () => {
   const { auth } = useAuth();
   const {
     data,
@@ -80,4 +80,6 @@ export default function Suppliers() {
       </div>
     </>
   );
-}
+};
+
+export default Suppliers;

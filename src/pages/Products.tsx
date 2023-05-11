@@ -21,7 +21,7 @@ import { createProductsField } from "../data/formFields";
 import UpdateForm from "../components/updateForm";
 import { useAuth } from "../context/authContext";
 
-export default function Products() {
+const Products = () => {
   const { auth } = useAuth();
   const {
     data,
@@ -98,4 +98,6 @@ export default function Products() {
       </div>
     </>
   );
-}
+};
+
+export default Products;

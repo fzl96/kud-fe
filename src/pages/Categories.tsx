@@ -20,7 +20,7 @@ import PageTitle from "../components/pageTitle";
 import UpdateForm from "../components/updateForm";
 import { useAuth } from "../context/authContext";
 
-export default function Categories() {
+const Categories: React.FC = () => {
   const { auth } = useAuth();
   const {
     data,
@@ -86,4 +86,6 @@ export default function Categories() {
       </div>
     </>
   );
-}
+};
+
+export default Categories;

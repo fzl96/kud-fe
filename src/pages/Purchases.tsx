@@ -23,7 +23,7 @@ import CreateFormLoader from "../components/createFormLoader";
 import UpdatePurchaseForm from "../components/updatePurchaseForm";
 import { useAuth } from "../context/authContext";
 
-export default function Purchases() {
+const Purchases = () => {
   const { auth } = useAuth();
   const { data, error, mutate, isLoading } = useSWR(purchasesApiEndpoint, () =>
     getPurchases(auth.accessToken)
@@ -86,4 +86,6 @@ export default function Purchases() {
       </div>
     </>
   );
-}
+};
+
+export default Purchases;

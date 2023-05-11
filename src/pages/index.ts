@@ -5,10 +5,8 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import Products from "./Products";
 import Purchases from "./Purchases";
-import Reports from "./Reports";
 import Roles from "./Roles";
 import Sales from "./Sales";
-import Settings from "./Settings";
 import Suppliers from "./Suppliers";
 import Users from "./Users";
 import Unauthorized from "./Unauthorized";
@@ -22,10 +20,8 @@ export {
   Login,
   Products,
   Purchases,
-  Reports,
   Roles,
   Sales,
-  Settings,
   Suppliers,
   Users,
   Unauthorized,

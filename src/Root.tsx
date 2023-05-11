@@ -34,7 +34,7 @@ function Layout({ children, open, setOpen }: Props) {
   );
 }
 
-export default function Root() {
+const Root = () => {
   const [open, setOpen] = useState(false);
   const { auth, setAuth } = useAuth();
   const refresh = useRefreshToken();
@@ -79,4 +79,6 @@ export default function Root() {
       </Layout>
     </AnimatePresence>
   );
-}
+};
+
+export default Root;

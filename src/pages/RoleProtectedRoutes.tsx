@@ -5,7 +5,7 @@ interface Props {
   allowedPermissions: Array<string>;
 }
 
-export default function RoleProtectedRoutes({ allowedPermissions }: Props) {
+const RoleProtectedRoutes = ({ allowedPermissions }: Props) => {
   const { auth } = useAuth();
   const location = useLocation();
 
@@ -14,4 +14,6 @@ export default function RoleProtectedRoutes({ allowedPermissions }: Props) {
   ) : (
     <Navigate to="/tidak-sah" state={{ from: location }} />
   );
-}
+};
+
+export default RoleProtectedRoutes;

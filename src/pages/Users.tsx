@@ -21,7 +21,7 @@ import Drawer from "../components/drawer";
 import { useState, useMemo } from "react";
 import { useAuth } from "../context/authContext";
 
-export default function Users() {
+const Users = () => {
   const { auth } = useAuth();
   const {
     data,
@@ -29,7 +29,6 @@ export default function Users() {
     mutate,
     isLoading: loading,
   } = useSWR(usersApiEndpoint, () => getUsers(auth.accessToken));
-  console.log(data);
   const [open, setOpen] = useState(false);
   const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState<null | {}>(null);
@@ -93,4 +92,6 @@ export default function Users() {
       </div>
     </>
   );
-}
+};
+
+export default Users;

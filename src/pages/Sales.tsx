@@ -14,7 +14,7 @@ import Drawer from "../components/drawer";
 import SalesForm from "../components/salesForm";
 import { useAuth } from "../context/authContext";
 
-export default function Sales() {
+const Sales = () => {
   const { auth } = useAuth();
   const {
     data,
@@ -62,4 +62,6 @@ export default function Sales() {
       </div>
     </>
   );
-}
+};
+
+export default Sales;

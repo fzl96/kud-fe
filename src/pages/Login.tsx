@@ -9,7 +9,7 @@ import { translate } from "../utils/translate";
 import { HiArrowSmRight } from "react-icons/hi";
 import { ClipLoader } from "react-spinners";
 
-export default function Login() {
+const Login = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -136,4 +136,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

@@ -1,16 +1,17 @@
 import useSWR from "swr";
 import { dashboardApiEndpoint, getDashboard } from "../api/dashboardApi";
-import { useState, useMemo } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
+import { useState, useMemo, useRef } from "react";
 import Charts from "../components/charts";
 import DashboardCard from "../components/dashboardCard";
-import { CiBag1 } from "react-icons/ci";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { SiExpensify } from "react-icons/si";
 import CustomYearSelect from "../components/customYearSelect";
 import { useAuth } from "../context/authContext";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import DashboardCardLoader from "../components/dashboardCardLoader";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import MyDocument from "../components/document";
+import { BsBag } from "react-icons/bs";
 
 const monthNames = [
   "Jan",
@@ -27,8 +28,9 @@ const monthNames = [
   "Dec",
 ];
 
-export default function Dashboard() {
+const Dashboard = () => {
   const { auth } = useAuth();
+  const componentRef = useRef<any>(null);
   const currentYear = new Date().getFullYear();
   const getMonth = new Date().getMonth() + 1;
   const [year, setYear] = useState(currentYear);
@@ -45,6 +47,10 @@ export default function Dashboard() {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
+  });
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
   });
 
   const salesData = useMemo(() => {
@@ -84,7 +90,7 @@ export default function Dashboard() {
 
   const compare = (current: number, previous: number) => {
     const prev = previous === 0 || isNaN(previous) ? 1 : previous;
-    const percentageDiff = ((current - prev) / prev) * 100;
+    const percentageDiff = ((current + 1 - prev) / prev) * 100;
     const rounded = Math.round(percentageDiff * 100) / 100;
     // console.log(
     //   `current : ${current}, previous : ${prev}, diff : ${percentageDiff} rounded : ${rounded}`
@@ -126,18 +132,29 @@ export default function Dashboard() {
         <h1 className="text-2xl font-semibold">Dashboard</h1>
         <div className="flex gap-3">
           <CustomYearSelect year={year} setYear={setYear} />
-          <button
-            className={`flex items-center text-white px-4 py-3 text-[0.9063rem] rounded-[0.25rem] bg-[#a285e1] font-semibold gap-2 hover:bg-[#bdabe2] transition-colors duration-150 ${
-              loading ? "cursor-not-allowed bg-[#2d2d30]" : "cursor-pointer"
-            }}`}
-            onClick={() => setOpen(true)}
-            disabled={loading}
+          <div
+            ref={componentRef}
+            className={`documentsToPrint marker:absolute z-[-10] inset-0`}
           >
-            <span className="text-lg">
-              <HiOutlineDocumentReport />
-            </span>
-            Unduh laporan
-          </button>
+            <MyDocument />
+          </div>
+          <ReactToPrint
+            trigger={() => (
+              <button
+                className={`flex items-center text-white px-4 py-3 text-[0.9063rem] rounded-[0.25rem] bg-[#a285e1] font-semibold gap-2 hover:bg-[#bdabe2] transition-colors duration-150 ${
+                  loading ? "cursor-not-allowed bg-[#2d2d30]" : "cursor-pointer"
+                }}`}
+                onClick={handlePrint}
+                disabled={loading}
+              >
+                <span className="text-lg">
+                  <HiOutlineDocumentReport />
+                </span>
+                Unduh laporan
+              </button>
+            )}
+            content={() => componentRef.current}
+          />
         </div>
       </div>
       <div className="px-5 md:px-10 mt-5 grid grid-cols-1 md:grid-cols-3 md:gap-3 w-full">
@@ -152,7 +169,7 @@ export default function Dashboard() {
             <DashboardCard
               title="Pendapatan Bulan ini"
               content={formatter.format(currentMonthData?.revenue || 0)}
-              icon={<CiBag1 className="stroke-[1px]" />}
+              icon={<BsBag />}
               status={currentMonthData?.revenueCompare}
             />
             <DashboardCard
@@ -178,4 +195,6 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;

@@ -1,7 +1,7 @@
 interface Props {
   title: string;
   content: any;
-  icon: React.ReactNode;
+  icon: any;
   status: any;
 }
 
@@ -10,7 +10,7 @@ export default function DashboardCard({ title, content, icon, status }: Props) {
     if (isNaN(value)) {
       return "0%";
     }
-    const sign = status > 0 ? "+" : "-";
+    const sign = status > 0 ? "+" : status === 0 ? "" : "-";
     const absPercentageDiff = Math.abs(status);
     return `${sign} ${absPercentageDiff.toFixed(2)}%`;
   };
@@ -29,7 +29,7 @@ export default function DashboardCard({ title, content, icon, status }: Props) {
           className={`font-semibold py-[0.125rem] px-2 rounded-md ${
             status > 0
               ? "bg-[#e1f8ea] text-green-600"
-              : isNaN(status)
+              : isNaN(status) || status === 0
               ? "bg-[#fcf4db] text-[#ff8a00]"
               : "bg-[#fbdddd] text-[#e96c6c]"
           }`}

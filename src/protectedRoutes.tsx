@@ -8,7 +8,7 @@ import { kudApi } from "./api/calls";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 
-export default function ProtectedRoutes() {
+const ProtectedRoutes = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -66,4 +66,6 @@ export default function ProtectedRoutes() {
   }
 
   return auth?.user ? <Outlet /> : <Navigate to="/login" />;
-}
+};
+
+export default ProtectedRoutes;
