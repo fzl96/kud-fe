@@ -10,14 +10,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/context/auth-context";
 import {
   Select,
   SelectContent,
@@ -39,15 +37,11 @@ const schema = z.object({
 
 export default function GroupId() {
   const { id } = useParams();
-  const { auth } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const {
-    data: group,
-    error,
-    isLoading,
-    mutate,
-  } = useSWR(`${groupsApiEndpoint}/${id}`, () => getGroup(id));
+  const { data: group } = useSWR(`${groupsApiEndpoint}/${id}`, () =>
+    getGroup(id)
+  );
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -118,7 +112,7 @@ export default function GroupId() {
                 <FormField
                   control={form.control}
                   name="leaderId"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Ketua Kelompok</FormLabel>
                       <FormControl>

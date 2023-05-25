@@ -12,11 +12,9 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
@@ -57,7 +55,6 @@ const paymentMethod = [
 
 export default function CashierCheckoutForm({
   selectedItems,
-  setSelectedItems,
   customers,
   mutate,
   auth,
@@ -66,7 +63,7 @@ export default function CashierCheckoutForm({
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   const [cash, setCash] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const componentRef = useRef<any>(null);
   const form = useForm({
     resolver: zodResolver(schema),
@@ -180,7 +177,7 @@ export default function CashierCheckoutForm({
             <FormField
               control={form.control}
               name="customerId"
-              render={({ field, fieldState }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Anggota/Umum</FormLabel>
                   <FormControl>
@@ -212,7 +209,7 @@ export default function CashierCheckoutForm({
             <FormField
               control={form.control}
               name="paymentMethod"
-              render={({ field, fieldState }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Metode Pembayaran</FormLabel>
                   <FormControl>

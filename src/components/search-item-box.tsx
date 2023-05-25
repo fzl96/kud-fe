@@ -1,6 +1,5 @@
 import { useState } from "react";
 // import { FiSearch } from "react-icons/fi";
-import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "./ui/input";
 
@@ -10,15 +9,11 @@ interface Props {
   setSelectedItems: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function SearchItemBox({
-  items,
-  selectedItems,
-  setSelectedItems,
-}: Props) {
+export default function SearchItemBox({ items, setSelectedItems }: Props) {
   const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [itemSelected, setItemSelected] = useState(false);
+  const [, setItemSelected] = useState(false);
 
   const filteredItems = items.filter(
     (item: any) =>
@@ -68,8 +63,6 @@ export default function SearchItemBox({
 
   return (
     <>
-      {/* <div className="flex items-center gap-2 w-full border rounded-3xl px-4 py-3 bg-[#e4e9ec] focus-within:bg-[#d7dde4] text-slate-400 focus-within:text-black transition-colors duration-150"> */}
-      {/* <Icons.search className /> */}
       <Input
         type="text"
         value={query}

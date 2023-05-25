@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useAuth } from "@/context/auth-context";
 import jwt_decode from "jwt-decode";
 import { getToken } from "@/lib/api/auth";

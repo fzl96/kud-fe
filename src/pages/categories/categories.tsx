@@ -13,12 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function Categories() {
   const { auth } = useAuth();
-  const {
-    data,
-    error,
-    mutate,
-    isLoading: loading,
-  } = useSWR(
+  const { data, mutate } = useSWR(
     [categoriesApiEndpoint, auth.accessToken],
     () => getCategories(auth.accessToken),
     {

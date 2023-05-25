@@ -9,7 +9,7 @@ import { useCustomers } from "@/hooks/use-customers";
 
 export default function Members() {
   const { auth } = useAuth();
-  const { members, error, mutate, loading } = useCustomers(auth.accessToken);
+  const { members, mutate } = useCustomers(auth.accessToken);
 
   return (
     <div className="flex flex-col gap-5">

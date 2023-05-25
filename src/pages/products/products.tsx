@@ -9,7 +9,7 @@ import { useProducts } from "@/hooks/use-products";
 
 export default function Products() {
   const { auth } = useAuth();
-  const { products, error, mutate, loading } = useProducts(auth.accessToken);
+  const { products, mutate } = useProducts(auth.accessToken);
 
   return (
     <div className="flex flex-col gap-5">

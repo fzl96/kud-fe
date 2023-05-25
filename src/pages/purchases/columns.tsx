@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Purchase } from "@/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
-import { ChevronsUpDown, MoreHorizontal } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableOperation } from "@/components/table-operation";
 

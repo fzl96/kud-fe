@@ -4,8 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { login } from "@/lib/api/auth";
 import { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,21 +14,17 @@ import jwt_decode from "jwt-decode";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
 
   const getFirstPage = (roleName: string) => {
     switch (roleName) {

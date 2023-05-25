@@ -40,7 +40,6 @@ import { isAxiosError } from "axios";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  deleteEndpoint?: string;
   selectable?: boolean;
   mutate: () => void;
   deleteFunction: (ids: string[]) => Promise<void>;
@@ -53,7 +52,6 @@ interface WithId {
 export function DataTable<TData extends WithId, TValue>({
   columns,
   data,
-  deleteEndpoint,
   selectable = true,
   mutate,
   deleteFunction,
@@ -193,7 +191,7 @@ export function DataTable<TData extends WithId, TValue>({
                       .rows.map((row) => row.original.id as string);
 
                     try {
-                      const res = await deleteFunction(ids);
+                      await deleteFunction(ids);
                       setIsDeleteLoading(false);
                       setShowDeleteAlert(false);
                       mutate();

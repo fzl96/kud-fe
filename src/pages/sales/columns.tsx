@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Sales } from "@/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
-import { ChevronsUpDown, MoreHorizontal } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableOperation } from "@/components/table-operation";
 import { cn } from "@/lib/utils";
@@ -55,6 +55,7 @@ export const columns: ColumnDef<Sales, any>[] = [
     ),
   },
   {
+    id: "customer",
     accessorKey: "customer.name",
     header: ({ column }) => {
       return (

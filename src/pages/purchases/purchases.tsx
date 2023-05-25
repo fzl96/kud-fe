@@ -9,7 +9,7 @@ import { deletePurchases } from "@/lib/api/purchases";
 
 export default function Purchases() {
   const { auth } = useAuth();
-  const { purchases, loading, mutate, error } = usePurchases(auth.accessToken);
+  const { purchases, mutate } = usePurchases(auth.accessToken);
 
   return (
     <div className="flex flex-col gap-5">

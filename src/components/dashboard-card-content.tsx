@@ -4,7 +4,7 @@ interface Props {
   status: any;
 }
 
-export function DashboardCard({ content, icon, status }: Props) {
+export function DashboardCard({ content, status }: Props) {
   const convertToString = (value: any) => {
     if (isNaN(value)) {
       return "0%";

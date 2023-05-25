@@ -36,17 +36,6 @@ import { Icons } from "@/components/icons";
 import { toast } from "@/components/ui/use-toast";
 import { CheckCircle } from "lucide-react";
 import { isAxiosError } from "axios";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { DataTableFacetedFilter } from "@/components/data-table-faceted-filter";
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   customers: Customer[] | undefined;
@@ -64,10 +53,8 @@ interface WithId {
 export function DataTable<TData extends WithId, TValue>({
   columns,
   data,
-  deleteEndpoint,
   selectable = true,
   mutate,
-  customers,
   deleteFunction,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -103,18 +90,18 @@ export function DataTable<TData extends WithId, TValue>({
 
   return (
     <div>
-      {customers && (
-        <div>
-          {/* <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={customers.map((customer) => ({
-              label: customer.name,
-              value: customer.id,
-            }))}
-          /> */}
-        </div>
-      )}
+      <div>
+        <Input
+          placeholder="Filter User..."
+          value={
+            (table.getColumn("customer")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("customer")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <div className="rounded-md border max-w-full overflow-x-auto">
         <Table>
           <TableHeader>
@@ -207,7 +194,7 @@ export function DataTable<TData extends WithId, TValue>({
                       .rows.map((row) => row.original.id as string);
 
                     try {
-                      const res = await deleteFunction(ids);
+                      await deleteFunction(ids);
                       setIsDeleteLoading(false);
                       setShowDeleteAlert(false);
                       mutate();

@@ -8,11 +8,9 @@ import CashierCheckoutForm from "@/components/cashier-checkout-form";
 export default function Cashier() {
   const { auth } = useAuth();
   const { products, mutate } = useProducts(auth.accessToken);
-  const { members, loading, error } = useCustomers(auth.accessToken);
+  const { members, loading } = useCustomers(auth.accessToken);
 
-  const [query, setQuery] = useState("");
   const [selectedItems, setSelectedItems] = useState<any>([]);
-  const paymentMethods = ["Tunai", "Kredit"];
 
   const formatter = new Intl.NumberFormat("id-ID", {
     style: "currency",

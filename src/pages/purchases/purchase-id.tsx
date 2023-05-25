@@ -10,11 +10,9 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,7 +25,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@/context/auth-context";
-import { useGroups } from "@/hooks/use-groups";
 import { usePurchases } from "@/hooks/use-purchases";
 import Select from "react-select";
 import { useEffect, useMemo, useState } from "react";
@@ -72,7 +69,7 @@ const customStyles = {
       backgroundColor: "#f1f5f9",
     },
   }),
-  multiValue: (provided: any, state: any) => ({
+  multiValue: (provided: any) => ({
     ...provided,
     backgroundColor: "#f1f5f9",
     borderRadius: "4px",
@@ -87,11 +84,9 @@ export default function PurchaseId() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const {
-    data: purchase,
-    error,
-    mutate,
-  } = useSWR(`${purchasesApiEndpoint}/${id}`, () => getPurchase(id));
+  const { data: purchase } = useSWR(`${purchasesApiEndpoint}/${id}`, () =>
+    getPurchase(id)
+  );
 
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const productOptions = useMemo(() => {
@@ -207,7 +202,7 @@ export default function PurchaseId() {
               <FormField
                 control={form.control}
                 name="supplierId"
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Supplier</FormLabel>
                     <FormControl>

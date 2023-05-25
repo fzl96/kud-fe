@@ -1,5 +1,4 @@
 import { Card } from "@/components/card";
-// import { PageTitle } from "@/components/page-title";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -10,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -135,7 +133,7 @@ export default function NewUsers() {
               <FormField
                 control={form.control}
                 name="groupId"
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Kelompok</FormLabel>
                     <FormControl>
@@ -166,7 +164,7 @@ export default function NewUsers() {
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status Keanggotaan</FormLabel>
                     <FormControl>

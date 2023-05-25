@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,12 +45,9 @@ export default function ProductId() {
   const { categories } = useProducts(auth.accessToken);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const {
-    data: product,
-    mutate,
-    error,
-    isLoading,
-  } = useSWR(`${productsApiEndpoint}/${id}`, () => getProduct(id));
+  const { data: product } = useSWR(`${productsApiEndpoint}/${id}`, () =>
+    getProduct(id)
+  );
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -126,7 +122,7 @@ export default function ProductId() {
               <FormField
                 control={form.control}
                 name="categoryId"
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Kategori</FormLabel>
                     <FormControl>

@@ -14,10 +14,7 @@ type PurchaseInput = {
   items: Item[];
 };
 
-export const getPurchases = async (
-  token: string,
-  includeProductsSupplier: boolean
-) => {
+export const getPurchases = async (token: string) => {
   const response = await kudApi.get(
     `${purchasesApiEndpoint}?include_products_suppliers=true`,
     {

@@ -5,12 +5,11 @@ import { DataTable } from "@/components/ui/data-table";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useCustomers } from "@/hooks/use-customers";
 import { useGroups } from "@/hooks/use-groups";
 
 export default function Members() {
   const { auth } = useAuth();
-  const { groups, error, mutate, loading } = useGroups(auth.accessToken);
+  const { groups, mutate } = useGroups(auth.accessToken);
 
   return (
     <div className="flex flex-col gap-5">

@@ -3,11 +3,9 @@ import {
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Area,
 } from "recharts";
 
 interface Props {

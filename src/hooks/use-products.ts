@@ -1,9 +1,5 @@
 import useSWR from "swr";
-import {
-  getProducts,
-  productsApiEndpoint,
-  deleteProducts,
-} from "@/lib/api/products";
+import { getProducts, productsApiEndpoint } from "@/lib/api/products";
 
 export const useProducts = (token: string) => {
   const {
