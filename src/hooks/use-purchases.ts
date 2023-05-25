@@ -4,7 +4,7 @@ import useSWR from "swr";
 export const usePurchases = (token: string) => {
   const { data, error, mutate, isLoading } = useSWR(
     [purchasesApiEndpoint, token],
-    () => getPurchases(token, true),
+    () => getPurchases(token),
     {
       onSuccess: (data) => {
         data.purchases.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));

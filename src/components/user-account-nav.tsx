@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "./user-avatar";
+import { logout } from "@/lib/api/auth";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: {
@@ -44,12 +41,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          // onSelect={(event) => {
-          //   event.preventDefault();
-          //   signOut({
-          //     callbackUrl: `${window.location.origin}/login`,
-          //   });
-          // }}
+          onSelect={async (event) => {
+            event.preventDefault();
+            await logout();
+          }}
         >
           Sign out
         </DropdownMenuItem>

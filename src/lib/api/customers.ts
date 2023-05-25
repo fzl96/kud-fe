@@ -1,4 +1,3 @@
-import axios from "axios";
 import { kudApi } from "./calls";
 import { Customer } from "@/types";
 

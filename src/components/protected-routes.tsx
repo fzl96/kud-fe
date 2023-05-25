@@ -4,7 +4,6 @@ import { getToken } from "@/lib/api/auth";
 import jwt_decode from "jwt-decode";
 import { isAxiosError } from "axios";
 import { useEffect } from "react";
-import { kudApi } from "@/lib/api/calls";
 import { useState } from "react";
 // import { ClipLoader } from "react-spinners";
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { kudApi } from "./calls";
 
 export const dashboardApiEndpoint = "/dashboard";

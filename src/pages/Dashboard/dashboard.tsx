@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { dashboardApiEndpoint, getDashboard } from "@/lib/api/dashboard";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
@@ -26,16 +26,11 @@ const monthNames = [
 
 export default function Dashboard() {
   const { auth } = useAuth();
-  const componentRef = useRef<any>(null);
+  // const componentRef = useRef<any>(null);
   const currentYear = new Date().getFullYear();
   const getMonth = new Date().getMonth() + 1;
   const [year, setYear] = useState<number>(currentYear);
-  const {
-    data,
-    error,
-    mutate,
-    isLoading: loading,
-  } = useSWR([dashboardApiEndpoint, year], () =>
+  const { data } = useSWR([dashboardApiEndpoint, year], () =>
     getDashboard(year, auth.accessToken)
   );
 
