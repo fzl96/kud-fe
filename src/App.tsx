@@ -38,8 +38,7 @@ const NewPurchase = lazy(() => import("@/pages/purchases/new-purchase"));
 const Cashier = lazy(() => import("@/pages/cashier/cashier"));
 
 const Sales = lazy(() => import("@/pages/sales/sales"));
-
-// const SalesId = lazy(() => import("@/pages/sales/sales-id"));
+const SaleId = lazy(() => import("@/pages/sales/sale-id"));
 
 function App() {
   return (
@@ -68,7 +67,7 @@ function App() {
               }
             />
             <Route
-              path="/kategori/:id"
+              path="/kategori/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <CategoriesId />
@@ -93,7 +92,7 @@ function App() {
               }
             />
             <Route
-              path="/supplier/:id"
+              path="/supplier/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <SupplierId />
@@ -118,7 +117,7 @@ function App() {
               }
             />
             <Route
-              path="/barang/:id"
+              path="/barang/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <ProductId />
@@ -143,7 +142,7 @@ function App() {
               }
             />
             <Route
-              path="/pengguna/:id"
+              path="/pengguna/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <UserId />
@@ -168,7 +167,7 @@ function App() {
               }
             />
             <Route
-              path="/anggota/:id"
+              path="/anggota/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <MemberId />
@@ -201,7 +200,7 @@ function App() {
               }
             />
             <Route
-              path="/kelompok/:id"
+              path="/kelompok/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <GroupId />
@@ -218,7 +217,7 @@ function App() {
               }
             />
             <Route
-              path="/pembelian/:id"
+              path="/pembelian/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <PurchaseId />
@@ -249,6 +248,14 @@ function App() {
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <Sales />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/penjualan/:id"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SaleId />
                 </Suspense>
               }
             />

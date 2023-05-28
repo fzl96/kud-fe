@@ -9,16 +9,28 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 interface TableOperationProps {
-  link: string;
+  id: string;
 }
 
-export function TableOperation({ link }: TableOperationProps) {
+export function PurchaseTableOperation({ id }: TableOperationProps) {
   return (
-    <>
+    <div className="flex items-center gap-2">
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger>
-            <Link to={link}>
+            <Link to={`/pembelian/${id}`}>
+              <Button variant="secondary" size="sm">
+                <Icons.zoomIn className="h-4 w-4" />
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>Lihat Data</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <Link to={`/pembelian/edit/${id}`}>
               <Button variant="secondary" size="sm">
                 <Icons.edit className="h-4 w-4" />
               </Button>
@@ -27,6 +39,6 @@ export function TableOperation({ link }: TableOperationProps) {
           <TooltipContent>Edit data</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-    </>
+    </div>
   );
 }

@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Icons } from "@/components/icons";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -84,7 +85,18 @@ export default function NewCategories() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Simpan</Button>
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting || !form.formState.isValid}
+              className="flex items-center gap-2"
+            >
+              {form.formState.isSubmitting && (
+                <span>
+                  <Icons.spinner className="animate-spin h-4 w-4" />
+                </span>
+              )}
+              Simpan
+            </Button>
           </form>
         </Form>
       </Card>

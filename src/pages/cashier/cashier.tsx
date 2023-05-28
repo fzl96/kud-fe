@@ -23,6 +23,12 @@ export default function Cashier() {
   };
 
   const handleIncrease = (id: string) => {
+    // check if the quantity is more than the stock
+    const product = products?.find((product) => product.id === id);
+    const stocks = product?.stock || 1;
+    if (selectedItems.find((item: any) => item.id === id).quantity >= stocks)
+      return;
+
     setSelectedItems((prevItems: any) => {
       const updatedItems = prevItems.map((prevItem: any) => {
         if (prevItem.id === id) {
@@ -102,7 +108,7 @@ export default function Cashier() {
                             <span>
                               <input
                                 type="number"
-                                className="w-10 text-center rounded-md focus:outline-none bg-[#fcf4db] font-semibold text-[#ff8a00] py-1"
+                                className="w-[4rem] text-center rounded-md text-sm focus:outline-none bg-[#fcf4db] font-semibold text-[#ff8a00] py-1"
                                 value={item.quantity}
                                 min={1}
                                 max={item.stock}

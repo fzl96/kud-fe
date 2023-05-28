@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { isAxiosError } from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -37,6 +37,7 @@ const schema = z.object({
   price: z.number().min(0).max(1000000000),
   stock: z.number().min(0).max(10000000),
   categoryId: z.string().cuid().nonempty(),
+  barcode: z.string().min(2).max(255).optional(),
 });
 
 export default function ProductId() {
@@ -56,6 +57,7 @@ export default function ProductId() {
       price: product?.price ?? 0,
       stock: product?.stock ?? 0,
       categoryId: product?.category.id ?? "",
+      barcode: product?.barcode ?? "",
     },
   });
 
@@ -66,6 +68,7 @@ export default function ProductId() {
         price: product.price,
         stock: product.stock,
         categoryId: product.category.id,
+        barcode: product.barcode,
       });
     }
   }, [product]);
@@ -151,7 +154,19 @@ export default function ProductId() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="barcode"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Barcode</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Kode Barcode" />
+                    </FormControl>
+                    <FormMessage>{fieldState.error?.message}</FormMessage>
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="price"
@@ -191,6 +206,13 @@ export default function ProductId() {
                   </FormItem>
                 )}
               />
+              <div>
+                <Link to={`/pembelian/baru`}>
+                  <Button variant="secondary" size="sm">
+                    Tambah stok
+                  </Button>
+                </Link>
+              </div>
             </div>
             <Button type="submit">Simpan</Button>
           </form>

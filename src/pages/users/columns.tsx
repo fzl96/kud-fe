@@ -130,6 +130,8 @@ export const columns: ColumnDef<User, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/pengguna/${row.original.id}`} />,
+    cell: ({ row }) => (
+      <TableOperation link={`/pengguna/edit/${row.original.id}`} />
+    ),
   },
 ];

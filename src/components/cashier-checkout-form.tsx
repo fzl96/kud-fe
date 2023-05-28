@@ -29,7 +29,7 @@ import { z } from "zod";
 import { DatePicker } from "@/components/ui/date-picker";
 
 const schema = z.object({
-  customerId: z.string().nonempty(),
+  customerId: z.string().optional(),
   paymentMethod: z.string().optional(),
   // cash: z.number().optional(),
 });
@@ -55,6 +55,7 @@ const paymentMethod = [
 
 export default function CashierCheckoutForm({
   selectedItems,
+  setSelectedItems,
   customers,
   mutate,
   auth,
@@ -127,12 +128,11 @@ export default function CashierCheckoutForm({
       })),
       cashierId: auth?.user?.id,
       dueDate: date,
-      status: values.paymentMethod === "TUNAI" ? "LUNAS" : "PROSES",
+      status: values.paymentMethod === "TUNAI" ? "SELESAI" : "PROSES",
     };
 
-    console.log(data);
-
     try {
+      console.log("test");
       await postCashier(data);
       // handlePrint();
       toast({
@@ -140,7 +140,13 @@ export default function CashierCheckoutForm({
         description: "Transaksi berhasil",
       });
       setLoading(false);
-      form.reset();
+      form.reset({
+        customerId: "",
+        paymentMethod: "TUNAI",
+      });
+      setCash(0);
+      setDate(undefined);
+      setSelectedItems([]);
       mutate();
     } catch (error) {
       if (isAxiosError(error) && error.response) {

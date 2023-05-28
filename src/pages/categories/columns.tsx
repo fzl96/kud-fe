@@ -101,6 +101,8 @@ export const columns: ColumnDef<Category, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/kategori/${row.original.id}`} />,
+    cell: ({ row }) => (
+      <TableOperation link={`/kategori/edit/${row.original.id}`} />
+    ),
   },
 ];

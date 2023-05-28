@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TableOperation } from "@/components/table-operation";
+import { PurchaseTableOperation } from "@/components/purchase-table-operation";
 
 const formatter = new Intl.NumberFormat("id-ID", {
   style: "currency",
@@ -55,7 +55,7 @@ export const columns: ColumnDef<Purchase, any>[] = [
   },
   {
     accessorKey: "total",
-    header: "Kategori",
+    header: "Total",
     cell: ({ row }) => (
       <div className="py-1 flex flex-col">
         <span className="text-[0.9063rem]">
@@ -118,8 +118,6 @@ export const columns: ColumnDef<Purchase, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => (
-      <TableOperation link={`/pembelian/${row.original.id}`} />
-    ),
+    cell: ({ row }) => <PurchaseTableOperation id={row.original.id} />,
   },
 ];

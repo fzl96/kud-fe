@@ -1,12 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   darkMode: ["class"],
   content: [
     './src/pages/**/*.{ts,tsx}',
     './src/components/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
 	],
   theme: {
     container: {
@@ -16,7 +14,11 @@ export default {
         "2xl": "1400px",
       },
     },
-    extend: {
+    extend: { 
+      fontFamily: {
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        heading: ["var(--font-heading)", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -31,6 +33,9 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -38,6 +43,15 @@ export default {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+        },
+        accent_2 :{
+          DEFAULT: "#edf3ff",
+          foreground: "#1e3a8a",
+          foreground_2: "#434ce7",
+        },
+        accent_3: {
+          DEFAULT: "#e1f8ea",
+          foreground: "#0d6526",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -73,5 +87,5 @@ export default {
       },
     },
   },
-  plugins: [import ("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate")],
 }

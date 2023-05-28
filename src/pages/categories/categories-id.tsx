@@ -5,15 +5,13 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { isAxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import {
   updateCategory,
   categoriesApiEndpoint,
   getCategory,
 } from "@/lib/api/categories";
-import { useParams } from "react-router-dom";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,7 +23,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { Icons } from "@/components/icons";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -60,6 +59,12 @@ export default function CategoriesId() {
       });
     }
   }, [category]);
+
+  const disabled = useMemo(() => {
+    if (!form.formState.isDirty) {
+      return true;
+    }
+  }, [form.formState.isDirty]);
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
@@ -112,7 +117,14 @@ export default function CategoriesId() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Simpan</Button>
+            <Button disabled={disabled} type="submit">
+              {form.formState.isSubmitting && (
+                <span>
+                  <Icons.spinner className="animate-spin h-4 w-4" />
+                </span>
+              )}
+              Simpan
+            </Button>
           </form>
         </Form>
       </Card>

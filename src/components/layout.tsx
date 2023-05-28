@@ -60,10 +60,10 @@ export function Layout() {
         </div>
       </header>
       <div className="container">
-        <aside className="hidden w-[200px] flex-col lg:flex fixed bg-white">
+        <aside className="hidden w-[200px] top-0 md:pt-20 pr-4 md:pb-3 bottom-0 flex-col lg:flex fixed bg-white overflow-y-scroll">
           <SidebarNav items={dashboardConfig.sidebarNav} />
         </aside>
-        <main className="flex w-full lg:pl-[250px] flex-1 flex-col overflow-hidden">
+        <main className="flex w-full lg:pl-[230px] flex-1 flex-col overflow-hidden">
           <Outlet />
         </main>
       </div>

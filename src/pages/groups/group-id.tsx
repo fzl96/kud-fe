@@ -28,7 +28,8 @@ import {
 import { updateGroup, getGroup, groupsApiEndpoint } from "@/lib/api/groups";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { Icons } from "@/components/icons";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -59,6 +60,10 @@ export default function GroupId() {
       });
     }
   }, [group]);
+
+  const disabled = useMemo(() => {
+    return form.formState.isSubmitting || !form.formState.isDirty;
+  }, [form.formState.isSubmitting, form.formState.isDirty]);
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
@@ -143,7 +148,14 @@ export default function GroupId() {
                 />
               )}
             </div>
-            <Button type="submit">Simpan</Button>
+            <Button type="submit" disabled={disabled}>
+              {form.formState.isSubmitting && (
+                <span>
+                  <Icons.spinner className="animate-spin h-4 w-4" />
+                </span>
+              )}
+              Simpan
+            </Button>
           </form>
         </Form>
       </Card>

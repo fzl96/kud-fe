@@ -1,5 +1,5 @@
 import { kudApi } from "./calls";
-import type { Sales } from "@/types";
+import type { Sales, Sale } from "@/types";
 
 export const salesApiEndpoint = "/sales";
 
@@ -25,7 +25,8 @@ export const getSales = async (token: string) => {
 
 export const getSale = async (id: string) => {
   const response = await kudApi.get(`${salesApiEndpoint}/${id}`);
-  return response.data;
+  const sale: Sale = response.data;
+  return sale;
 };
 
 export const createSale = async (sale: SaleInput) => {

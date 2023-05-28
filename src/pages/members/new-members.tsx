@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/select";
 import { useGroups } from "@/hooks/use-groups";
 import { createCustomer } from "@/lib/api/customers";
+import { useMemo } from "react";
+import { Icons } from "@/components/icons";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -66,6 +68,18 @@ export default function NewUsers() {
       status: "ANGGOTA",
     },
   });
+
+  const disabled = useMemo(() => {
+    return (
+      form.formState.isSubmitting ||
+      !form.formState.isDirty ||
+      !form.formState.isValid
+    );
+  }, [
+    form.formState.isSubmitting,
+    form.formState.isDirty,
+    form.formState.isValid,
+  ]);
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
@@ -197,7 +211,14 @@ export default function NewUsers() {
                 )}
               />
             </div>
-            <Button type="submit">Simpan</Button>
+            <Button type="submit" disabled={disabled}>
+              {form.formState.isSubmitting && (
+                <span>
+                  <Icons.spinner className="animate-spin h-4 w-4" />
+                </span>
+              )}
+              Simpan
+            </Button>
           </form>
         </Form>
       </Card>

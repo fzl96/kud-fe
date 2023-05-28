@@ -9,7 +9,11 @@ interface Props {
   setSelectedItems: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function SearchItemBox({ items, setSelectedItems }: Props) {
+export default function SearchItemBox({
+  items,
+  selectedItems,
+  setSelectedItems,
+}: Props) {
   const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -18,7 +22,8 @@ export default function SearchItemBox({ items, setSelectedItems }: Props) {
   const filteredItems = items.filter(
     (item: any) =>
       item.name.toLowerCase().includes(query.toLowerCase()) ||
-      item.id.toString().includes(query)
+      item.id.toString().includes(query) ||
+      (item.barcode && item.barcode.toString().includes(query))
   );
 
   const handleFocus = () => {
@@ -37,6 +42,7 @@ export default function SearchItemBox({ items, setSelectedItems }: Props) {
       toast({
         title: "Stok habis",
         description: "Stok produk ini sudah habis",
+        variant: "destructive",
       });
       return;
     }
@@ -57,7 +63,24 @@ export default function SearchItemBox({ items, setSelectedItems }: Props) {
 
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter" && filteredItems.length > 0) {
+      // check if the filteredItems[0] is already in the selectedItems array
+      const exist = selectedItems.find(
+        (item: any) => item.id === filteredItems[0].id
+      );
+      if (!exist) {
+        handleSelectItem(filteredItems[0]);
+        return;
+      }
+      if (exist.quantity >= filteredItems[0].stock) {
+        toast({
+          title: "Stok tidak cukup",
+          description: "Stok produk ini tidak mencukupi",
+          variant: "destructive",
+        });
+        return;
+      }
       handleSelectItem(filteredItems[0]);
+      return;
     }
   };
 
@@ -77,7 +100,9 @@ export default function SearchItemBox({ items, setSelectedItems }: Props) {
       {isFocused && (
         <ul className="max-h-[30rem] overflow-auto absolute z-10 shadow bg-white border-2 rounded-md w-64 mt-2 p-2">
           {filteredItems.length < 1 ? (
-            <div className="px-4 py-2 hover:bg-gray-200 cursor-pointer" />
+            <div className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              Tidak ada produk
+            </div>
           ) : (
             filteredItems.map((item: any) => (
               <li

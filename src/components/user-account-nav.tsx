@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "./user-avatar";
 import { logout } from "@/lib/api/auth";
+import { useNavigate } from "react-router-dom";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: {
@@ -17,6 +18,7 @@ interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
+  const navigate = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,7 +45,11 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           className="cursor-pointer"
           onSelect={async (event) => {
             event.preventDefault();
-            await logout();
+            try {
+              await logout();
+              navigate("/login");
+              return;
+            } catch (error) {}
           }}
         >
           Sign out

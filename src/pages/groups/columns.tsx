@@ -135,6 +135,8 @@ export const columns: ColumnDef<Group, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/kelompok/${row.original.id}`} />,
+    cell: ({ row }) => (
+      <TableOperation link={`/kelompok/edit/${row.original.id}`} />
+    ),
   },
 ];

@@ -33,6 +33,7 @@ const schema = z.object({
   price: z.number().min(0).max(1000000000),
   stock: z.number().min(0).max(10000000),
   categoryId: z.string().cuid().nonempty(),
+  barcode: z.string().min(2).max(255).optional(),
 });
 
 export default function NewProducts() {
@@ -48,6 +49,7 @@ export default function NewProducts() {
       price: 0,
       stock: 0,
       categoryId: "",
+      barcode: "",
     },
   });
 
@@ -129,6 +131,19 @@ export default function NewProducts() {
                         </SelectContent>
                       </Select>
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="barcode"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Barcode Barang</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Kode Barcode" />
+                    </FormControl>
+                    <FormMessage>{fieldState.error?.message}</FormMessage>
                   </FormItem>
                 )}
               />

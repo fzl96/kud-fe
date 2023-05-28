@@ -3,7 +3,7 @@ import { kudApi } from "./calls";
 export const cashierApiEndpoint = "/cashier";
 
 export type Sale = {
-  customerId: string;
+  customerId?: string;
   products: {
     id: string;
     quantity: number;

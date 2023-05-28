@@ -142,7 +142,7 @@ export default function NewPurchase() {
       form.reset();
       toast({
         title: "Berhasil",
-        description: "Kelompok berhasil ditambahkan",
+        description: "Pembelian berhasil ditambahkan",
       });
       return navigate("/pembelian");
     } catch (error) {
@@ -164,8 +164,8 @@ export default function NewPurchase() {
   return (
     <div className="flex flex-col gap-4">
       <Card
-        title="Kelompok Baru"
-        description="Masukkan nama kelompok"
+        title="Pembelian Baru"
+        description="Masukkan supplier dan barang yang dibeli"
         titleClass="font-semibold text-xl"
       >
         <Form {...form}>
@@ -204,7 +204,7 @@ export default function NewPurchase() {
                 )}
               />
               <FormItem>
-                <FormLabel>Produk</FormLabel>
+                <FormLabel>Barang</FormLabel>
                 <FormControl>
                   <Select
                     options={productOptions}
@@ -213,12 +213,12 @@ export default function NewPurchase() {
                     className="border border-input rounded-md ring-offset-background focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
                     styles={customStyles}
                     isMulti
-                    closeMenuOnSelect={false}
+                    // closeMenuOnSelect={false}
                     menuPortalTarget={document.querySelector("body")}
                   />
                 </FormControl>
               </FormItem>
-              <br />
+              {selectedProducts && selectedProducts.length > 0 && <br />}
               <div className="space-y-4">
                 {selectedProducts &&
                   selectedProducts.length > 0 &&

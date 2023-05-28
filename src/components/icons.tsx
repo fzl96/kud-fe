@@ -37,12 +37,16 @@ import {
   Users,
   Group,
   Search,
+  Eye,
+  ZoomIn,
   type Icon as LucideIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons: any = {
+  eye: Eye,
+  zoomIn: ZoomIn,
   search: Search,
   group: Group,
   barang: Package,

@@ -77,6 +77,7 @@ export type Product = {
   updatedAt: string;
   active?: boolean;
   category: Pick<Category, "id" | "name">;
+  barcode?: string;
 };
 
 export type ProductWithCategory = {
@@ -108,17 +109,22 @@ export type UserWithRole = {
 
 export type Sale = {
   id: string;
-  total: number;
-  createdAt: string;
-  updatedAt: string;
   customer?: Pick<Customer, "id" | "name">;
+  total: number;
+  cash?: number;
+  change?: number;
+  paymentMethod: string;
+  status: string;
+  dueDate?: string;
+  cashier: Pick<User, "id" | "name">;
   products: {
     id: string;
     name: string;
-    price: number;
     quantity: number;
     total: number;
   }[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Group = {

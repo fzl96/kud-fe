@@ -146,6 +146,6 @@ export const columns: ColumnDef<Customer, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/anggota/${row.original.id}`} />,
+    cell: ({ row }) => <TableOperation link={`/anggota/edit/${row.original.id}`} />,
   },
 ];

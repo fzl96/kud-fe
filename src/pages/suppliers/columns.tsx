@@ -119,6 +119,8 @@ export const columns: ColumnDef<Supplier, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/supplier/${row.original.id}`} />,
+    cell: ({ row }) => (
+      <TableOperation link={`/supplier/edit/${row.original.id}`} />
+    ),
   },
 ];

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { SidebarNavItem } from "@/types";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
@@ -22,24 +22,27 @@ export function SidebarNav({ items }: SidebarNavProps) {
   const userSection = items.filter((item) => item.section === "user");
 
   return (
-    <nav className="grid items-start gap-2">
-      <div className="flex flex-col gap-2">
+    <nav className="grid items-start gap-2 ">
+      <div className="flex flex-col gap-2 ">
         {mainSection.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
-              <Link key={index} to={item.disabled ? "/" : item.href}>
-                <span
-                  className={cn(
-                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                    useMatch(item.href) ? "bg-accent" : "transparent",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
+              <NavLink
+                key={index}
+                to={item.href}
+                className={({ isActive, isPending }) =>
+                  cn(
+                    "group flex items-center rounded-md px-3 py-2 font-semibold hover:bg-accent_3 hover:text-accent_3-foreground",
+                    isActive
+                      ? "bg-accent_3 text-accent_3-foreground"
+                      : "transparent"
+                  )
+                }
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{item.title}</span>
+              </NavLink>
             )
           );
         })}
@@ -53,18 +56,21 @@ export function SidebarNav({ items }: SidebarNavProps) {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
-              <Link key={index} to={item.disabled ? "/" : item.href}>
-                <span
-                  className={cn(
-                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                    useMatch(item.href) ? "bg-accent" : "transparent",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
+              <NavLink
+                key={index}
+                to={item.href}
+                className={({ isActive, isPending }) =>
+                  cn(
+                    "group flex items-center rounded-md px-3 py-2 font-semibold ver:bg-accent_3 hover:bg-accent_3 hover:text-accent_3-foreground",
+                    isActive
+                      ? "bg-accent_3 text-accent_3-foreground"
+                      : "transparent"
+                  )
+                }
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{item.title}</span>
+              </NavLink>
             )
           );
         })}
@@ -77,18 +83,21 @@ export function SidebarNav({ items }: SidebarNavProps) {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
-              <Link key={index} to={item.disabled ? "/" : item.href}>
-                <span
-                  className={cn(
-                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                    useMatch(item.href) ? "bg-accent" : "transparent",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
+              <NavLink
+                key={index}
+                to={item.href}
+                className={({ isActive, isPending }) =>
+                  cn(
+                    "group flex items-center rounded-md px-3 py-2 font-semibold hover:bg-accent_3 hover:text-accent_3-foreground",
+                    isActive
+                      ? "bg-accent_3 text-accent_3-foreground"
+                      : "transparent"
+                  )
+                }
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{item.title}</span>
+              </NavLink>
             )
           );
         })}
@@ -101,18 +110,21 @@ export function SidebarNav({ items }: SidebarNavProps) {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
-              <Link key={index} to={item.disabled ? "/" : item.href}>
-                <span
-                  className={cn(
-                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                    useMatch(item.href) ? "bg-accent" : "transparent",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
+              <NavLink
+                key={index}
+                to={item.href}
+                className={({ isActive, isPending }) =>
+                  cn(
+                    "group flex items-center rounded-md px-3 py-2 font-semibold hover:bg-accent_3 hover:text-accent_3-foreground",
+                    isActive
+                      ? "bg-accent_3 text-accent_3-foreground"
+                      : "transparent"
+                  )
+                }
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{item.title}</span>
+              </NavLink>
             )
           );
         })}
@@ -125,42 +137,25 @@ export function SidebarNav({ items }: SidebarNavProps) {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
-              <Link key={index} to={item.disabled ? "/" : item.href}>
-                <span
-                  className={cn(
-                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                    useMatch(item.href) ? "bg-accent" : "transparent",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
+              <NavLink
+                key={index}
+                to={item.href}
+                className={({ isActive, isPending }) =>
+                  cn(
+                    "group flex items-center rounded-md px-3 py-2 font-semibold hover:bg-accent_3 hover:text-accent_3-foreground",
+                    isActive
+                      ? "bg-accent_3 text-accent_3-foreground"
+                      : "transparent"
+                  )
+                }
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{item.title}</span>
+              </NavLink>
             )
           );
         })}
       </div>
-
-      {/* {items.map((item, index) => {
-        const Icon = Icons[item.icon || "arrowRight"];
-        return (
-          item.href && (
-            <Link key={index} to={item.disabled ? "/" : item.href}>
-              <span
-                className={cn(
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                  useMatch(item.href) ? "bg-accent" : "transparent",
-                  item.disabled && "cursor-not-allowed opacity-80"
-                )}
-              >
-                <Icon className="mr-2 h-4 w-4" />
-                <span>{item.title}</span>
-              </span>
-            </Link>
-          )
-        );
-      })} */}
     </nav>
   );
 }

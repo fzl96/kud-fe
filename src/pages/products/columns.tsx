@@ -54,6 +54,26 @@ export const columns: ColumnDef<Product, any>[] = [
     ),
   },
   {
+    accessorKey: "barcode",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="">Kode</span>
+          <ChevronsUpDown size={16} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="flex flex-col">
+        <span className="text-[0.9063rem]">{row.original.barcode ?? " "}</span>
+      </div>
+    ),
+  },
+  {
     accessorKey: "category.name",
     header: "Kategori",
     cell: ({ row }) => (
@@ -160,6 +180,8 @@ export const columns: ColumnDef<Product, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/barang/${row.original.id}`} />,
+    cell: ({ row }) => (
+      <TableOperation link={`/barang/edit/${row.original.id}`} />
+    ),
   },
 ];

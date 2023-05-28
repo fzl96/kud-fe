@@ -12,21 +12,21 @@ interface TableOperationProps {
   link: string;
 }
 
-export function TableOperation({ link }: TableOperationProps) {
+export function SaleTableOperation({ link }: TableOperationProps) {
   return (
-    <>
+    <div className="flex items-center">
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger>
             <Link to={link}>
               <Button variant="secondary" size="sm">
-                <Icons.edit className="h-4 w-4" />
+                <Icons.zoomIn className="h-4 w-4" />
               </Button>
             </Link>
           </TooltipTrigger>
-          <TooltipContent>Edit data</TooltipContent>
+          <TooltipContent>Lihat Data</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-    </>
+    </div>
   );
 }
