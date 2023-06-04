@@ -43,6 +43,7 @@ interface DataTableProps<TData, TValue> {
   selectable?: boolean;
   mutate: () => void;
   deleteFunction: (ids: string[]) => Promise<void>;
+  filterColumn?: string;
 }
 
 interface WithId {
@@ -55,6 +56,7 @@ export function DataTable<TData extends WithId, TValue>({
   selectable = true,
   mutate,
   deleteFunction,
+  filterColumn,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -91,7 +93,7 @@ export function DataTable<TData extends WithId, TValue>({
     <div>
       <div className="flex items-center pb-4">
         <Input
-          placeholder="Filter kategori..."
+          placeholder={`Cari ${filterColumn}`}
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

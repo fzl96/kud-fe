@@ -52,6 +52,33 @@ export type DashboardConfig = {
   sidebarNav: SidebarNavItem[];
 };
 
+type Monthly = {
+  month: number;
+  revenue: number;
+  spending: number;
+  salesCount: number;
+};
+
+export type ProductSale = {
+  id: string;
+  name: string;
+  salesCount: number;
+  quantityCount: number;
+};
+
+type Yearly = {
+  revenue: number;
+  spending: number;
+  salesCount: number;
+  avgTransaction: number;
+  products: ProductSale[];
+};
+
+export type DashboardData = {
+  monthlySales: Monthly[];
+  yearlySales: Yearly;
+};
+
 export type Category = {
   id: string;
   name: string;
@@ -116,6 +143,13 @@ export type Sale = {
   paymentMethod: string;
   status: string;
   dueDate?: string;
+  paid?: number;
+  payments?: {
+    id: string;
+    amount: number;
+    note?: string;
+    createdAt: string;
+  }[];
   cashier: Pick<User, "id" | "name">;
   products: {
     id: string;
@@ -127,17 +161,24 @@ export type Sale = {
   updatedAt: string;
 };
 
+type GroupMember = {
+  id: string;
+  name: string;
+  status: string;
+  totalTransactions: number;
+};
+
 export type Group = {
   id: string;
   name: string;
+  numberOfMembers?: number;
+  members?: GroupMember[];
   leader: {
     id: string;
     name: string;
   };
   createdAt: string;
   updatedAt: string;
-  members?: Pick<Customer, "id" | "name" | "status">[];
-  numberOfMembers?: number;
 };
 
 export type Customer = {
@@ -159,6 +200,7 @@ export type Purchase = {
   supplier: Pick<Supplier, "id" | "name">;
   items?: {
     id: string;
+    name: string;
     purchasePrice: number;
     quantity: number;
     total: number;
@@ -174,6 +216,8 @@ export type PurchaseWithSupplierProduct = {
 export type Sales = {
   id: string;
   customer: Pick<Customer, "id" | "name">;
+  customerType: string;
+  customerName?: string;
   total: number;
   cash?: number;
   change?: number;

@@ -11,6 +11,14 @@ export type SaleInput = {
   cash: number;
   change: number;
   customerId: string;
+  customerType: string;
+  customerName?: string;
+  paymentMethod: string;
+};
+
+export type SaleUpdate = {
+  amount: number;
+  note?: string;
 };
 
 export const getSales = async (token: string) => {
@@ -34,8 +42,8 @@ export const createSale = async (sale: SaleInput) => {
   return response.data;
 };
 
-export const updateSale = async (id: string, sale: SaleInput) => {
-  const response = await kudApi.put(`${salesApiEndpoint}/${id}`, sale);
+export const updateSale = async (id: string, data: SaleUpdate) => {
+  const response = await kudApi.put(`${salesApiEndpoint}/${id}`, data);
   return response.data;
 };
 

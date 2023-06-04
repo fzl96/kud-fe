@@ -200,7 +200,7 @@ export default function Cashier() {
             "loading"
           ) : (
             <CashierCheckoutForm
-              customers={members}
+              members={members}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
               mutate={mutate}

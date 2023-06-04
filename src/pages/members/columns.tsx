@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 import { TableOperation } from "@/components/table-operation";
+import { MembersTableOperation } from "@/components/members-table-operation";
 
 export const columns: ColumnDef<Customer, any>[] = [
   {
@@ -146,6 +147,6 @@ export const columns: ColumnDef<Customer, any>[] = [
   },
   {
     id: "operation",
-    cell: ({ row }) => <TableOperation link={`/anggota/edit/${row.original.id}`} />,
+    cell: ({ row }) => <MembersTableOperation id={row.original.id} />,
   },
 ];

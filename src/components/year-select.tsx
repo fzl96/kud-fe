@@ -25,20 +25,22 @@ export function YearSelect({ year, setYear }: YearSelectProps) {
   };
 
   return (
-    <Select onValueChange={handleSelect}>
-      <SelectTrigger>
-        <SelectValue placeholder="Pilih Tahun">{year}</SelectValue>
-      </SelectTrigger>
-      <SelectContent className="text-lg">
-        <SelectGroup>
-          <SelectLabel>Tahun</SelectLabel>
-          {years.map((customYear) => (
-            <SelectItem key={customYear} value={customYear.toString()}>
-              {customYear}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <div className="min-w-[5rem] max-w-[10rem]">
+      <Select onValueChange={handleSelect} defaultValue={year.toString()}>
+        <SelectTrigger>
+          <SelectValue placeholder="Pilih Tahun">{year}</SelectValue>
+        </SelectTrigger>
+        <SelectContent className="text-lg">
+          <SelectGroup>
+            <SelectLabel>Tahun</SelectLabel>
+            {years.map((customYear) => (
+              <SelectItem key={customYear} value={customYear.toString()}>
+                {customYear}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   ColumnDef,
@@ -22,42 +24,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { isAxiosError } from "axios";
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
-import { Button } from "@/components/ui/button";
-import { deleteSales } from "@/lib/api/sales";
-import { useToast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/icons";
-import { CheckCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
+
+import { DataTablePagination } from "./sales-data-table-pagination";
+// import { DataTableToolbar } from "./data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  members: {
-    label: string;
-    value: string;
-  }[];
-  cashiers: {
-    label: string;
-    value: string;
-  }[];
-  mutate: () => void;
 }
 
-interface WithId {
-  id?: string;
-}
-
-export function DataTable<TData extends WithId, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
-  members,
-  cashiers,
-  mutate,
 }: DataTableProps<TData, TValue>) {
-  const { toast } = useToast();
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -65,9 +44,6 @@ export function DataTable<TData extends WithId, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = React.useState(false);
-  const [isDeleteLoading, setIsDeleteLoading] = React.useState(false);
 
   const table = useReactTable({
     data,
@@ -98,10 +74,10 @@ export function DataTable<TData extends WithId, TValue>({
 
   return (
     <div className="space-y-4 max-w-full overflow-x-auto">
-      <DataTableToolbar table={table} members={members} cashiers={cashiers} />
+      {/* <DataTableToolbar table={table} members={members} cashiers={cashiers} /> */}
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -149,7 +125,7 @@ export function DataTable<TData extends WithId, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} mutate={mutate} />
+      <DataTablePagination table={table} />
     </div>
   );
 }

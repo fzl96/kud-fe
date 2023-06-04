@@ -40,6 +40,7 @@ export default function Categories() {
 
       {data && (
         <DataTable
+          filterColumn="Supplier"
           columns={columns}
           data={data}
           selectable={true}

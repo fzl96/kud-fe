@@ -30,6 +30,23 @@ export default function Sales() {
     }));
   }, [users]);
 
+  const customerNames = useMemo(() => {
+    if (!sales) return [];
+    const uniqueNames = sales.reduce((acc, curr) => {
+      if (curr.customerType === "ANGGOTA" && curr.customerType === "ANGGOTA") {
+        return acc; // Skip adding to `acc` if customerType is 'ANGGOTA'
+      }
+      if (!acc.some((item) => item.label === curr.customerName)) {
+        acc.push({
+          label: curr.customerName ?? "",
+          value: curr.customerName ?? "",
+        });
+      }
+      return acc;
+    }, [] as { label: string; value: string }[]);
+    return uniqueNames;
+  }, [sales]);
+
   return (
     <div className="flex flex-col gap-5">
       <PageTitle heading="Penjualan" />
@@ -39,14 +56,21 @@ export default function Sales() {
           data={sales.map((sale) => ({
             id: sale.id,
             cashier: sale.user.name as string,
-            member: sale.customer ? sale.customer.name : "Umum",
+            customerType: sale.customerType,
+            customerName:
+              sale.customerType === "ANGGOTA"
+                ? sale.customer.name
+                : sale.customerName ?? "",
+            // member: sale.customer ? sale.customer.name : "Umum",
             total: sale.total,
+            status: sale.status === "SELESAI" ? "Selesai" : "Proses",
             paymentMethod: sale.paymentMethod === "TUNAI" ? "Tunai" : "Kredit",
             createdAt: sale.createdAt,
           }))}
           columns={columns}
-          members={[{ label: "Umum", value: "Umum" }, ...mappedMembers]}
+          members={[...customerNames, ...mappedMembers]}
           cashiers={mappedUsers}
+          mutate={mutate}
         />
       )}
     </div>

@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-// import Select from "react-select";
 import { postCashier, type Sale } from "@/lib/api/cashier";
 import { useToast } from "@/components/ui/use-toast";
 import { isAxiosError } from "axios";
@@ -7,8 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import Receipt from "./receipt";
-// import ReactToPrint, { useReactToPrint } from "react-to-print";
 import {
   Form,
   FormControl,
@@ -27,9 +24,13 @@ import {
 } from "@/components/ui/select";
 import { z } from "zod";
 import { DatePicker } from "@/components/ui/date-picker";
+import { useReactToPrint } from "react-to-print";
+import Receipt from "@/components/receipt";
 
 const schema = z.object({
-  customerId: z.string().optional(),
+  memberId: z.string().optional(),
+  customerName: z.string().optional(),
+  customerType: z.string().nonempty(),
   paymentMethod: z.string().optional(),
   // cash: z.number().optional(),
 });
@@ -37,7 +38,7 @@ const schema = z.object({
 interface Props {
   selectedItems: any;
   setSelectedItems: React.Dispatch<React.SetStateAction<any>>;
-  customers: any;
+  members: any;
   mutate: () => void;
   auth: any;
 }
@@ -53,14 +54,19 @@ const paymentMethod = [
   },
 ];
 
+const customerTypes = [
+  { label: "Umum", value: "UMUM" },
+  { label: "Anggota", value: "ANGGOTA" },
+];
+
 export default function CashierCheckoutForm({
   selectedItems,
   setSelectedItems,
-  customers,
+  members,
   mutate,
   auth,
 }: Props) {
-  // const pageStyle = `{ size: 2in 3in }`;
+  const pageStyle = `{ size: 500mm 500mm }`;
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   const [cash, setCash] = useState<number>(0);
@@ -69,8 +75,10 @@ export default function CashierCheckoutForm({
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      customerId: "",
+      memberId: "",
       paymentMethod: "TUNAI",
+      customerType: "UMUM",
+      customerName: "",
       // cash: 0,
     },
   });
@@ -81,25 +89,15 @@ export default function CashierCheckoutForm({
     minimumFractionDigits: 0,
   });
 
-  useEffect(() => {
-    if (form.getValues().customerId === "") {
-      // change payment method to tunai
-      form.setValue("paymentMethod", "TUNAI");
-    }
-  }, [form.getValues().customerId, form.getValues().paymentMethod]);
-
-  const options = useMemo(() => {
-    return [
-      {
-        value: "",
-        label: "Umum",
-      },
-      ...customers.map((customer: any) => ({
-        value: customer.id,
-        label: customer.name,
-      })),
-    ];
-  }, [customers]);
+  const membersOptions: {
+    value: string;
+    label: string;
+  }[] = useMemo(() => {
+    return members.map((member: any) => ({
+      value: member.id,
+      label: member.name,
+    }));
+  }, [members]);
 
   const total: number = useMemo(() => {
     return selectedItems.reduce((acc: any, item: any) => {
@@ -115,10 +113,22 @@ export default function CashierCheckoutForm({
     );
   }, [selectedItems, cash, total]);
 
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    pageStyle: `@media print {
+      @page {
+        size: 80mm 200mm;
+        margin: 0;
+      }
+    }`,
+  });
+
   const onSubmit = async (values: z.infer<typeof schema>) => {
     setLoading(true);
     const data: Sale = {
-      customerId: values.customerId,
+      customerId: values.memberId,
+      customerType: values.customerType,
+      customerName: values.customerName,
       paymentMethod: values.paymentMethod,
       cash: cash ?? "",
       change: cash ? cash - total : undefined,
@@ -131,22 +141,23 @@ export default function CashierCheckoutForm({
       status: values.paymentMethod === "TUNAI" ? "SELESAI" : "PROSES",
     };
 
+    // console.log(data);
+
     try {
-      console.log("test");
       await postCashier(data);
-      // handlePrint();
       toast({
         title: "Berhasil",
         description: "Transaksi berhasil",
       });
       setLoading(false);
       form.reset({
-        customerId: "",
+        memberId: "",
         paymentMethod: "TUNAI",
       });
       setCash(0);
       setDate(undefined);
       setSelectedItems([]);
+      handlePrint();
       mutate();
     } catch (error) {
       if (isAxiosError(error) && error.response) {
@@ -160,20 +171,9 @@ export default function CashierCheckoutForm({
     }
   };
 
-  // const handlePrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  // });
-
   const tunai: boolean = useMemo(() => {
     return form.getValues().paymentMethod === "TUNAI";
   }, [form.getValues().paymentMethod]);
-
-  // filter payment method, if customer is umum, then payment method is tunai
-  const filteredPaymentMethod = useMemo(() => {
-    return form.getValues().customerId === ""
-      ? paymentMethod.filter((method) => method.value === "TUNAI")
-      : paymentMethod;
-  }, [form.getValues().customerId]);
 
   return (
     <div className="px-2">
@@ -182,27 +182,27 @@ export default function CashierCheckoutForm({
           <div className="space-y-2">
             <FormField
               control={form.control}
-              name="customerId"
+              name="customerType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Anggota/Umum</FormLabel>
+                  <FormLabel>Kategori Pelanggan (Anggota/Umum)</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Pilih Anggota">
+                        <SelectValue placeholder="Pilih Kategori Pelanggan">
                           {
-                            options?.find(
-                              (option) => option.value === field.value
-                            )?.name
+                            customerTypes?.find(
+                              (type) => type.value === field.value
+                            )?.label
                           }
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Anggota</SelectLabel>
-                          {options?.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
+                          {customerTypes.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -212,6 +212,64 @@ export default function CashierCheckoutForm({
                 </FormItem>
               )}
             />
+            {form.getValues().customerType === "ANGGOTA" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="memberId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Anggota/Umum</FormLabel>
+                      <FormControl>
+                        <Select {...field} onValueChange={field.onChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Anggota">
+                              {
+                                membersOptions?.find(
+                                  (member) => member.value === field.value
+                                )?.label
+                              }
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Anggota</SelectLabel>
+                              {membersOptions?.map((member) => (
+                                <SelectItem
+                                  key={member.value}
+                                  value={member.value}
+                                >
+                                  {member.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+            {form.getValues().customerType === "UMUM" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="customerName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nama Pelanggan</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Masukkan nama pelanggan"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
             <FormField
               control={form.control}
               name="paymentMethod"
@@ -223,7 +281,7 @@ export default function CashierCheckoutForm({
                       <SelectTrigger>
                         <SelectValue placeholder="Pilih Anggota">
                           {
-                            filteredPaymentMethod?.find(
+                            paymentMethod?.find(
                               (method) => method.value === field.value
                             )?.label
                           }
@@ -232,7 +290,7 @@ export default function CashierCheckoutForm({
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Metode Pembayaran</SelectLabel>
-                          {filteredPaymentMethod?.map((method) => (
+                          {paymentMethod?.map((method) => (
                             <SelectItem key={method.value} value={method.value}>
                               {method.label}
                             </SelectItem>
@@ -256,20 +314,10 @@ export default function CashierCheckoutForm({
                 </FormControl>
               </FormItem>
             ) : (
-              <FormItem>
-                <FormLabel>Tenggat</FormLabel>
-                <FormControl>
-                  <DatePicker date={date} setDate={setDate} />
-                </FormControl>
-              </FormItem>
+              <></>
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-xl">
-              <h1>Subtotal</h1>
-              <span>{currencyFormatter.format(total)}</span>
-            </div>
-
             <div className="flex justify-between font-semibold text-2xl">
               <h1>Total</h1>
               <span>{currencyFormatter.format(total)}</span>
@@ -292,79 +340,24 @@ export default function CashierCheckoutForm({
           </Button>
         </form>
       </Form>
-      {/* <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="customer" className="font-semibold">
-              Anggota
-            </label>
-            <Select
-              className="border-gray-300 border-2 block w-full sm:text-sm rounded-md"
-              options={options}
-              styles={customStyles}
-              onChange={handleSelectChange}
-              closeMenuOnSelect={true}
-              noOptionsMessage={() => null}
-              value={selectedCustomer}
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="Cash" className="font-semibold">
-              Tunai
-            </label>
-            <input
-              type="number"
-              name="cash"
-              value={cash}
-              id="cash"
-              placeholder="0"
-              className="border-gray-300 py-2 px-3 border-2 block w-full rounded-md"
-              onChange={(e) => setCash(parseInt(e.target.value))}
-              onBlur={(e) =>
-                e.target.value === ""
-                  ? setCash(0)
-                  : setCash(parseInt(e.target.value))
-              }
-            />
-          </div>
-          <div className="flex justify-between text-xl">
-            <h1>Subtotal</h1>
-            <span>{currencyFormatter.format(total)}</span>
-          </div>
 
-          <div className="flex justify-between font-semibold text-2xl">
-            <h1>Total</h1>
-            <span>{currencyFormatter.format(total)}</span>
-          </div>
-          <div className="flex justify-between text-xl">
-            <h1>Tunai</h1>
-            <span>{currencyFormatter.format(cash)}</span>
-          </div>
-          <div className="flex justify-between font-semibold text-2xl">
-            <h1>Kembalian</h1>
-            <span>{currencyFormatter.format(cash - total)}</span>
-          </div>
-          <button
-            className={` ${
-              disabled ? "bg-gray-500" : "bg-gray-800"
-            } px-3 py-3 rounded-lg text-white`}
-            disabled={disabled}
-            type="submit"
-          >
-            Simpan
-          </button>
-        </div>
-      </form> */}
-
-      <div ref={componentRef} className="z-[-10] componentsToPrint">
-        {/* {selectedItems && (
+      <div ref={componentRef} className="z-[-10] receipt">
+        {selectedItems && (
           <Receipt
             selectedItems={selectedItems}
             cash={cash || 0}
             change={cash - total || 0}
             totalPrice={total || 0}
+            paymentMethod={form.getValues().paymentMethod}
+            customerName={
+              form.getValues().customerType === "UMUM"
+                ? form.getValues().customerName
+                : membersOptions?.find(
+                    (member) => member.value === form.getValues().memberId
+                  )?.label || ""
+            }
           />
-        )} */}
+        )}
       </div>
     </div>
   );

@@ -20,10 +20,19 @@ export const getCustomers = async (token: string) => {
   return customers;
 };
 
-export const getCustomer = async (id: string, withSales: boolean) => {
-  const response = await kudApi.get(
-    `${customersApiEndpoint}/${id}?include_sales=${withSales}`
-  );
+export const getCustomer = async (
+  id: string,
+  withSales: boolean,
+  year?: number,
+  month?: number
+) => {
+  let endPoint = `${customersApiEndpoint}/${id}`;
+  if (withSales) {
+    endPoint += `?include_sales=${withSales}&year=${year}&month=${month}`;
+  } else {
+    endPoint += `?include_sales=${withSales}`;
+  }
+  const response = await kudApi.get(endPoint);
   const customer: Customer = response.data;
   return customer;
 };

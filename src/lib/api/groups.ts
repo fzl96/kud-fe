@@ -19,8 +19,19 @@ export const getGroups = async (token: string) => {
   return groups;
 };
 
-export const getGroup = async (id: string) => {
-  const response = await kudApi.get(`${groupsApiEndpoint}/${id}`);
+export const getGroup = async (
+  id: string,
+  include_sales: boolean,
+  year?: number,
+  month?: number
+) => {
+  let endPoint = `${groupsApiEndpoint}/${id}`;
+  if (include_sales) {
+    endPoint += `?include_sales=${include_sales}&year=${year}&month=${month}`;
+  } else {
+    endPoint += `?include_sales=${include_sales}`;
+  }
+  const response = await kudApi.get(endPoint);
   const group: Group = response.data;
   return group;
 };

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -38,6 +38,7 @@
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3",
+    "react-to-print": "^2.14.12",
     "recharts": "^2.6.2",
     "swr": "^2.1.5",
     "tailwind-merge": "^1.12.0",

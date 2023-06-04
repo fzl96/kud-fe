@@ -38,6 +38,7 @@ export default function Categories() {
 
       {data && (
         <DataTable
+          filterColumn="Kategori"
           columns={columns}
           data={data}
           selectable={true}

@@ -1,4 +1,5 @@
 import { kudApi } from "./calls";
+import type { DashboardData } from "@/types/";
 
 export const dashboardApiEndpoint = "/dashboard";
 
@@ -8,5 +9,6 @@ export const getDashboard = async (year: number, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  const data: DashboardData = response.data;
+  return data;
 };

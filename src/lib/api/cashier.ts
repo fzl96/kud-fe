@@ -4,6 +4,8 @@ export const cashierApiEndpoint = "/cashier";
 
 export type Sale = {
   customerId?: string;
+  customerType: string;
+  customerName?: string;
   products: {
     id: string;
     quantity: number;
@@ -26,6 +28,7 @@ export const getCashier = async (token: string) => {
 };
 
 export const postCashier = async (data: Sale) => {
+  console.log(data);
   const response = await kudApi.post(cashierApiEndpoint, data);
   return response.data;
 };

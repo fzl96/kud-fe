@@ -26,6 +26,7 @@ export default function Members() {
 
       {members && (
         <DataTable
+          filterColumn="Anggota"
           columns={columns}
           data={members}
           selectable={true}

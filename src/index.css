@@ -87,3 +87,18 @@
     margin: 0;
   }
 }
+
+.receipt {
+  /* display: none; */
+  font-family: 'Roboto Mono';
+}
+
+@media screen {
+  .receipt {
+    display: none;
+    font-family: 'Roboto Mono';
+  }
+  .dashboard-reports {
+    display: none;
+  }
+}

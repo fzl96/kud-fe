@@ -26,6 +26,7 @@ export default function Products() {
 
       {products && (
         <DataTable
+          filterColumn="Barang"
           columns={columns}
           data={products}
           selectable={true}

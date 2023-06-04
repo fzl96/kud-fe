@@ -7,6 +7,7 @@ import { labels, priorities, statuses } from "../data/data";
 import { Sale } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { SaleTableOperation } from "@/components/sale-table-operation";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<Sale>[] = [
   {
@@ -47,14 +48,32 @@ export const columns: ColumnDef<Sale>[] = [
     },
   },
   {
-    accessorKey: "member",
+    accessorKey: "customerType",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Anggota" />
+      <DataTableColumnHeader column={column} title="Kategori" />
     ),
     cell: ({ row }) => {
+      console.log(row.getValue("cutomerType"));
       return (
         <div className="flex items-center">
-          <span>{row.getValue("member")}</span>
+          <span>{row.getValue("customerType")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "customerName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nama" />
+    ),
+    cell: ({ row }) => {
+      console.log(row.getValue("customerName"));
+      return (
+        <div className="flex items-center">
+          <span>{row.getValue("customerName")}</span>
         </div>
       );
     },
@@ -65,7 +84,7 @@ export const columns: ColumnDef<Sale>[] = [
   {
     accessorKey: "paymentMethod",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Metode Pembayaran" />
+      <DataTableColumnHeader column={column} title="Metode" />
     ),
     cell: ({ row }) => {
       return (
@@ -94,6 +113,34 @@ export const columns: ColumnDef<Sale>[] = [
           <span>{formatter.format(row.getValue("total"))}</span>
         </div>
       );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return (
+        <div className="flex items-center">
+          <span
+            className={cn(
+              "px-2 py-1 rounded-lg text-sm font-medium",
+              status === "Selesai"
+                ? "bg-[#e1f8ea] text-green-600"
+                : status === "Proses"
+                ? "bg-[#fcf4db] text-[#ff8a00]"
+                : "bg-[#fbdddd] text-[#e96c6c]"
+            )}
+          >
+            {row.getValue("status")}
+          </span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {

@@ -23,6 +23,7 @@ export default function Users() {
 
       {users && (
         <DataTable
+          filterColumn="Pengguna"
           columns={columns}
           data={users}
           selectable={true}

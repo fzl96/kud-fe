@@ -1,11 +1,10 @@
-"use client";
-
 import * as React from "react";
 // import Link from "next/link";
 import { Link } from "react-router-dom";
 import { SidebarNavItem } from "@/types";
 import { Icons } from "@/components/icons";
 import { MobileNav } from "./mobile-nav";
+import { useLocation } from "react-router-dom";
 
 interface MainNavProps {
   items?: SidebarNavItem[];
@@ -14,6 +13,11 @@ interface MainNavProps {
 
 export function MainNav({ items, children }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
+  const location = useLocation();
+
+  React.useEffect(() => {
+    setShowMobileMenu(false);
+  }, [location]);
 
   return (
     <div className="flex gap-6 md:gap-10">

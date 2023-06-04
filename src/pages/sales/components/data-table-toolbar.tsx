@@ -7,17 +7,37 @@ import { Button } from "@/components/ui/button";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
+type Option = {
+  value: string;
+  label: string;
+};
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  members: {
-    value: string;
-    label: string;
-  }[];
-  cashiers: {
-    value: string;
-    label: string;
-  }[];
+  members: Option[];
+  cashiers: Option[];
 }
+
+const paymentMethods: Option[] = [
+  {
+    value: "Tunai",
+    label: "Tunai",
+  },
+  {
+    value: "Kredit",
+    label: "Kredit",
+  },
+];
+
+const statuses: Option[] = [
+  {
+    value: "Selesai",
+    label: "Selesai",
+  },
+  {
+    value: "Proses",
+    label: "Proses",
+  },
+];
 
 export function DataTableToolbar<TData>({
   table,
@@ -38,11 +58,25 @@ export function DataTableToolbar<TData>({
             options={cashiers}
           />
         )}
-        {table.getColumn("member") && (
+        {table.getColumn("customerName") && (
           <DataTableFacetedFilter
-            column={table.getColumn("member")}
-            title="Cari Anggota"
+            column={table.getColumn("customerName")}
+            title="Cari Pelanggan"
             options={members}
+          />
+        )}
+        {table.getColumn("paymentMethod") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("paymentMethod")}
+            title="Metode Pembayaran"
+            options={paymentMethods}
+          />
+        )}
+        {table.getColumn("status") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Status"
+            options={statuses}
           />
         )}
         {isFiltered && (

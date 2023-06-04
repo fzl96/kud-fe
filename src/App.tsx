@@ -26,14 +26,19 @@ const NewUsers = lazy(() => import("@/pages/users/new-users"));
 const Members = lazy(() => import("@/pages/members/members"));
 const MemberId = lazy(() => import("@/pages/members/member-id"));
 const NewMembers = lazy(() => import("@/pages/members/new-members"));
+const MemberDetails = lazy(() => import("@/pages/members/member-details"));
 
 const Groups = lazy(() => import("@/pages/groups/groups"));
 const GroupId = lazy(() => import("@/pages/groups/group-id"));
 const NewGroup = lazy(() => import("@/pages/groups/new-group"));
+const GroupDetails = lazy(() => import("@/pages/groups/group-details"));
 
 const Purchases = lazy(() => import("@/pages/purchases/purchases"));
 const PurchaseId = lazy(() => import("@/pages/purchases/purchase-id"));
 const NewPurchase = lazy(() => import("@/pages/purchases/new-purchase"));
+const PurchaseIdDetails = lazy(
+  () => import("@/pages/purchases/purchase-id-details")
+);
 
 const Cashier = lazy(() => import("@/pages/cashier/cashier"));
 
@@ -167,6 +172,14 @@ function App() {
               }
             />
             <Route
+              path="/anggota/:id"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <MemberDetails />
+                </Suspense>
+              }
+            />
+            <Route
               path="/anggota/edit/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
@@ -192,6 +205,14 @@ function App() {
               }
             />
             <Route
+              path="/kelompok/:id"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <GroupDetails />
+                </Suspense>
+              }
+            />
+            <Route
               path="/kelompok/baru"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
@@ -213,6 +234,14 @@ function App() {
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <Purchases />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/pembelian/:id"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PurchaseIdDetails />
                 </Suspense>
               }
             />

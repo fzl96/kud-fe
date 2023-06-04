@@ -26,6 +26,7 @@ export default function Members() {
 
       {groups && (
         <DataTable
+          filterColumn="Kelompok"
           columns={columns}
           data={groups}
           selectable={true}
