@@ -9,6 +9,7 @@ export const saleSchema = z.object({
   paymentMethod: z.string(),
   total: z.number(),
   createdAt: z.string(),
+  status: z.string(),
 });
 
 export type Sale = z.infer<typeof saleSchema>;

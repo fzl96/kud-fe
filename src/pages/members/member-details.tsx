@@ -100,11 +100,13 @@ export default function MemberDetails() {
               {customer.sales && customer.sales.length !== 0 && (
                 <DataTable
                   data={customer.sales?.map((sale) => {
+                    console.log(sale);
                     return {
                       id: sale.id,
                       total: sale.total,
                       paymentMethod: sale.paymentMethod,
                       createdAt: sale.createdAt,
+                      status: sale.status,
                     };
                   })}
                   columns={columns}

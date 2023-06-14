@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Sale } from "./schema";
 import { DataTableColumnHeader } from "./sales-data-table-column-header";
 import { SaleTableOperation } from "@/components/sale-table-operation";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<Sale>[] = [
   {
@@ -38,6 +39,35 @@ export const columns: ColumnDef<Sale>[] = [
       return (
         <div className="flex items-center">
           <span>{formatter.format(row.getValue("total"))}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return (
+        <div className="flex items-center">
+          <span
+            className={cn(
+              "px-3 py-2 rounded-lg text-sm font-semibold",
+              status === "SELESAI"
+                ? "bg-[#e1f8ea] text-green-600"
+                : status === "PROSES"
+                ? "bg-[#fcf4db] text-[#ff8a00]"
+                : "bg-[#fbdddd] text-[#e96c6c]"
+            )}
+          >
+            {row.getValue("status") === "SELESAI"
+              ? "Selesai"
+              : row.getValue("status") === "PROSES"
+              ? "Proses"
+              : "Batal"}
+          </span>
         </div>
       );
     },

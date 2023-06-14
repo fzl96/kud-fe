@@ -132,7 +132,7 @@ DataTablePaginationProps<TData>) {
         </div>
       </div>
       <div className="flex items-center flex-col md:flex-row space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
+        <div className="hidden md:flex items-center space-x-2">
           <p className="text-sm font-medium">Baris per halaman</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
@@ -152,7 +152,7 @@ DataTablePaginationProps<TData>) {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[120px] items-center justify-center text-sm font-medium">
+        <div className="hidden md:flex w-[120px] items-center justify-center text-sm font-medium">
           Halaman {table.getState().pagination.pageIndex + 1} dari{" "}
           {table.getPageCount()}
         </div>

@@ -6,6 +6,7 @@ import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCustomers } from "@/hooks/use-customers";
+import { Icons } from "@/components/icons";
 
 export default function Members() {
   const { auth } = useAuth();
@@ -16,10 +17,20 @@ export default function Members() {
       <PageTitle heading="Anggota">
         <div className="mt-2 flex md:flex-row flex-col gap-2">
           <Link to="/kelompok/baru">
-            <Button variant="secondary">Tambah Kelompok</Button>
+            <Button variant="secondary">
+              <span>
+                <Icons.add className="h-5 w-5 mr-1" />
+              </span>
+              Tambah Kelompok
+            </Button>
           </Link>
           <Link to="/anggota/baru">
-            <Button>Tambah anggota</Button>
+            <Button>
+              <span>
+                <Icons.add className="h-5 w-5 mr-1" />
+              </span>
+              Tambah anggota
+            </Button>
           </Link>
         </div>
       </PageTitle>
@@ -32,6 +43,7 @@ export default function Members() {
           selectable={true}
           deleteFunction={deleteCustomers}
           mutate={mutate}
+          columName="name"
         />
       )}
     </div>

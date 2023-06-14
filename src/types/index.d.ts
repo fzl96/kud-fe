@@ -13,6 +13,7 @@ export type MainNavItem = NavItem;
 
 export type SidebarNavItem = {
   title: string;
+  roles: string[];
   disabled?: boolean;
   external?: boolean;
   section?: string;

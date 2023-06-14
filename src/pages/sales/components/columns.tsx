@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { labels, priorities, statuses } from "../data/data";
 import { Sale } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { SaleTableOperation } from "@/components/sale-table-operation";
@@ -47,30 +46,30 @@ export const columns: ColumnDef<Sale>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    accessorKey: "customerType",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Kategori" />
-    ),
-    cell: ({ row }) => {
-      console.log(row.getValue("cutomerType"));
-      return (
-        <div className="flex items-center">
-          <span>{row.getValue("customerType")}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
+  // {
+  //   id: "customerType",
+  //   accessorKey: "customerType",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Kategori" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     console.log(row.getValue("cutomerType"));
+  //     return (
+  //       <div className="flex items-center">
+  //         <span>{row.getValue("customerType")}</span>
+  //       </div>
+  //     );
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id));
+  //   },
+  // },
   {
     accessorKey: "customerName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nama" />
+      <DataTableColumnHeader column={column} title="Nama Pelanggan" />
     ),
     cell: ({ row }) => {
-      console.log(row.getValue("customerName"));
       return (
         <div className="flex items-center">
           <span>{row.getValue("customerName")}</span>

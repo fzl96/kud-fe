@@ -101,7 +101,6 @@ export default function NewProducts() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="categoryId"

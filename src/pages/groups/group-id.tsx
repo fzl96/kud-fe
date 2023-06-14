@@ -41,7 +41,7 @@ export default function GroupId() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { data: group } = useSWR(`${groupsApiEndpoint}/${id}`, () =>
-    getGroup(id)
+    getGroup(id, false)
   );
 
   const form = useForm({

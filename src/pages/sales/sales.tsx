@@ -24,10 +24,12 @@ export default function Sales() {
 
   const mappedUsers = useMemo(() => {
     if (!users) return [];
-    return users.map((user) => ({
-      label: user.name,
-      value: user.name,
-    }));
+    return users
+      .filter((user) => ["Admin", "Kasir"].includes(user.role.name))
+      .map((user) => ({
+        label: user.name,
+        value: user.name,
+      }));
   }, [users]);
 
   const customerNames = useMemo(() => {

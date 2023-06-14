@@ -28,7 +28,6 @@ export const getCashier = async (token: string) => {
 };
 
 export const postCashier = async (data: Sale) => {
-  console.log(data);
   const response = await kudApi.post(cashierApiEndpoint, data);
   return response.data;
 };

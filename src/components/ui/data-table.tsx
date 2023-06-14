@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   mutate: () => void;
   deleteFunction: (ids: string[]) => Promise<void>;
   filterColumn?: string;
+  columName: string;
 }
 
 interface WithId {
@@ -57,6 +58,7 @@ export function DataTable<TData extends WithId, TValue>({
   mutate,
   deleteFunction,
   filterColumn,
+  columName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -94,9 +96,9 @@ export function DataTable<TData extends WithId, TValue>({
       <div className="flex items-center pb-4">
         <Input
           placeholder={`Cari ${filterColumn}`}
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn(columName)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn(columName)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

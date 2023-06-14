@@ -4,6 +4,8 @@ import { Layout } from "@/components/layout";
 import ProtectedRoutes from "./components/protected-routes";
 import Login from "@/pages/Login/login";
 import { Toaster } from "@/components/ui/toaster";
+import RoleProtectedRoute from "@/components/role-protected-route";
+import Unauthorized from "@/pages/unauthorized/unauthorized";
 
 const Home = lazy(() => import("./pages/Dashboard/dashboard"));
 
@@ -55,239 +57,303 @@ function App() {
           <Route element={<Layout />}>
             {/* dashboard */}
             <Route
-              path="/"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Home />
-                </Suspense>
+                <RoleProtectedRoute
+                  requiredRoles={["Admin", "Kasir", "Bendahara", "Ketua"]}
+                />
               }
-            />
+            >
+              <Route
+                path="/"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Home />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* categories */}
             <Route
-              path="/kategori"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Categories />
-                </Suspense>
+                <RoleProtectedRoute requiredRoles={["Admin", "Kasir"]} />
               }
-            />
-            <Route
-              path="/kategori/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <CategoriesId />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/kategori/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewCategories />
-                </Suspense>
-              }
-            />
+            >
+              <Route
+                path="/kategori"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Categories />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/kategori/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <CategoriesId />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/kategori/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewCategories />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* suppliers */}
             <Route
-              path="/supplier"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Suppliers />
-                </Suspense>
+                <RoleProtectedRoute
+                  requiredRoles={["Admin", "Kasir", "Bendahara"]}
+                />
               }
-            />
-            <Route
-              path="/supplier/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <SupplierId />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/supplier/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewSuppliers />
-                </Suspense>
-              }
-            />
+            >
+              <Route
+                path="/supplier"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Suppliers />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="/supplier/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <SupplierId />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="/supplier/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewSuppliers />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* products */}
             <Route
-              path="/barang"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Products />
-                </Suspense>
+                <RoleProtectedRoute
+                  requiredRoles={["Admin", "Kasir", "Bendahara"]}
+                />
               }
-            />
-            <Route
-              path="/barang/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <ProductId />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/barang/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewProducts />
-                </Suspense>
-              }
-            />
+            >
+              <Route
+                path="/barang"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Products />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="/barang/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <ProductId />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="/barang/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewProducts />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* users */}
-            <Route
-              path="/pengguna"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Users />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/pengguna/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <UserId />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/pengguna/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewUsers />
-                </Suspense>
-              }
-            />
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/pengguna"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Users />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/pengguna/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <UserId />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/pengguna/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewUsers />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* members */}
-            <Route
-              path="/anggota"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Members />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/anggota/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <MemberDetails />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/anggota/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <MemberId />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/anggota/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewMembers />
-                </Suspense>
-              }
-            />
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/anggota"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Members />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/anggota/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <MemberDetails />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/anggota/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <MemberId />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/anggota/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewMembers />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* Group */}
-            <Route
-              path="/kelompok"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Groups />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/kelompok/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <GroupDetails />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/kelompok/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewGroup />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/kelompok/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <GroupId />
-                </Suspense>
-              }
-            />
+            <Route element={<RoleProtectedRoute requiredRoles={["Admin"]} />}>
+              <Route
+                path="/kelompok"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Groups />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/kelompok/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <GroupDetails />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/kelompok/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewGroup />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/kelompok/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <GroupId />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* purchases */}
             <Route
-              path="/pembelian"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Purchases />
-                </Suspense>
+                <RoleProtectedRoute
+                  requiredRoles={["Admin", "Kasir", "Bendahara"]}
+                />
               }
-            />
-            <Route
-              path="/pembelian/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <PurchaseIdDetails />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/pembelian/edit/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <PurchaseId />
-                </Suspense>
-              }
-            />
-
-            <Route
-              path="/pembelian/baru"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <NewPurchase />
-                </Suspense>
-              }
-            />
+            >
+              <Route
+                path="/pembelian"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Purchases />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/pembelian/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <PurchaseIdDetails />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/pembelian/edit/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <PurchaseId />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/pembelian/baru"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <NewPurchase />
+                  </Suspense>
+                }
+              />
+            </Route>
             {/* cashier */}
             <Route
-              path="/kasir"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Cashier />
-                </Suspense>
+                <RoleProtectedRoute requiredRoles={["Admin", "Kasir"]} />
               }
-            />
-            {/* sales */}
-            <Route
-              path="/penjualan"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Sales />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/penjualan/:id"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <SaleId />
-                </Suspense>
-              }
-            />
+            >
+              <Route
+                path="/kasir"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Cashier />
+                  </Suspense>
+                }
+              />
+              {/* sales */}
+              <Route
+                path="/penjualan"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Sales />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/penjualan/:id"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <SaleId />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route path="/tidak-sah" element={<Unauthorized />} />
           </Route>
         </Route>
       </Routes>

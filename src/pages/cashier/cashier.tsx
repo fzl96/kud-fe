@@ -61,7 +61,7 @@ export default function Cashier() {
 
   return (
     <>
-      <div className="flex mt-4 lg:flex-row flex-col">
+      <div className="flex mt-4 lg:flex-row flex-col md:gap-0 gap-5">
         <div className="">
           <div className="mr-4">
             {products && (

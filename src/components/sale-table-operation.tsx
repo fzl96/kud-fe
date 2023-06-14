@@ -18,11 +18,11 @@ export function SaleTableOperation({ link }: TableOperationProps) {
     <div className="flex items-center gap-3">
       <TooltipProvider>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Link to={link}>
               <Button
                 variant="secondary"
-                className="bg-[#e1f8ea] hover:bg-green-200 "
+                className="bg-[#e1f8ea] hover:bg-green-200"
                 size="sm"
               >
                 <Icons.zoomIn className="h-4 w-4 text-green-600" />

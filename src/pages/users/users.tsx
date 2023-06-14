@@ -6,6 +6,7 @@ import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useUsersRoles } from "@/hooks/use-users-roles";
+import { Icons } from "@/components/icons";
 
 export default function Users() {
   const { auth } = useAuth();
@@ -16,7 +17,12 @@ export default function Users() {
       <PageTitle heading="Pengguna">
         <div className="mt-2">
           <Link to="/pengguna/baru">
-            <Button>Tambah pengguna</Button>
+            <Button>
+              <span>
+                <Icons.add className="h-5 w-5 mr-1" />
+              </span>
+              Tambah pengguna
+            </Button>
           </Link>
         </div>
       </PageTitle>
@@ -29,6 +35,7 @@ export default function Users() {
           selectable={true}
           deleteFunction={deleteUsers}
           mutate={mutate}
+          columName="name"
         />
       )}
     </div>

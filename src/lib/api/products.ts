@@ -47,3 +47,13 @@ export const deleteProducts = async (ids: string[]) => {
   const response = await kudApi.delete(productsApiEndpoint, { data: { ids } });
   return response.data;
 };
+
+export const exportProducts = async (token: string) => {
+  const response = await kudApi.get(`/export/products`, {
+    responseType: "blob",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};

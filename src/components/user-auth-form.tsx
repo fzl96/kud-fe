@@ -14,17 +14,20 @@ import jwt_decode from "jwt-decode";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
   });
-
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [, setError] = useState("");
 
   const getFirstPage = (roleName: string) => {
     switch (roleName) {
@@ -56,7 +59,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       navigate(firstPage);
     } catch (err) {
       if (isAxiosError(err) && err.response) {
-        setError(err.response.data.error);
+        const formError = { type: "server", message: err.response.data.error };
+        setError("username", formError);
+        setError("password", formError);
         setIsLoading(false);
         return;
       }
@@ -102,6 +107,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             )}
             Sign In
           </button>
+          <p className="text-sm text-red-500">
+            {errors.username && errors.password ? errors.username.message : ""}
+          </p>
         </div>
       </form>
     </div>

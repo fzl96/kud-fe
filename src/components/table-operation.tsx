@@ -17,9 +17,13 @@ export function TableOperation({ link }: TableOperationProps) {
     <>
       <TooltipProvider>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Link to={link}>
-              <Button variant="secondary" size="sm">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-[#e7f0ff] hover:bg-blue-200 text-[#4182eb]"
+              >
                 <Icons.edit className="h-4 w-4" />
               </Button>
             </Link>

@@ -34,6 +34,7 @@ export const columns: ColumnDef<Purchase, any>[] = [
     enableHiding: false,
   },
   {
+    id: "supplier",
     accessorKey: "supplier.name",
     header: ({ column }) => {
       return (
@@ -52,6 +53,37 @@ export const columns: ColumnDef<Purchase, any>[] = [
         <span className="text-[0.9063rem]">{row.original.supplier.name}</span>
       </div>
     ),
+  },
+  {
+    accessorKey: "items",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="">Barang</span>
+          <ChevronsUpDown size={16} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-wrap gap-2 max-w-[15rem]">
+          {row.original.items?.map((item) => (
+            <span
+              key={item.id}
+              className="text-[0.9063rem] bg-gray-100 px-2 py-1 rounded-md"
+            >
+              {item.name}
+              {" x "}
+              {item.quantity}
+            </span>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "total",

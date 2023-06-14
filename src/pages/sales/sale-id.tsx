@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { CreditPayment } from "@/components/credit-payment";
+import { CreditPaymentOperation } from "@/components/credit-payment-operation";
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
@@ -141,6 +142,7 @@ export default function SaleId() {
                           <TableHead>Tanggal</TableHead>
                           <TableHead>Jumlah</TableHead>
                           <TableHead>Catatan</TableHead>
+                          <TableHead></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -158,6 +160,12 @@ export default function SaleId() {
                               </TableCell>
                               <TableCell className="font-[500] text-base">
                                 {item.note}
+                              </TableCell>
+                              <TableCell className="font-[500] text-base">
+                                <CreditPaymentOperation
+                                  payment={item}
+                                  onSuccess={mutate}
+                                />
                               </TableCell>
                             </TableRow>
                           ))}

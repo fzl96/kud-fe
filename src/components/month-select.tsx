@@ -30,7 +30,6 @@ const months = [
 
 export function MonthSelect({ month, onChange }: MonthSelectProps) {
   const handleSelect = (selectedOption: any) => {
-    console.log(selectedOption);
     onChange(parseInt(selectedOption));
   };
 

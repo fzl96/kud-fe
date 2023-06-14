@@ -1,6 +1,21 @@
 import { Charts } from "./charts";
 import type { ProductSale } from "@/types";
 
+const months: string[] = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+
 type SalesData = {
   name: string;
   revenue: number;
@@ -158,22 +173,22 @@ export function DashboardReports({
       <br />
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <div>
-          <p className="text-xl font-semibold mb-2">Sales Analysis</p>
+          <p className="text-xl font-semibold mb-2">
+            Riwayat Penjualan Perbulan
+          </p>
           <table className="mt-4 w-full border">
             <thead>
               <tr className="bg-gray-200">
-                <th className="py-3 px-4 text-lg">Month</th>
-                <th className="py-3 px-4 text-lg">Total Sales</th>
-                <th className="py-3 px-4 text-lg">Total Expenses</th>
-                <th className="py-3 px-4 text-lg">Number of Sales</th>
+                <th className="py-3 px-4 text-lg">Bulan</th>
+                <th className="py-3 px-4 text-lg">Total Penjualan</th>
+                <th className="py-3 px-4 text-lg">Total Pengeluaran</th>
+                <th className="py-3 px-4 text-lg">Jumlah Penjualan</th>
               </tr>
             </thead>
             <tbody>
-              {monthlySalesData.map((monthData) => (
+              {monthlySalesData.map((monthData, i) => (
                 <tr key={monthData.name} className="border-b">
-                  <td className="py-3 px-4 pl-10 text-left">
-                    {monthData.name}
-                  </td>
+                  <td className="py-3 px-4 pl-10 text-left">{months[i]}</td>
                   <td className="py-3 px-4 pl-10">
                     {formatter.format(monthData.revenue)}
                   </td>

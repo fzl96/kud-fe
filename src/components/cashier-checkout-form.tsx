@@ -141,8 +141,6 @@ export default function CashierCheckoutForm({
       status: values.paymentMethod === "TUNAI" ? "SELESAI" : "PROSES",
     };
 
-    // console.log(data);
-
     try {
       await postCashier(data);
       toast({

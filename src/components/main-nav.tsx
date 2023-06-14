@@ -5,15 +5,21 @@ import { SidebarNavItem } from "@/types";
 import { Icons } from "@/components/icons";
 import { MobileNav } from "./mobile-nav";
 import { useLocation } from "react-router-dom";
+import imgUrl from "@/assets/logo.webp";
 
 interface MainNavProps {
   items?: SidebarNavItem[];
   children?: React.ReactNode;
+  role: string;
 }
 
-export function MainNav({ items, children }: MainNavProps) {
+export function MainNav({ items, children, role }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
   const location = useLocation();
+
+  const filteredNav = React.useMemo(() => {
+    return items?.filter((item) => item.roles.includes(role));
+  }, [items, role]);
 
   React.useEffect(() => {
     setShowMobileMenu(false);
@@ -22,8 +28,10 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link to="/" className="hidden items-center space-x-2 lg:flex">
-        <Icons.logo />
-        <span className="hidden font-bold sm:inline-block">Jayamakmur</span>
+        <img src={imgUrl} alt="Logo" className="w-10" />
+        <span className="hidden font-bold sm:inline-block">
+          KUD Jaya Makmur
+        </span>
       </Link>
       <button
         className="flex items-center space-x-2 lg:hidden"
@@ -33,7 +41,7 @@ export function MainNav({ items, children }: MainNavProps) {
         <span className="font-bold">Menu</span>
       </button>
       {showMobileMenu && items && (
-        <MobileNav items={items}>{children}</MobileNav>
+        <MobileNav items={filteredNav ?? []}>{children}</MobileNav>
       )}
     </div>
   );

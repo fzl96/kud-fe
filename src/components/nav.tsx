@@ -2,24 +2,28 @@ import { Link, NavLink } from "react-router-dom";
 import { SidebarNavItem } from "@/types";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { useMatch } from "react-router-dom";
-
+import { useMemo } from "react";
 interface SidebarNavProps {
   items: SidebarNavItem[];
+  role: string;
 }
 
-export function SidebarNav({ items }: SidebarNavProps) {
+export function SidebarNav({ items, role }: SidebarNavProps) {
   // const path = usePathname();
 
   if (!items) return null;
 
-  const mainSection = items.filter((item) => item.section === "main");
-  const goodsSection = items.filter((item) => item.section === "goods");
-  const transactionSection = items.filter(
+  const filteredNav = useMemo(() => {
+    return items.filter((item) => item.roles.includes(role));
+  }, [items, role]);
+
+  const mainSection = filteredNav.filter((item) => item.section === "main");
+  const goodsSection = filteredNav.filter((item) => item.section === "goods");
+  const transactionSection = filteredNav.filter(
     (item) => item.section === "transaction"
   );
-  const memberSection = items.filter((item) => item.section === "member");
-  const userSection = items.filter((item) => item.section === "user");
+  const memberSection = filteredNav.filter((item) => item.section === "member");
+  const userSection = filteredNav.filter((item) => item.section === "user");
 
   return (
     <nav className="grid items-start gap-2 ">
@@ -48,9 +52,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
         })}
       </div>
       <div className="flex flex-col gap-2">
-        <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
-          Barang
-        </h1>
+        {(role === "Admin" || role === "Kasir" || role === "Bendahara") && (
+          <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
+            Barang
+          </h1>
+        )}
 
         {goodsSection.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
@@ -76,9 +82,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
         })}
       </div>
       <div className="flex flex-col gap-2">
-        <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
-          Transaksi
-        </h1>
+        {(role === "Admin" || role === "Kasir" || role === "Bendahara") && (
+          <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
+            Transaksi
+          </h1>
+        )}
         {transactionSection.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
@@ -103,9 +111,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
         })}
       </div>
       <div className="flex flex-col gap-2">
-        <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
-          Keanggotaan
-        </h1>
+        {role === "Admin" && (
+          <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
+            Keanggotaan
+          </h1>
+        )}
         {memberSection.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
@@ -130,9 +140,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
         })}
       </div>
       <div className="flex flex-col gap-2">
-        <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
-          User
-        </h1>
+        {role === "Admin" && (
+          <h1 className="ml-3 uppercase text-sm my-2 font-semibold text-slate-400">
+            Pengguna
+          </h1>
+        )}
         {userSection.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
           return (

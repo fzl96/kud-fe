@@ -19,7 +19,11 @@ export function MembersTableOperation({ id }: TableOperationProps) {
         <Tooltip delayDuration={0}>
           <TooltipTrigger>
             <Link to={`/anggota/${id}`}>
-              <Button variant="secondary" size="sm">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-[#e1f8ea] hover:bg-green-200 text-green-600"
+              >
                 <Icons.zoomIn className="h-4 w-4" />
               </Button>
             </Link>
@@ -31,7 +35,11 @@ export function MembersTableOperation({ id }: TableOperationProps) {
         <Tooltip delayDuration={0}>
           <TooltipTrigger>
             <Link to={`/anggota/edit/${id}`}>
-              <Button variant="secondary" size="sm">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-[#e7f0ff] hover:bg-blue-200 text-[#4182eb]"
+              >
                 <Icons.edit className="h-4 w-4" />
               </Button>
             </Link>

@@ -148,7 +148,7 @@ export default function Dashboard() {
             />
           </div>
           <PageTitle heading="Dashboard">
-            <div className="flex items-center mt-2 gap-3">
+            <div className="flex flex-col md:flex-row md:items-center mt-2 gap-3">
               <YearSelect year={year} setYear={setYear} />
               <ReactToPrint
                 trigger={() => (
@@ -163,7 +163,7 @@ export default function Dashboard() {
               />
             </div>
           </PageTitle>
-          <div className="mt-5 md:px-2 grid grid-cols-1 md:grid-cols-3 md:gap-3">
+          <div className="mt-5 md:px-2 grid grid-cols-1 md:grid-cols-3 gap-3">
             <Card title="Pendapatan Bulan Ini">
               <DashboardCard
                 content={formatter.format(currentMonthData?.revenue || 0)}

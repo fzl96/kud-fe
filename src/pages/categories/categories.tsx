@@ -10,6 +10,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Icons } from "@/components/icons";
 
 export default function Categories() {
   const { auth } = useAuth();
@@ -28,10 +29,20 @@ export default function Categories() {
       <PageTitle heading="Kategori">
         <div className="mt-2 flex md:flex-row flex-col gap-2">
           <Link to="/barang/baru">
-            <Button variant="secondary">Tambah Barang</Button>
+            <Button variant="secondary">
+              <span>
+                <Icons.add className="h-5 w-5 mr-1" />
+              </span>
+              Tambah Barang
+            </Button>
           </Link>
           <Link to="/kategori/baru">
-            <Button>Tambah Kategori</Button>
+            <Button>
+              <span>
+                <Icons.add className="h-5 w-5 mr-1" />
+              </span>
+              Tambah Kategori
+            </Button>
           </Link>
         </div>
       </PageTitle>
@@ -44,6 +55,7 @@ export default function Categories() {
           selectable={true}
           deleteFunction={deleteCategories}
           mutate={mutate}
+          columName="name"
         />
       )}
     </div>

@@ -49,7 +49,10 @@ export function Layout() {
     <div className="flex min-h-screen flex-col font-sans space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
-          <MainNav items={dashboardConfig.sidebarNav} />
+          <MainNav
+            items={dashboardConfig.sidebarNav}
+            role={auth.user.role.name}
+          />
           <UserAccountNav
             user={{
               name: auth.user.name,
@@ -61,7 +64,10 @@ export function Layout() {
       </header>
       <div className="container">
         <aside className="hidden w-[200px] top-0 md:pt-20 pr-4 md:pb-3 bottom-0 flex-col lg:flex fixed bg-white overflow-y-scroll">
-          <SidebarNav items={dashboardConfig.sidebarNav} />
+          <SidebarNav
+            items={dashboardConfig.sidebarNav}
+            role={auth.user.role.name}
+          />
         </aside>
         <main className="flex w-full lg:pl-[230px] flex-1 flex-col overflow-hidden">
           <Outlet />
