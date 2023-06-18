@@ -75,7 +75,7 @@ export default function SaleId() {
               }
             />
             <Field label="Kasir" value={sale.cashier.name} />
-            <Field label="Pelanggan" value={sale.customer?.name ?? "Umum"} />
+            <Field label="Pelanggan" value={sale.member?.name ?? "Umum"} />
             <div className="space-y-2">
               <Label className="font-normal">Barang</Label>
               <div className="border rounded-lg">

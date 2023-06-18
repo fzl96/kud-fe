@@ -126,7 +126,7 @@ export default function CashierCheckoutForm({
   const onSubmit = async (values: z.infer<typeof schema>) => {
     setLoading(true);
     const data: Sale = {
-      customerId: values.memberId,
+      memberId: values.memberId,
       customerType: values.customerType,
       customerName: values.customerName,
       paymentMethod: values.paymentMethod,
@@ -137,8 +137,6 @@ export default function CashierCheckoutForm({
         quantity: item.quantity,
       })),
       cashierId: auth?.user?.id,
-      dueDate: date,
-      status: values.paymentMethod === "TUNAI" ? "SELESAI" : "PROSES",
     };
 
     try {

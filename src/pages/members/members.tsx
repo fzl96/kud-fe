@@ -1,16 +1,16 @@
-import { deleteCustomers } from "@/lib/api/customers";
+import { deleteMembers } from "@/lib/api/members";
 import { useAuth } from "@/context/auth-context";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useCustomers } from "@/hooks/use-customers";
+import { useMembers } from "@/hooks/use-members";
 import { Icons } from "@/components/icons";
 
 export default function Members() {
   const { auth } = useAuth();
-  const { members, mutate } = useCustomers(auth.accessToken);
+  const { members, mutate } = useMembers(auth.accessToken);
 
   return (
     <div className="flex flex-col gap-5">
@@ -41,7 +41,7 @@ export default function Members() {
           columns={columns}
           data={members}
           selectable={true}
-          deleteFunction={deleteCustomers}
+          deleteFunction={deleteMembers}
           mutate={mutate}
           columName="name"
         />

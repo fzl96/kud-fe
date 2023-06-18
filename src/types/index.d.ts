@@ -53,6 +53,82 @@ export type DashboardConfig = {
   sidebarNav: SidebarNavItem[];
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CashierProduct = {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  barcode: string;
+};
+
+export type CashierMember = {
+  id: string;
+  name: string;
+};
+
+export type CashierConfig = {
+  products: CashierProduct[];
+  members: CashierMember[];
+};
+
+type MemberSale = {
+  id: string;
+  total: number;
+  createdAt: string;
+  updatedAt: string;
+  paymentMethod: string;
+  status: string;
+  products: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    total: number;
+  }[];
+};
+
+export type Member = {
+  id: string;
+  name: string;
+  phone?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  group: {
+    id: string;
+    name: string;
+  };
+  sales?: MemberSale[];
+};
+
+type GroupMember = {
+  id: string;
+  name: string;
+  status: string;
+  phone?: string;
+  totalTransactions?: number;
+};
+
+export type Group = {
+  id: string;
+  name: string;
+  numberOfMembers: number;
+  leader: {
+    id: string;
+    name: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  members?: GroupMember[];
+};
+
 type Monthly = {
   month: number;
   revenue: number;
@@ -80,13 +156,6 @@ export type DashboardData = {
   yearlySales: Yearly;
 };
 
-export type Category = {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type Supplier = {
   id: string;
   name: string;
@@ -94,18 +163,6 @@ export type Supplier = {
   phone?: string;
   createdAt: string;
   updatedAt: string;
-};
-
-export type Product = {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  createdAt: string;
-  updatedAt: string;
-  active?: boolean;
-  category: Pick<Category, "id" | "name">;
-  barcode?: string;
 };
 
 export type ProductWithCategory = {
@@ -137,60 +194,31 @@ export type UserWithRole = {
 
 export type Sale = {
   id: string;
-  customer?: Pick<Customer, "id" | "name">;
+  member?: Pick<Customer, "id" | "name">;
+  customerType: string;
+  customerName?: string;
   total: number;
   cash?: number;
   change?: number;
   paymentMethod: string;
   status: string;
-  dueDate?: string;
   paid?: number;
   payments?: {
     id: string;
     amount: number;
     note?: string;
     createdAt: string;
+    updatedAt: string;
   }[];
-  cashier: Pick<User, "id" | "name">;
   products: {
     id: string;
     name: string;
     quantity: number;
     total: number;
   }[];
+  cashier: Pick<User, "id" | "name">;
   createdAt: string;
   updatedAt: string;
-};
-
-type GroupMember = {
-  id: string;
-  name: string;
-  status: string;
-  totalTransactions: number;
-};
-
-export type Group = {
-  id: string;
-  name: string;
-  numberOfMembers?: number;
-  members?: GroupMember[];
-  leader: {
-    id: string;
-    name: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type Customer = {
-  id: string;
-  name: string;
-  phone?: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  group: Pick<Group, "id" | "name">;
-  sales?: Sale[];
 };
 
 export type Purchase = {
@@ -216,21 +244,13 @@ export type PurchaseWithSupplierProduct = {
 
 export type Sales = {
   id: string;
-  customer: Pick<Customer, "id" | "name">;
+  createdAt: string;
+  updatedAt: string;
   customerType: string;
   customerName?: string;
   total: number;
-  cash?: number;
-  change?: number;
   paymentMethod?: string;
   status?: string;
-  dueDate?: string;
-  products: {
-    id: string;
-    name: string;
-    quantity: number;
-  }[];
   user: Pick<User, "id" | "name">;
-  createdAt: string;
-  updatedAt: string;
+  member: Pick<Customer, "id" | "name">;
 };

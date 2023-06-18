@@ -128,10 +128,12 @@ export default function NewUsers() {
                       <Select {...field} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih role">
-                            {
+                            {field.value ? (
                               roles?.find((role) => role.id === field.value)
                                 ?.name
-                            }
+                            ) : (
+                              <span className="text-gray-500">Pilih Role</span>
+                            )}
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>

@@ -1,13 +1,13 @@
-import { getCustomers, customersApiEndpoint } from "@/lib/api/customers";
+import { getMembers, membersApiEndpoint } from "@/lib/api/members";
 import useSWR from "swr";
 
-export const useCustomers = (token: string) => {
+export const useMembers = (token: string) => {
   const {
     data: members,
     error,
     mutate,
     isLoading,
-  } = useSWR(customersApiEndpoint, () => getCustomers(token), {
+  } = useSWR(membersApiEndpoint, () => getMembers(token), {
     onSuccess: (data) => {
       data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     },

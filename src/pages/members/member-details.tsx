@@ -1,7 +1,7 @@
 import { Card } from "@/components/card";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { getCustomer, customersApiEndpoint } from "@/lib/api/customers";
+import { getMember, membersApiEndpoint } from "@/lib/api/members";
 import { useState, useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -47,11 +47,11 @@ export default function MemberDetails() {
   const [month, setMonth] = useState<number>(currentMonth);
   const [year, setYear] = useState<number>(currentYear);
   const {
-    data: customer,
+    data: member,
     isLoading,
     error,
-  } = useSWR([`${customersApiEndpoint}/${id}`, year, month], () =>
-    getCustomer(id, true, year, month)
+  } = useSWR([`${membersApiEndpoint}/${id}`, year, month], () =>
+    getMember(id, true, year, month)
   );
 
   const formatter = new Intl.NumberFormat("id-ID", {
@@ -61,22 +61,22 @@ export default function MemberDetails() {
   });
 
   const totalSales = useMemo(() => {
-    if (!customer || !customer.sales) return 0;
-    return customer?.sales?.reduce((acc, sale) => acc + sale.total, 0);
-  }, [customer]);
+    if (!member || !member.sales) return 0;
+    return member?.sales?.reduce((acc, sale) => acc + sale.total, 0);
+  }, [member]);
 
   return (
     <div className="flex flex-col gap-4">
       <Card
-        title={`Anggota: ${customer?.name}`}
+        title={`Anggota: ${member?.name}`}
         titleClass="font-semibold text-xl"
       >
-        {customer && (
+        {member && (
           <div className="space-y-3">
-            <Field label="Nama" value={customer.name} />
-            <Field label="Nomor Telepon" value={customer.phone} />
-            <Field label="Kelompok" value={customer.group.name} />
-            <Field label="Status Anggota" value={customer.status} />
+            <Field label="Nama" value={member.name} />
+            <Field label="Nomor Telepon" value={member.phone} />
+            <Field label="Kelompok" value={member.group.name} />
+            <Field label="Status Anggota" value={member.status} />
             <Separator />
             <h1 className="font-medium">Riwayat Transaksi</h1>
             <div className="space-y-2">
@@ -97,9 +97,9 @@ export default function MemberDetails() {
                 Daftar transaksi pada tahun {year} bulan{" "}
                 {months.find((m) => m.id === month)?.name}
               </Label>
-              {customer.sales && customer.sales.length !== 0 && (
+              {member.sales && member.sales.length !== 0 && (
                 <DataTable
-                  data={customer.sales?.map((sale) => {
+                  data={member.sales?.map((sale) => {
                     console.log(sale);
                     return {
                       id: sale.id,

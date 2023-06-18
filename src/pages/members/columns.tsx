@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Customer } from "@/types";
+import { Member } from "@/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 import { TableOperation } from "@/components/table-operation";
 import { MembersTableOperation } from "@/components/members-table-operation";
 
-export const columns: ColumnDef<Customer, any>[] = [
+export const columns: ColumnDef<Member, any>[] = [
   {
     id: "select",
     header: ({ table }) => (

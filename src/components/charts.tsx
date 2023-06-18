@@ -45,27 +45,38 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 export function Charts({ data }: Props) {
+  const formatValue = (value: number) => {
+    if (value < 1000000) return (value / 1000).toFixed(0) + "RB";
+    if (value < 1000000000) return value / 1000000 + "JT";
+    return (value / 1000000000).toFixed(0) + "M";
+  };
+
   return (
     <ResponsiveContainer width="100%" height={250}>
-      <LineChart
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          bottom: 5,
-        }}
-      >
+      <LineChart data={data}>
         {/* <CartesianGrid horizontal={true} vertical={false} /> */}
-        <XAxis dataKey="name" axisLine={false} dy={10} />
-        <YAxis axisLine={false} dx={-5} />
+        <XAxis
+          dataKey="name"
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          dy={5}
+        />
+        <YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => `${formatValue(value)}`}
+        />
         <Tooltip
           wrapperStyle={{ outline: "none" }}
           content={<CustomTooltip />}
         />
         <Legend />
         <Line
+          name="Pendapatan"
           type="monotone"
           dataKey="revenue"
           stroke="#a285e1"

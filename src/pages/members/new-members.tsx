@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGroups } from "@/hooks/use-groups";
-import { createCustomer } from "@/lib/api/customers";
+import { createMember } from "@/lib/api/members";
 import { useMemo } from "react";
 import { Icons } from "@/components/icons";
 
@@ -83,7 +83,7 @@ export default function NewUsers() {
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
-      await createCustomer(values);
+      await createMember(values);
       form.reset();
       toast({
         title: "Berhasil",

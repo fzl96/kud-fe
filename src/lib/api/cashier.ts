@@ -1,21 +1,20 @@
 import { kudApi } from "./calls";
+import { CashierConfig } from "@/types";
 
 export const cashierApiEndpoint = "/cashier";
 
 export type Sale = {
-  customerId?: string;
-  customerType: string;
-  customerName?: string;
+  memberId?: string;
   products: {
     id: string;
     quantity: number;
-  };
+  }[];
   cash?: number | undefined;
   change?: number | undefined;
   cashierId: string;
+  customerType: string;
+  customerName?: string;
   paymentMethod?: string;
-  status?: string;
-  dueDate?: Date;
 };
 
 export const getCashier = async (token: string) => {
@@ -24,7 +23,8 @@ export const getCashier = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  const data: CashierConfig = response.data;
+  return data;
 };
 
 export const postCashier = async (data: Sale) => {

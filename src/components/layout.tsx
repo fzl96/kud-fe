@@ -56,7 +56,7 @@ export function Layout() {
           <UserAccountNav
             user={{
               name: auth.user.name,
-              image: "https://i.pravatar.cc/100?img=68",
+              image: "",
               username: auth.user.username,
             }}
           />

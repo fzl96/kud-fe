@@ -25,7 +25,8 @@ import * as z from "zod";
 import { updateSale } from "@/lib/api/sales";
 import { useToast } from "./ui/use-toast";
 import { isAxiosError } from "axios";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Icons } from "./icons";
 
 const paymentSchema = z.object({
   amount: z.number().min(1).max(999999999).nonnegative(),
@@ -48,6 +49,10 @@ export function CreditPayment({ id, mutate, disabled }: CreditPaymentProps) {
     },
   });
   const [open, setOpen] = useState<boolean>(false);
+
+  const submitDisabled = useMemo(() => {
+    return form.formState.isSubmitting || !form.formState.isDirty;
+  }, [form.formState.isSubmitting, form.formState.isDirty]);
 
   const onSubmit = async (values: z.infer<typeof paymentSchema>) => {
     try {
@@ -119,7 +124,16 @@ export function CreditPayment({ id, mutate, disabled }: CreditPaymentProps) {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Simpan</Button>
+              <Button type="submit">
+                {form.formState.isSubmitting ? (
+                  <span className="flex gap-2 items-center">
+                    <Icons.spinner className="animate-spin w-4 h-4" />
+                    Menyimpan...
+                  </span>
+                ) : (
+                  "Simpan"
+                )}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

@@ -4,14 +4,14 @@ import { DataTable } from "./components/data-table";
 import { PageTitle } from "@/components/page-title";
 import { deleteSales } from "@/lib/api/sales";
 import { useSales } from "@/hooks/use-sales";
-import { useCustomers } from "@/hooks/use-customers";
+import { useMembers } from "@/hooks/use-members";
 import { useMemo } from "react";
 import { useUsersRoles } from "@/hooks/use-users-roles";
 
 export default function Sales() {
   const { auth } = useAuth();
   const { sales, loading, mutate } = useSales(auth.accessToken);
-  const { members } = useCustomers(auth.accessToken);
+  const { members } = useMembers(auth.accessToken);
   const { users } = useUsersRoles(auth.accessToken);
 
   const mappedMembers = useMemo(() => {
@@ -61,7 +61,7 @@ export default function Sales() {
             customerType: sale.customerType,
             customerName:
               sale.customerType === "ANGGOTA"
-                ? sale.customer.name
+                ? sale.member.name
                 : sale.customerName ?? "",
             // member: sale.customer ? sale.customer.name : "Umum",
             total: sale.total,

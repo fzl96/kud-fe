@@ -28,11 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGroups } from "@/hooks/use-groups";
-import {
-  updateCustomer,
-  getCustomer,
-  customersApiEndpoint,
-} from "@/lib/api/customers";
+import { updateMember, getMember, membersApiEndpoint } from "@/lib/api/members";
 import useSWR from "swr";
 import { useEffect, useMemo } from "react";
 import { Icons } from "@/components/icons";
@@ -71,7 +67,7 @@ export default function MemberId() {
     error,
     isLoading,
     mutate,
-  } = useSWR(`${customersApiEndpoint}/${id}`, () => getCustomer(id, false));
+  } = useSWR(`${membersApiEndpoint}/${id}`, () => getMember(id, false));
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -99,7 +95,7 @@ export default function MemberId() {
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
-      await updateCustomer(id, values);
+      await updateMember(id, values);
       form.reset();
       toast({
         title: "Berhasil",

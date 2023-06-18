@@ -1,14 +1,20 @@
-import { useProducts } from "@/hooks/use-products";
-import { useCustomers } from "@/hooks/use-customers";
+// import { useProducts } from "@/hooks/use-products";
+// import { useCustomers } from "@/hooks/use-members";
 import { useAuth } from "@/context/auth-context";
 import { useState } from "react";
 import SearchItemBox from "@/components/search-item-box";
 import CashierCheckoutForm from "@/components/cashier-checkout-form";
+import useSWR from "swr";
+import { cashierApiEndpoint, getCashier } from "@/lib/api/cashier";
 
 export default function Cashier() {
   const { auth } = useAuth();
-  const { products, mutate } = useProducts(auth.accessToken);
-  const { members, loading } = useCustomers(auth.accessToken);
+  // const { products, mutate } = useProducts(auth.accessToken);
+  // const { members, loading } = useCustomers(auth.accessToken);
+  const { data, error, isLoading, mutate } = useSWR(
+    [`${cashierApiEndpoint}`, auth.accessToken],
+    () => getCashier(auth.accessToken)
+  );
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
 
@@ -24,7 +30,7 @@ export default function Cashier() {
 
   const handleIncrease = (id: string) => {
     // check if the quantity is more than the stock
-    const product = products?.find((product) => product.id === id);
+    const product = data?.products?.find((product) => product.id === id);
     const stocks = product?.stock || 1;
     if (selectedItems.find((item: any) => item.id === id).quantity >= stocks)
       return;
@@ -64,9 +70,9 @@ export default function Cashier() {
       <div className="flex mt-4 lg:flex-row flex-col md:gap-0 gap-5">
         <div className="">
           <div className="mr-4">
-            {products && (
+            {data?.products && (
               <SearchItemBox
-                items={products}
+                items={data.products}
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems}
               />
@@ -196,11 +202,11 @@ export default function Cashier() {
           </div>
         </div>
         <div className="w-full md:px-0 ">
-          {loading || !members ? (
+          {isLoading || !data?.members ? (
             "loading"
           ) : (
             <CashierCheckoutForm
-              members={members}
+              members={data.members}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
               mutate={mutate}

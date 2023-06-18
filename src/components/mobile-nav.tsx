@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { SidebarNavItem } from "@/types";
-import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useLockBody } from "@/hooks/use-lock-body";
-import { Icons } from "@/components/icons";
+import imgUrl from "@/assets/logo.webp";
 
 interface MobileNavProps {
   items: SidebarNavItem[];
@@ -22,8 +21,8 @@ export function MobileNav({ items, children }: MobileNavProps) {
     >
       <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <Link to="/" className="flex items-center space-x-2">
-          <Icons.logo />
-          <span className="font-bold">{siteConfig.name}</span>
+          <img src={imgUrl} alt="Logo" className="w-7" />
+          <span className="font-bold">KUD Jaya Makmur</span>
         </Link>
         <nav className="grid grid-flow-row auto-rows-max text-sm">
           {items.map(

@@ -27,6 +27,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -105,9 +119,57 @@ export default function NewProducts() {
                 control={form.control}
                 name="categoryId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Kategori</FormLabel>
-                    <FormControl>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-[400px] justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? categories?.find(
+                                  (category) => category.id === field.value
+                                )?.name
+                              : "Pilih Kategori"}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[400px] p-0">
+                        <Command className="">
+                          <CommandInput placeholder="Cari Kategori..." />
+                          <CommandEmpty>Kategori tidak ditemukan.</CommandEmpty>
+                          <CommandGroup>
+                            {categories?.map((category) => (
+                              <CommandItem
+                                value={category.id}
+                                key={category.id}
+                                onSelect={(value) => {
+                                  form.setValue("categoryId", value);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    category.id === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {category.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    {/* <FormControl>
                       <Select {...field} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih kategori">
@@ -129,7 +191,7 @@ export default function NewProducts() {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                    </FormControl>
+                    </FormControl> */}
                   </FormItem>
                 )}
               />

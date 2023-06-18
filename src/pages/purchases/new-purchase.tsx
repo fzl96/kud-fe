@@ -181,11 +181,11 @@ export default function NewPurchase() {
                       <Single {...field} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Supplier">
-                            {
-                              suppliers?.find(
-                                (supplier) => supplier.id === field.value
-                              )?.name
-                            }
+                            {field.value
+                              ? suppliers?.find(
+                                  (supplier) => supplier.id === field.value
+                                )?.name
+                              : "Pilih Supplier"}
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
@@ -213,6 +213,8 @@ export default function NewPurchase() {
                     className="border border-input rounded-md ring-offset-background focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
                     styles={customStyles}
                     isMulti
+                    isSearchable
+                    placeholder="Pilih/Cari Barang"
                     // closeMenuOnSelect={false}
                     menuPortalTarget={document.querySelector("body")}
                   />
