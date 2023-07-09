@@ -221,6 +221,17 @@ export type Sale = {
   updatedAt: string;
 };
 
+export type Product = {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  barcode: string;
+  createdAt: string;
+  updatedAt: string;
+  category: Pick<Category, "id" | "name">;
+};
+
 export type Purchase = {
   id: string;
   createdAt: string;

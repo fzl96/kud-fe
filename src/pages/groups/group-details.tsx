@@ -91,7 +91,7 @@ export default function GroupDetails() {
                         <TableCell>{member.name}</TableCell>
                         <TableCell>{member.status}</TableCell>
                         <TableCell>
-                          {formatter.format(member.totalTransactions)}
+                          {formatter.format(member.totalTransactions ?? 0)}
                         </TableCell>
                         <TableCell className="max-w-[5rem]">
                           <GroupDetailsTableOperation id={member.id} />
