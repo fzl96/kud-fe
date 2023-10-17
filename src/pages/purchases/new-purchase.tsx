@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,9 +30,11 @@ import { usePurchases } from "@/hooks/use-purchases";
 import Select from "react-select";
 import { useMemo, useState } from "react";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 const schema = z.object({
   supplierId: z.string().min(2).max(255).nonempty(),
+  verified: z.boolean().optional(),
 });
 
 const customStyles = {
@@ -90,6 +93,7 @@ export default function NewPurchase() {
     resolver: zodResolver(schema),
     defaultValues: {
       supplierId: "",
+      verified: false,
     },
   });
 
@@ -137,6 +141,7 @@ export default function NewPurchase() {
           purchasePrice: product.purchasePrice,
           quantity: product.quantity,
         })),
+        verified: values.verified,
       };
       await createPurchase(data);
       form.reset();
@@ -258,6 +263,28 @@ export default function NewPurchase() {
                     </div>
                   ))}
               </div>
+              <FormField
+                control={form.control}
+                name="verified"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        Verifikasi
+                      </FormLabel>
+                      <FormDescription>
+                        Pembelian yang sudah diverifikasi tidak dapat dihapus atau diubah.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
             <Button type="submit">Simpan</Button>
           </form>

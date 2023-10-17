@@ -6,6 +6,7 @@ import Login from "@/pages/Login/login";
 import { Toaster } from "@/components/ui/toaster";
 import RoleProtectedRoute from "@/components/role-protected-route";
 import Unauthorized from "@/pages/unauthorized/unauthorized";
+import { PageSkeleton } from "./components/page-skeleton";
 
 const Home = lazy(() => import("./pages/Dashboard/dashboard"));
 
@@ -81,7 +82,7 @@ function App() {
               <Route
                 path="/kategori"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Kategori" />}>
                     <Categories />
                   </Suspense>
                 }
@@ -114,7 +115,7 @@ function App() {
               <Route
                 path="/supplier"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Suppllier" />}>
                     <Suppliers />
                   </Suspense>
                 }
@@ -149,7 +150,7 @@ function App() {
               <Route
                 path="/barang"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Barang" />}>
                     <Products />
                   </Suspense>
                 }
@@ -178,7 +179,7 @@ function App() {
               <Route
                 path="/pengguna"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Pengguna" />}>
                     <Users />
                   </Suspense>
                 }
@@ -209,7 +210,7 @@ function App() {
               <Route
                 path="/anggota"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Anggota" />}>
                     <Members />
                   </Suspense>
                 }
@@ -250,7 +251,7 @@ function App() {
               <Route
                 path="/kelompok"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Kelompok" />}>
                     <Groups />
                   </Suspense>
                 }
@@ -291,7 +292,7 @@ function App() {
               <Route
                 path="/pembelian"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Pembelian" />}>
                     <Purchases />
                   </Suspense>
                 }
@@ -339,7 +340,7 @@ function App() {
               <Route
                 path="/penjualan"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<PageSkeleton title="Penjualan" />}>
                     <Sales />
                   </Suspense>
                 }

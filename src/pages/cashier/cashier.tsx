@@ -206,7 +206,9 @@ export default function Cashier() {
             "loading"
           ) : (
             <CashierCheckoutForm
-              members={data.members}
+              members={data.members.sort((a: any, b: any) =>
+                a.name.localeCompare(b.name)
+              )}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
               mutate={mutate}

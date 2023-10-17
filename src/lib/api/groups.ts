@@ -15,7 +15,10 @@ export const getGroups = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const groups: Group[] = response.data;
+  const groups: {
+    pagination: any,
+    data: Group[]
+  } = response.data;
   return groups;
 };
 

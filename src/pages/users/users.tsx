@@ -31,7 +31,7 @@ export default function Users() {
         <DataTable
           filterColumn="Pengguna"
           columns={columns}
-          data={users}
+          data={users.data}
           selectable={true}
           deleteFunction={deleteUsers}
           mutate={mutate}

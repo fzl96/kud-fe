@@ -7,7 +7,7 @@ export const usePurchases = (token: string) => {
     () => getPurchases(token),
     {
       onSuccess: (data) => {
-        data.purchases.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        data.purchases.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
       },
     }
   );

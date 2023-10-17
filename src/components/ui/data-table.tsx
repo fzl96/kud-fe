@@ -10,7 +10,12 @@ import {
   ColumnFiltersState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -86,7 +91,7 @@ export function DataTable<TData extends WithId, TValue>({
     initialState: {
       sorting: [],
       pagination: {
-        pageSize: 4,
+        pageSize: 5,
       },
     },
   });
@@ -158,8 +163,8 @@ export function DataTable<TData extends WithId, TValue>({
           {selectable && (
             <div className="flex gap-2 items-center">
               <div>
-                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
+                {table.getFilteredSelectedRowModel().rows.length} dari{" "}
+                {table.getFilteredRowModel().rows.length} baris dipilih.
               </div>
               {table.getFilteredSelectedRowModel().rows.length > 0 && (
                 <Button
@@ -242,7 +247,7 @@ export function DataTable<TData extends WithId, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <Button
           variant="outline"
@@ -250,7 +255,7 @@ export function DataTable<TData extends WithId, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

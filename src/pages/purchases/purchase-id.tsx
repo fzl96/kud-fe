@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,9 +36,11 @@ import {
   updatePurchase,
 } from "@/lib/api/purchases";
 import useSWR from "swr";
+import { Switch } from "@/components/ui/switch";
 
 const schema = z.object({
   supplierId: z.string().min(2).max(255).nonempty(),
+  verified: z.boolean().optional(),
 });
 
 const customStyles = {
@@ -102,6 +105,7 @@ export default function PurchaseId() {
     resolver: zodResolver(schema),
     defaultValues: {
       supplierId: "",
+      verified: false,
     },
   });
 
@@ -109,6 +113,7 @@ export default function PurchaseId() {
     if (purchase) {
       form.reset({
         supplierId: purchase.supplier.id,
+        verified: purchase.verified,
       });
       setSelectedProducts(
         purchase?.items?.map((item: any) => ({
@@ -160,6 +165,7 @@ export default function PurchaseId() {
     try {
       const data = {
         supplierId: values.supplierId,
+        verified: values.verified,
         items: selectedProducts.map((product: any) => ({
           id: product.value,
           purchasePrice: product.purchasePrice,
@@ -207,7 +213,9 @@ export default function PurchaseId() {
                     <FormLabel>Supplier</FormLabel>
                     <FormControl>
                       <Single {...field} onValueChange={field.onChange}>
-                        <SelectTrigger>
+                        <SelectTrigger
+                          disabled={purchase?.verified}
+                        >
                           <SelectValue placeholder="Pilih Supplier">
                             {
                               suppliers?.find(
@@ -243,6 +251,7 @@ export default function PurchaseId() {
                     isMulti
                     // closeMenuOnSelect={false}
                     menuPortalTarget={document.querySelector("body")}
+                    isDisabled={purchase?.verified}
                   />
                 </FormControl>
               </FormItem>
@@ -262,6 +271,7 @@ export default function PurchaseId() {
                             type="number"
                             placeholder="Jumlah Beli"
                             value={product.quantity}
+                            disabled={purchase?.verified}
                             onChange={(e) =>
                               handleQuantityChange(e, product.value)
                             }
@@ -275,6 +285,7 @@ export default function PurchaseId() {
                             type="number"
                             placeholder="Harga Satuan"
                             value={product.purchasePrice}
+                            disabled={purchase?.verified}
                             onChange={(e) =>
                               handlePurchasePriceChange(e, product.value)
                             }
@@ -284,6 +295,29 @@ export default function PurchaseId() {
                     </div>
                   ))}
               </div>
+              <FormField
+                control={form.control}
+                name="verified"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        Verifikasi
+                      </FormLabel>
+                      <FormDescription>
+                        Pembelian yang sudah diverifikasi tidak dapat dihapus atau diubah.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={purchase?.verified}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
             <Button type="submit">Simpan</Button>
           </form>

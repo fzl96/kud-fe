@@ -9,7 +9,7 @@ export const useProducts = (token: string) => {
     isLoading: loading,
   } = useSWR([productsApiEndpoint, token], () => getProducts(token), {
     onSuccess: (data) => {
-      data.products.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+      data.products.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     },
   });
 

@@ -27,7 +27,10 @@ export const getSales = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const sales: Sales[] = response.data;
+  const sales: {
+    pagination: any,
+    data: Sales[]
+  } = response.data;
   return sales;
 };
 

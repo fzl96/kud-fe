@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { usePurchases } from "@/hooks/use-purchases";
 import { deletePurchases } from "@/lib/api/purchases";
 import { Icons } from "@/components/icons";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Purchases() {
   const { auth } = useAuth();
@@ -35,10 +36,12 @@ export default function Purchases() {
         </div>
       </PageTitle>
 
-      {purchases && (
+      {!purchases ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
           columns={columns}
-          data={purchases}
+          data={purchases.data}
           selectable={true}
           deleteFunction={deletePurchases}
           mutate={mutate}

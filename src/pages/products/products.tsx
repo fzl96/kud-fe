@@ -10,6 +10,7 @@ import { Icons } from "@/components/icons";
 import { exportProducts } from "@/lib/api/products";
 import { useState } from "react";
 import { saveAs } from "file-saver";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Products() {
   const { auth } = useAuth();
@@ -54,11 +55,13 @@ export default function Products() {
         </div>
       </PageTitle>
 
-      {products && (
+      {!products ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
           filterColumn="Barang"
           columns={columns}
-          data={products}
+          data={products.data}
           selectable={true}
           deleteFunction={deleteProducts}
           mutate={mutate}

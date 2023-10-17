@@ -24,10 +24,12 @@ export default function Categories() {
     () => getSuppliers(auth.accessToken),
     {
       onSuccess: (data) => {
-        data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        data.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
       },
     }
   );
+
+  console.log(data)
 
   return (
     <div className="flex flex-col gap-5">
@@ -49,7 +51,7 @@ export default function Categories() {
         <DataTable
           filterColumn="Supplier"
           columns={columns}
-          data={data}
+          data={data.data}
           selectable={true}
           deleteFunction={deleteSuppliers}
           mutate={mutate}

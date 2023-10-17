@@ -13,7 +13,10 @@ export const getCategories = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const categories: Category[] = response.data;
+  const categories: {
+    pagination: any
+    data: Category[]
+  } = response.data;
   return categories;
 };
 

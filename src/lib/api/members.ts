@@ -16,7 +16,10 @@ export const getMembers = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const customers: Member[] = response.data;
+  const customers: {
+    pagination: any,
+    data: Member[]
+  } = response.data;
   return customers;
 };
 

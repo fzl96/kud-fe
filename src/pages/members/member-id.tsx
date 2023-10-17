@@ -169,7 +169,7 @@ export default function MemberId() {
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih kelompok">
                             {
-                              groups?.find((group) => group.id === field.value)
+                              groups?.data.find((group) => group.id === field.value)
                                 ?.name
                             }
                           </SelectValue>
@@ -177,7 +177,7 @@ export default function MemberId() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Kelompok</SelectLabel>
-                            {groups?.map((group) => (
+                            {groups?.data.map((group) => (
                               <SelectItem key={group.id} value={group.id}>
                                 {group.name}
                               </SelectItem>

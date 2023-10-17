@@ -11,6 +11,7 @@ import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Icons } from "@/components/icons";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Categories() {
   const { auth } = useAuth();
@@ -19,7 +20,7 @@ export default function Categories() {
     () => getCategories(auth.accessToken),
     {
       onSuccess: (data) => {
-        data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        data.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
       },
     }
   );
@@ -47,11 +48,13 @@ export default function Categories() {
         </div>
       </PageTitle>
 
-      {data && (
+      {!data ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
           filterColumn="Kategori"
           columns={columns}
-          data={data}
+          data={data.data}
           selectable={true}
           deleteFunction={deleteCategories}
           mutate={mutate}

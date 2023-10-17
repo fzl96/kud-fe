@@ -7,7 +7,7 @@ export const useGroups = (token: string) => {
     getGroups,
     {
       onSuccess: (data) => {
-        data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        data.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
       },
     }
   );

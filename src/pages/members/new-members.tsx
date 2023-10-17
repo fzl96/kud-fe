@@ -154,16 +154,20 @@ export default function NewUsers() {
                       <Select {...field} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih kelompok">
-                            {
-                              groups?.find((group) => group.id === field.value)
+                            {field.value ? (
+                              groups?.data.find((group) => group.id === field.value)
                                 ?.name
-                            }
+                            ) : (
+                              <span className="text-gray-500">
+                                Pilih kelompok
+                              </span>
+                            )}
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Kelompok</SelectLabel>
-                            {groups?.map((group) => (
+                            {groups?.data.map((group) => (
                               <SelectItem key={group.id} value={group.id}>
                                 {group.name}
                               </SelectItem>

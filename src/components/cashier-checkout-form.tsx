@@ -22,10 +22,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { z } from "zod";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useReactToPrint } from "react-to-print";
 import Receipt from "@/components/receipt";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const schema = z.object({
   memberId: z.string().optional(),
@@ -66,11 +81,12 @@ export default function CashierCheckoutForm({
   mutate,
   auth,
 }: Props) {
+  const [open, setOpen] = useState(false);
   const pageStyle = `{ size: 500mm 500mm }`;
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   const [cash, setCash] = useState<number>(0);
-  const [, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const componentRef = useRef<any>(null);
   const form = useForm({
     resolver: zodResolver(schema),
@@ -215,16 +231,75 @@ export default function CashierCheckoutForm({
                   name="memberId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Anggota/Umum</FormLabel>
-                      <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Anggota">
-                              {
+                      <FormLabel>Anggota</FormLabel>
+                      <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
                                 membersOptions?.find(
                                   (member) => member.value === field.value
                                 )?.label
-                              }
+                              ) : (
+                                <span className="text-gray-500">
+                                  Pilih Anggota
+                                </span>
+                              )}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0" align="start">
+                          <Command>
+                            <CommandInput placeholder="Cari anggota..." />
+                            <CommandList>
+                              <CommandEmpty>
+                                Kategori tidak ditemukan.
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {membersOptions?.map((member) => (
+                                  <CommandItem
+                                    value={member.value}
+                                    key={member.value}
+                                    onSelect={(value) => {
+                                      form.setValue("memberId", value);
+                                      setOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        member.value === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {member.label}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                        {/* <Select {...field} onValueChange={field.onChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Anggota">
+                              {field.value ? (
+                                membersOptions?.find(
+                                  (member) => member.value === field.value
+                                )?.label
+                              ) : (
+                                <span className="text-gray-500">
+                                  Pilih Anggota
+                                </span>
+                              )}
                             </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
@@ -240,8 +315,8 @@ export default function CashierCheckoutForm({
                               ))}
                             </SelectGroup>
                           </SelectContent>
-                        </Select>
-                      </FormControl>
+                        </Select> */}
+                      </Popover>
                     </FormItem>
                   )}
                 />
@@ -303,7 +378,7 @@ export default function CashierCheckoutForm({
                 <FormLabel>Tunai</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Tunai"
+                    placeholder="Jumlah yang dibayarkan"
                     type="number"
                     onChange={(event) => setCash(Number(event.target.value))}
                   />
@@ -331,7 +406,15 @@ export default function CashierCheckoutForm({
               </>
             )}
           </div>
-          <Button className="w-full" type="submit" disabled={disabled}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={
+              (form.getValues().paymentMethod !== "KREDIT" &&
+                (isNaN(cash) || cash < total)) ||
+              selectedItems.length === 0 || loading
+            }
+          >
             Simpan
           </Button>
         </form>

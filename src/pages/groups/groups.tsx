@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useGroups } from "@/hooks/use-groups";
 import { Icons } from "@/components/icons";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Members() {
   const { auth } = useAuth();
@@ -35,11 +36,13 @@ export default function Members() {
         </div>
       </PageTitle>
 
-      {groups && (
+      {!groups ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
           filterColumn="Kelompok"
           columns={columns}
-          data={groups}
+          data={groups.data}
           selectable={true}
           deleteFunction={deleteGroups}
           mutate={mutate}

@@ -139,7 +139,7 @@ type Monthly = {
 export type ProductSale = {
   id: string;
   name: string;
-  salesCount: number;
+  // salesCount: number;
   quantityCount: number;
 };
 
@@ -166,7 +166,10 @@ export type Supplier = {
 };
 
 export type ProductWithCategory = {
-  products: Product[];
+  products: {
+    pagination: any,
+    data: Product[];
+  },
   categories: Category[];
 };
 
@@ -188,7 +191,10 @@ export type User = {
 };
 
 export type UserWithRole = {
-  users: User[];
+  users: {
+    pagination: any,
+    data: User[];
+  },
   roles: Role[];
 };
 
@@ -245,10 +251,14 @@ export type Purchase = {
     quantity: number;
     total: number;
   }[];
+  verified?: boolean;
 };
 
 export type PurchaseWithSupplierProduct = {
-  purchases: Purchase[];
+  purchases: {
+    pagination: any,
+    data: Purchase[];
+  };
   suppliers: Supplier[];
   products: Product[];
 };

@@ -19,15 +19,6 @@ import { createProduct } from "@/lib/api/products";
 import { useProducts } from "@/hooks/use-products";
 import { useAuth } from "@/context/auth-context";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -41,6 +32,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { CommandList } from "cmdk";
 
 const schema = z.object({
   name: z.string().min(2).max(255).nonempty(),
@@ -115,6 +107,7 @@ export default function NewProducts() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="categoryId"
@@ -141,57 +134,38 @@ export default function NewProducts() {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[400px] p-0">
-                        <Command className="">
+                      <PopoverContent className="w-[400px] p-0" align="start">
+                        <Command>
                           <CommandInput placeholder="Cari Kategori..." />
-                          <CommandEmpty>Kategori tidak ditemukan.</CommandEmpty>
-                          <CommandGroup>
-                            {categories?.map((category) => (
-                              <CommandItem
-                                value={category.id}
-                                key={category.id}
-                                onSelect={(value) => {
-                                  form.setValue("categoryId", value);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    category.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {category.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
+                          <CommandList>
+                            <CommandEmpty>
+                              Kategori tidak ditemukan.
+                            </CommandEmpty>
+                            <CommandGroup className="max-h-[20rem] overflow-y-auto">
+                              {categories?.map((category) => (
+                                <CommandItem
+                                  value={category.id}
+                                  key={category.id}
+                                  onSelect={(value) => {
+                                    form.setValue("categoryId", value);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      category.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {category.name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
                         </Command>
                       </PopoverContent>
                     </Popover>
-                    {/* <FormControl>
-                      <Select {...field} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih kategori">
-                            {
-                              categories?.find(
-                                (category) => category.id === field.value
-                              )?.name
-                            }
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Kategori</SelectLabel>
-                            {categories?.map((category) => (
-                              <SelectItem key={category.id} value={category.id}>
-                                {category.name}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl> */}
                   </FormItem>
                 )}
               />

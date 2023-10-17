@@ -9,7 +9,7 @@ export const useUsersRoles = (token: string) => {
     isLoading: loading,
   } = useSWR([usersApiEndpoint, token], () => getUsers(token), {
     onSuccess: (data) => {
-      data.users.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+      data.users.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     },
   });
 

@@ -15,7 +15,10 @@ export const getSuppliers = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const suppliers: Supplier[] = response.data;
+  const suppliers: {
+    pagination: any,
+    data: Supplier[]
+  } = response.data;
   return suppliers;
 };
 

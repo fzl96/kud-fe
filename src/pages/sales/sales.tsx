@@ -7,6 +7,7 @@ import { useSales } from "@/hooks/use-sales";
 import { useMembers } from "@/hooks/use-members";
 import { useMemo } from "react";
 import { useUsersRoles } from "@/hooks/use-users-roles";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Sales() {
   const { auth } = useAuth();
@@ -16,7 +17,7 @@ export default function Sales() {
 
   const mappedMembers = useMemo(() => {
     if (!members) return [];
-    return members.map((member) => ({
+    return members.data.map((member) => ({
       label: member.name,
       value: member.name,
     }));
@@ -24,7 +25,7 @@ export default function Sales() {
 
   const mappedUsers = useMemo(() => {
     if (!users) return [];
-    return users
+    return users.data
       .filter((user) => ["Admin", "Kasir"].includes(user.role.name))
       .map((user) => ({
         label: user.name,
@@ -34,7 +35,7 @@ export default function Sales() {
 
   const customerNames = useMemo(() => {
     if (!sales) return [];
-    const uniqueNames = sales.reduce((acc, curr) => {
+    const uniqueNames = sales.data.reduce((acc, curr) => {
       if (curr.customerType === "ANGGOTA" && curr.customerType === "ANGGOTA") {
         return acc; // Skip adding to `acc` if customerType is 'ANGGOTA'
       }
@@ -53,9 +54,11 @@ export default function Sales() {
     <div className="flex flex-col gap-5">
       <PageTitle heading="Penjualan" />
 
-      {sales && !loading && members && (
+      {!sales || !members || loading ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
-          data={sales.map((sale) => ({
+          data={sales.data.map((sale) => ({
             id: sale.id,
             cashier: sale.user.name as string,
             customerType: sale.customerType,

@@ -52,7 +52,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
             } catch (error) {}
           }}
         >
-          Sign out
+          Keluar
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useMembers } from "@/hooks/use-members";
 import { Icons } from "@/components/icons";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export default function Members() {
   const { auth } = useAuth();
@@ -35,11 +36,13 @@ export default function Members() {
         </div>
       </PageTitle>
 
-      {members && (
+      {!members ? (
+        <TableSkeleton />
+      ) : (
         <DataTable
           filterColumn="Anggota"
           columns={columns}
-          data={members}
+          data={members.data}
           selectable={true}
           deleteFunction={deleteMembers}
           mutate={mutate}

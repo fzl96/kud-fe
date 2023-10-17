@@ -9,7 +9,7 @@ export const useMembers = (token: string) => {
     isLoading,
   } = useSWR(membersApiEndpoint, () => getMembers(token), {
     onSuccess: (data) => {
-      data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+      data.data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     },
   });
   return {
